@@ -28,7 +28,7 @@ class Discounts extends CI_Controller {
             'discount_type' => $discount['discount_type'],
             'enabled_for_services' => $discount['enabled_for_services'],
             'enabled_for_products' => $discount['enabled_for_products'],
-            'enabled_for_vouchers' => $discount['enabled_for_vouchers']
+            'enabled_for_vouchers' => (empty($discount['enabled_for_vouchers']) ? 0 : $discount['enabled_for_vouchers'])
         );
         if(!empty($discount_id)) {
             $q = $this->discount_model->update($discount_id, $values);

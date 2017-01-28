@@ -62,23 +62,23 @@ class Sales extends CI_Controller {
     function addPayment() {
         
         $sale = $this->session->userdata('sale');
-        $payment = $_POST;
         
+        $payment = $_POST;
         $ses['payment'] = $payment;
         $this->session->set_userdata($ses);
         
-//        echo '<pre>', print_r($_POST), '</pre>';
-//        echo '<pre>', print_r($sale), '</pre>';
-        
         $invoicedate = date('Y-m-d H:i:s', strtotime($sale['invoice_date']));
         
+        $appointmentid = $sale['appointmentid'];
         $checkoutins = array(
-            'appointmentid' => $sale['appointmentid'],
+            'appointmentid' => $appointmentid,
             'clientid' => $sale['customer_id'],
             'invoicedate' => $invoicedate
         );
         $this->db->insert("checkout", $checkoutins);
         $checkoutid = $this->db->insert_id();
+        
+        $this->db->update('appointmentstatus', array('status' => 'paid'), array('appointmentid' => $appointmentid));
         
         $checkoutinvoice = array(
             'checkoutid' => $checkoutid,
@@ -95,7 +95,7 @@ class Sales extends CI_Controller {
         if(!empty($sale['items_attributes'])) {
             $products = $sale['items_attributes'];
             foreach($products as $product) {
-                $qnt = $product['quantity'];
+                $qnt = (!empty($product['quantity'])) ? $product['quantity'] : 0;
                 $productid = $product['item_id'];
                 $insp = array(
                     'checkoutid' => $checkoutid,

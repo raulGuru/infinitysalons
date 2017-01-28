@@ -34,7 +34,7 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach($customers as $customer) {  ?> 
-                                               <tr class="clickable-row view_customer" data-id="<?php echo $customer['id'] ?>" id="customer_<?php echo $customer['id'] ?>">
+                                               <tr class="clickable-row view_customer" data-params='{"id":"<?php echo $customer['id']; ?>"}' data-model="modal" data-modalid="newCustomerModal" href="/customers/edit">
                                                    <td><?php echo $customer['firstname'] .' '. $customer['lastname']?></td>
                                                    <td><?php echo $customer['mobile'] ?></td>
                                                    <td><?php echo $customer['email'] ?></td>
@@ -58,8 +58,8 @@
     $(document).ready(function() {
         $('#customers_list').dataTable({"bLengthChange": false});
         
-        $('.view_customer').click(function(){
-            window.location = g.base_url + 'customers/view?id='+ $(this).data('id');
-        });
+//        $('.view_customer').click(function(){
+//            window.location = g.base_url + 'customers/view?id='+ $(this).data('id');
+//        });
     });
 </script>

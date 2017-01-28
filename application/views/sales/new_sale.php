@@ -101,7 +101,7 @@
 <!--                        <div class="search-results" style="display: none;"></div>
                         <div class="loading-screen sale-box__loading" style="display: none;">
                            <span class="sale-box__loading-text">
-                           <img src="<?php echo base_url('assets/pages/progress/progress-circle-success-8af1b228d8a0c5203b02eca464533f0765a0a290b4f44ae8b12cb45b5efe1427.svg') ?>" alt="Progress circle success">
+                           <img src="<?php //echo base_url('assets/pages/progress/progress-circle-success-8af1b228d8a0c5203b02eca464533f0765a0a290b4f44ae8b12cb45b5efe1427.svg') ?>" alt="Progress circle success">
                            </span>
                         </div>-->
                         <div class="navigation-stack">
@@ -197,7 +197,7 @@
                                                                   <div>
                                                                       <input type="hidden" value="<?php echo $appointmentdetails['special_price'] ?>" name="sale[service][special_price]" id="service-special-price">
                                                                       <input type="hidden" value="<?php echo $appointmentdetails['price'] ?>" name="sale[service][full_price]">
-                                                                      <span class="price-presenter"><span><span><s class="js-fp"><?php echo $appointmentdetails['price'] ?></s></span><span class="text-danger m-l-10 js-sp" id="js-sp-service"><?php echo $appointmentdetails['special_price'] ?></span></span></span>
+                                                                      <span class="price-presenter"><span><span><s class="js-fp">₹<?php echo $appointmentdetails['price'] ?></s></span><span class="text-danger m-l-10 js-sp" id="js-sp-service">₹<?php echo $appointmentdetails['special_price'] ?></span></span></span>
                                                                   </div>
                                                                </div>
                                                             </div>

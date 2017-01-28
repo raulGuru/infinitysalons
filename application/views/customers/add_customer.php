@@ -41,7 +41,7 @@
                                     <div class="form-group string optional customer_contact_numbers">
                                        <label class="string optional control-label" for="customer_contact_numbers">Mobile Number</label>
                                        <div class="intl-tel-input" style="z-index: 1000;">
-                                           <input class="string optional tel-input form-control" data-default-country="in" pattern="\d*" type="text" name="customer[mobile]" id="customer_contact_numbers" placeholder="+91 91234 56789" maxlength="10" value="<?php echo $customer['mobile'] ?>">
+                                           <input class="string optional tel-input form-control" data-default-country="in" pattern="\d*" type="text" name="customer[mobile]" id="customer_contact_numbers" placeholder="9123456789" maxlength="10" value="<?php echo $customer['mobile'] ?>">
                                           
                                        </div>
                                     </div>
@@ -50,7 +50,7 @@
                                     <div class="form-group tel optional customer_telephone">
                                        <label class="tel optional control-label" for="customer_telephone">Telephone</label>
                                        <div class="intl-tel-input" style="z-index: 999;">
-                                           <input class="string tel optional tel-input form-control" data-default-country="in" type="tel" name="customer[telephone]" id="customer_telephone" placeholder="+91 91234 56789" maxlength="15" value="<?php echo $customer['telephone'] ?>">
+                                           <input class="string tel optional tel-input form-control" data-default-country="in" type="tel" name="customer[telephone]" id="customer_telephone" placeholder="02212345678" maxlength="15" value="<?php echo $customer['telephone'] ?>">
                                         
                                        </div>
                                     </div>

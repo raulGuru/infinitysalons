@@ -59,7 +59,7 @@ class Services extends CI_Controller {
     }
     
     public function newService() {
-        $data['group_id'] = $_REQUEST['id'];
+        $data['group_id'] = $_GET['id'];
         $this->load->view('services/add_service', $data);
     }
     
@@ -76,9 +76,9 @@ class Services extends CI_Controller {
                 'extra_time_in_seconds' => $service['extra_time_in_seconds'],
                 'gender' => $service['gender'],
                 'pricing_type' => $service['pricing_type'],
-                'tax_rate_id' => $service['tax_rate_id'],
-                'voucher_enabled' => $service['voucher_enabled'],
-                'voucher_expiration_period' => $service['voucher_expiration_period'],
+                'tax_rate_id' => (empty($service['tax_rate_id']) ? "0" : $service['tax_rate_id']),
+                'voucher_enabled' => ($service['voucher_enabled']) ? $service['voucher_enabled'] : 0,
+                'voucher_expiration_period' => ($service['voucher_expiration_period']) ? $service['voucher_expiration_period'] : 0,
                 'price' => $service_pricing['service_pricing_price'],
                 'special_price' => $service_pricing['service_pricing_special_price'],
                 'duration' => $service_pricing['duration_value'],

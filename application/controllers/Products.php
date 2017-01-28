@@ -32,9 +32,9 @@ class Products extends CI_Controller {
             'description' => $product['description'],
             'cost_price' => !empty($product['cost_price']) ? $product['cost_price'] : 0,
             'full_price' => !empty($product['full_price']) ? $product['full_price'] : 0,
-            'special_price' => !empty($product['special_price']) ? $product['special_price'] : 0,
-            'tax_rate_id' => $product['tax_rate_id'],
-            'commission_enabled' => $product['commission_enabled'],
+            'special_price' => (!empty($product['special_price']) ? $product['special_price'] : $product['full_price']),
+            'tax_rate_id' => (empty($product['tax_rate_id']) ? '0' : $product['tax_rate_id']),
+            'commission_enabled' => (empty($product['commission_enabled']) ? '0' : $product['commission_enabled']),
             'quantity' => !empty($product['quantity']) ? $product['quantity'] : 0
         );
         if(!empty($product_id)) {

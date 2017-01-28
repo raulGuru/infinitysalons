@@ -23,8 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-//$config['base_url'] = 'http://beautysalon.com/';//$_SERVER['HTTP_HOST'];
-$config['base_url'] = (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST'];
+//$config['base_url'] = 'http://beautysalon.com/';
+$config['base_url'] = 'http://infinitysalons.com/';
+//$config['base_url'] = (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST'];
 $config['site_url'] = $config['base_url'];
 
 

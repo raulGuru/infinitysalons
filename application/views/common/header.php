@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="">
-    <title>Hair Salon</title>
+    <title>Infinity Salon</title>
     <link href="<?php echo base_url('assets/css/fullcalendar.min.css') ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/updated-bootstrap.css') ?>" rel="stylesheet">
     <link href="<?php //echo base_url('assets/css/bootstrap.css') ?>" rel="stylesheet">

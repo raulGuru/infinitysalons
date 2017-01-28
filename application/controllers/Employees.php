@@ -22,7 +22,7 @@ class Employees extends CI_Controller {
             $services[$service]['service_id'] = $s['id']; 
             
         }
-         $data['services'] = $services;
+        $data['services'] = $services;
         $this->load->view('employees/add_employees', $data);
     }
     
@@ -41,11 +41,11 @@ class Employees extends CI_Controller {
             $employee = array(
                 'first_name' => $post['first_name'],
                 'last_name' => $post['last_name'],
-                'mobile_number' => $post['mobile_number'],
+                'mobile_number' => (!empty($post['mobile_number'])) ? $post['mobile_number'] : NULL,
                 'email' => $post['email'],
                 'notes' => $post['notes'],
                 'start_date' => $start_date,
-                'end_date' => $end_date,
+                'end_date' => (!empty($end_date)) ? $end_date : NULL,
                 'active' => '1'
             );
             if(!empty($staff_id)) {

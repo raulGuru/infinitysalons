@@ -207,7 +207,7 @@
                          
                          <div class="pos-box__btns bg-white pos-box-table__item">
                              <div class=""><input type="checkbox" value="1" checked="checked" name="include_tax" id="include_tax"><label class="no-margin">Include Tax</label></div>
-                             <input type="submit" name="pay" value="Paid" class="btn btn-lg full-width bold fs-16 btn-success js-submit" disabled="disabled">
+                             <input type="submit" name="pay" value="Paid" class="btn btn-lg full-width payment-button btn-success js-submit" disabled="disabled">
                         </div>
                     </form>
                 </div> 

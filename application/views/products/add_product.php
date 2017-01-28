@@ -6,7 +6,7 @@
             <i class="pg-close"></i>
             </button>
             <h4 class="text-center">
-               New Product
+               <?php echo ((!empty($product['id'])) ? "Edit Product" : "New Product")?>
             </h4>
          </div>
          <div class="edit-form">
@@ -63,7 +63,7 @@
                                        </div>
                                     </div>
                                  </div>
-                                  <div class="col-md-4">
+                                  <div class="col-md-4 m-t-20">
                                 <div class="form-group">
                                     <label class="string optional" for="product_quantity">Product Quantity</label>
                                         <div class="input-group">
@@ -73,7 +73,7 @@
                                 </div>
                               </div>
                                
-                              <div class="form-group tax-rate-field no-margin">
+<!--                              <div class="form-group tax-rate-field no-margin">
                                  <label for="product_tax_Rate_id">Tax</label>
                                  <span class="help">Included in prices</span>
                                  <div class="select-wrapper">
@@ -81,10 +81,10 @@
                                        <option value="0">Not applicable</option>
                                     </select>
                                  </div>
-                              </div>
-                              <div class="form-group m-t-25">
+                              </div>-->
+<!--                              <div class="form-group m-t-25">
                                  <div class="checkbox check-success m-b-none">
-                                     <input name="product[commission_enabled]" type="hidden" value="0"><input class="boolean optional form-control" type="checkbox" value="<?php echo (!empty($product['commission_enabled'])) ? $product['commission_enabled'] : 1 ?>" <?php echo (!empty($product['commission_enabled'])) ? (($product['commission_enabled'] == 1) ? 'checked="checked"' : '') : 'checked="checked"';  ?> name="product[commission_enabled]" id="product_commission_enabled">
+                                     <input name="product[commission_enabled]" type="hidden" value="0"><input class="boolean optional form-control" type="checkbox" value="<?php // echo (!empty($product['commission_enabled'])) ? $product['commission_enabled'] : 1 ?>" <?php // echo (!empty($product['commission_enabled'])) ? (($product['commission_enabled'] == 1) ? 'checked="checked"' : '') : 'checked="checked"';  ?> name="product[commission_enabled]" id="product_commission_enabled">
                                     <label for="product_commission_enabled">Enable commission
                                     <i class="icon-question-circle hint-icon" data-placement="bottom" data-toggle="tooltip" title="Calculate staff commissions when this product is sold"></i>
                                     </label>
@@ -92,7 +92,7 @@
                                        Calculate staff commissions when this product is sold
                                     </div>
                                  </div>
-                              </div>
+                              </div>-->
                            </div>
                         </div>
                      </div>

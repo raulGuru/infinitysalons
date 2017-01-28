@@ -65,7 +65,6 @@ class Calendar extends CI_Controller {
                     break;
             }
             $events[$k]['color'] = $color;
-            $events[$k]['title'] = '';
             
             $events[$k]['app_detail']['status_lbl'] = $st_lbl;
             $events[$k]['app_detail']['client_lbl'] = ($appointment['clientid'] == '0') ? 'Walk-In' : $appointment['fname_c'] .' '. $appointment['lname_c'];
@@ -167,7 +166,7 @@ class Calendar extends CI_Controller {
     
     private function getAppointmentDetails($appointment_id) {
         
-        $where = "WHERE t.status != 'canc'";
+        $where = "WHERE t.status != 'canc' AND t.status != 'paid' ";
         if(!empty($appointment_id)) {
             $where = ' AND a.id='.$appointment_id.'';
         }

@@ -59,7 +59,7 @@ class Customers extends CI_Controller {
     
     public function view() {
         
-        $customer_id = $_REQUEST['id'];
+        $customer_id = $_GET['id'];
         if(!empty($customer_id)) {
             $query = $this->db->get_where('clients', array('id' => $customer_id));
             $data['customer'] = $query->row_array();
