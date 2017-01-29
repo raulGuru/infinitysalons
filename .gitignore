@@ -13,10 +13,14 @@ user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 
 # NetBeans specific
-nbproject/private/
+nbproject/*
+nbproject/private/*
 build/
 nbbuild/
 dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+
+application/config/config.php
+application/config/database.php
