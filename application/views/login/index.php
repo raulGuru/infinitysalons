@@ -13,7 +13,7 @@
         <meta content="/mstile-144x144.png?v=rMMnxJlqdL" name="msapplication-TileImage">
         <meta content="#ffffff" name="theme-color">
         <link rel="stylesheet" media="all" href="//d3ith3umqn03s3.cloudfront.net/assets/application-11002f05b9198749711068d74feebf5b6287f9b4b3f893159c9ab4d67fcae406.css">
-        
+
     </head>
     <body class="fixed-header registration  pace-done">
         <div class="pace  pace-inactive">
@@ -31,7 +31,7 @@
                         <!--Welcome to the world's first free system for Wellness and Beauty-->
                     </h2>
                     <p class="small">
-<!--                        © <?php // echo date('Y'); ?> -->
+                        <!--                        © <?php // echo date('Y');            ?> -->
                         <!--Surge Ventures Inc.-->
                     </p>
                 </div>
@@ -41,9 +41,17 @@
                     <!--<a href="https://www.shedul.com"><img height="22" src="//d3ith3umqn03s3.cloudfront.net/assets/shedul-full-logo-light-bg-63d8928125e4469dabc395245bcf0485bd621c9184acdafcf5a4320189ec9669.png" alt="Shedul full logo light bg"></a>-->
                     <h3>Login to your account</h3>
                     <!-- START Login Form -->
-                    <form class="simple_form p-t-15" novalidate="novalidate" id="new_employee" action="/home" accept-charset="UTF-8" method="post">
-                        <div class="form-group error_msg optional ">
-                        </div>
+                    <form class="simple_form p-t-15" novalidate="novalidate" id="new_employee" action="/login" accept-charset="UTF-8" method="post">
+                        <?php if (isset($_SESSION) && !empty($this->session->flashdata('flash_data'))) { ?>
+                            <div class="alert alert-danger fade in">
+                                <!--<button href="javascript:void(0)" class="close">x</button>-->
+                                <?php
+                                echo $this->session->flashdata('flash_data');
+                                ?>                        
+                            </div>
+                        <?php }
+                        ?> 
+                        <div class="form-group error_msg optional "></div>
                         <div class="form-group email optional employee_email">
                             <input class="string email optional input-lg form-control" autofocus="autofocus" placeholder="Email address" type="email" name="email" id="email">
                         </div>
@@ -61,16 +69,16 @@
                             </div>
                         </div>
                     </form>
-<!--                    <div class="pull-bottom sm-pull-bottom">
-                        <div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">
-                            <div class="col-sm-9 no-padding m-t-10">
-                                <p>
-                                    Don't have a free Shedul account yet?
-                                    <a class="btn btn-default m-t-10" href="/sign-up">Register your business</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>-->
+                    <!--                    <div class="pull-bottom sm-pull-bottom">
+                                            <div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">
+                                                <div class="col-sm-9 no-padding m-t-10">
+                                                    <p>
+                                                        Don't have a free Shedul account yet?
+                                                        <a class="btn btn-default m-t-10" href="/sign-up">Register your business</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>-->
                 </div>
             </div>
         </div>
