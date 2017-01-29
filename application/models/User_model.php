@@ -12,7 +12,7 @@ class User_model extends CI_Model {
     public function getUser($email) {
         $returnArr = array();
         $ql = $this->db->get_where('user', array('email' => $email));
-        $returnArr = $ql->result();
+        $returnArr = $ql->row_array();
 
         if ($ql->num_rows() > 0) {
             return $returnArr;
