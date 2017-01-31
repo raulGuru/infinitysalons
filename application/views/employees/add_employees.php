@@ -24,9 +24,9 @@
                      <li class="js-when-providing-services">
                         <a data-toggle="tab" href="#services">Services</a>
                      </li>
-<!--                     <li>
+                     <li>
                         <a data-toggle="tab" href="#commission">Commission</a>
-                     </li>-->
+                     </li>
                   </ul>
                   <div class="row m-t-20">
                      <div class="col-lg-12">
@@ -176,7 +176,7 @@
                                  </div>
                               </ul>
                            </div>
-<!--                           <div class="tab-pane" id="commission">
+                           <div class="tab-pane" id="commission">
                               <div class="row">
                                  <div class="col-md-6 left-modal-column-md">
                                     <div class="row attached-fields-md">
@@ -185,7 +185,7 @@
                                              <label class="decimal optional" for="employee_service_commission">Service commission</label>
                                              <div class="input-group">
                                                 <span class="input-group-addon">%</span>
-                                                <input step="0.01" class="numeric decimal optional form-control" placeholder="0.0" type="number" name="employee[service_commission]" id="employee_service_commission" value="<?php //echo $staffservicecommision['service_commision'] ?>">
+                                                <input step="0.01" class="numeric decimal optional form-control" placeholder="0.0" type="number" name="employee[service_commission]" id="employee_service_commission" value="<?php echo $staffservicecommision['service_commision'] ?>">
                                              </div>
                                           </div>
                                        </div>
@@ -194,23 +194,13 @@
                                              <label class="decimal optional" for="employee_product_commission">Product commission</label>
                                              <div class="input-group">
                                                 <span class="input-group-addon">%</span>
-                                                <input step="0.01" class="numeric decimal optional form-control" placeholder="0.0" type="number" name="employee[product_commission]" id="employee_product_commission" value="<?php //echo $staffservicecommision['product_commision'] ?>">
+                                                <input step="0.01" class="numeric decimal optional form-control" placeholder="0.0" type="number" name="employee[product_commission]" id="employee_product_commission" value="<?php echo $staffservicecommision['product_commision'] ?>">
                                              </div>
                                           </div>
-                                       </div>
-                                       div class="col-md-6 col-xs-12 no-padding">
-                                          <div class="form-group m-b-none m-t-20">
-                                             <label class="decimal optional" for="employee_voucher_commission">Voucher sales commission</label>
-                                             <div class="input-group">
-                                                <span class="input-group-addon">%</span>
-                                                <input step="0.01" class="numeric decimal optional form-control" placeholder="0.0" type="number" name="employee[voucher_commission]" id="employee_voucher_commission">
-                                             </div>
-                                          </div>
-                                       </div
-                                    </div>
+                                       </div>                                       
                                  </div>
                               </div>
-                           </div>-->
+                           </div>
                         </div>
                      </div>
                   </div>

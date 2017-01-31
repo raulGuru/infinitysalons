@@ -14,12 +14,12 @@
             <div class="row pos-box">
                <div class="col-sm-5 col-xs-12 pos-box__item">
                   <div class="pos-box__item payment-box payment-box--bordered">
-                     <form class="simple_form one-line-form" novalidate="novalidate" id="new_email_receipt_form" action="/sales/42397-2943889/email_receipt" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><input class="string email required form-control one-line-form__item one-line-form__input" placeholder="Email address" type="email" name="email_receipt_form[email]" id="email_receipt_form_email">
+<!--                     <form class="simple_form one-line-form" novalidate="novalidate" id="new_email_receipt_form" action="/sales/42397-2943889/email_receipt" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="✓"><input class="string email required form-control one-line-form__item one-line-form__input" placeholder="Email address" type="email" name="email_receipt_form[email]" id="email_receipt_form_email">
                         <button class="btn btn-success btn-lg one-line-form__item bold">Email Invoice</button>
-                     </form>
+                     </form>-->
                      <div class="payment-box__btns">
-                        <a class="btn btn-lg btn-default download-receipt payment-box-btn bold" href="/sales/42397-2943889/pdf_receipt">Download PDF Invoice</a>
-                        <a class="btn btn-lg btn-default print-receipt payment-box-btn bold" href="">Print Invoice</a>
+<!--                        <a class="btn btn-lg btn-default download-receipt payment-box-btn bold" href="/sales/42397-2943889/pdf_receipt">Download PDF Invoice</a>-->
+<a class="btn btn-lg btn-default print-receipt payment-box-btn bold" data-checkoutid="<?php echo $checkoutid ?>" href="javascript:void(0);">Print Invoice</a>
                      </div>
                      <div class="checkmark">
                         <svg version="1.1" id="checkAnimation" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 161.2 161.2" enable-background="new 0 0 161.2 161.2" xml:space="preserve">
@@ -99,3 +99,19 @@
       </div>
    </div>
 </div>
+<script>
+    $('.print-receipt').click(function(){
+        
+       $.ajax({
+            url: g.base_url + 'invoice/printinvoice',
+            type: 'post',   
+            //dataType: 'html',
+            data: $(this).data('checkoutid'),
+            success: function(data) {
+console.log(data);
+return false;
+            }
+        });
+        
+    });
+</script>

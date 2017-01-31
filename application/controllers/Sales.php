@@ -23,6 +23,15 @@ class Sales extends CI_Controller {
 
         $sale = $_POST['sale'];
         
+        if(!empty($sale['items_attributes'])) {
+            $prds = $sale['items_attributes'];
+            foreach($prds as $prd) {
+                if(empty($prd['staff-id'])) {
+                    return ;
+                }
+            }
+        }
+        
         $this->load->library('session');
         //$this->session->unset_userdata();
         $ses['sale'] = $sale;
@@ -35,7 +44,7 @@ class Sales extends CI_Controller {
         $querytax = $this->db->get("businesstax");
         $data['taxes'] = $querytax->result_array();
         
-        $this->load->view('sales/apply_payment', $data);        
+        $this->load->view('sales/apply_payment', $data);
     }
     
     function appointmentSale() {
@@ -52,14 +61,22 @@ class Sales extends CI_Controller {
         
         $query = $this->db->get_where('products', array('quantity !=' => '0'));
         $data['products'] = $query->result_array();
+        
         $querydiscounts = $this->db->get_where('discounts', array('enabled_for_products' => '1'));
         $data['discounts'] = $querydiscounts->result_array();
+        
+        $querysdiscounts = $this->db->get_where('discounts', array('enabled_for_services' => '1'));
+        $data['servicediscounts'] = $querysdiscounts->result_array();
+        
         $querystaff = $this->db->get_where('staff', array('active' => '1'));
         $data['staffs'] = $querystaff->result_array();
+
         $this->load->view('sales/new_sale', $data);        
     }
     
     function addPayment() {
+        
+        //$this->load->view('sales/invoice_raised');
         
         $sale = $this->session->userdata('sale');
         
@@ -72,7 +89,7 @@ class Sales extends CI_Controller {
         $appointmentid = $sale['appointmentid'];
         $checkoutins = array(
             'appointmentid' => $appointmentid,
-            'clientid' => $sale['customer_id'],
+            'clientid' => (!empty($sale['customer_id'])) ? $sale['customer_id'] : 0,
             'invoicedate' => $invoicedate
         );
         $this->db->insert("checkout", $checkoutins);
@@ -83,8 +100,9 @@ class Sales extends CI_Controller {
         $checkoutinvoice = array(
             'checkoutid' => $checkoutid,
             'invoicedate' => $invoicedate,
-            'totalprice' => $payment['grand-total'],
-            'businesspaytypeid' => $payment['payment-method-id'],
+            'totalprice' => round($payment['grand-total'], 2),
+            'sale' => round($payment['sale-total'], 2),
+            'businesspaytype' => $payment['payment-method-name'],
             'notes' => NULL,
             'tax' => ($payment['include_tax']) ? '1' : '0',
             'status' => '1'
@@ -104,7 +122,7 @@ class Sales extends CI_Controller {
                     'quatity' => $qnt,
                     'price' => $product['special_price'],
                     'fullprice' => $product['full_price'],
-                    'discountid' => $product['discount_id']
+                    'discountid' => (!empty($product['discount_id'])) ? $product['discount_id'] : NULL
                 );
                 $this->db->insert("checkoutproducts", $insp);
                 
@@ -121,7 +139,7 @@ class Sales extends CI_Controller {
                 'quantity' => $service['quantity'],
                 'price' => $service['special_price'],
                 'fullprice' => $service['full_price'],
-                'discountid' => $service['discount_id']
+                'discountid' => (!empty($service['discount_id'])) ? $service['discount_id'] : NULL
             );
             $this->db->insert("checkoutservices", $checkoutservices);
         }
@@ -141,10 +159,15 @@ class Sales extends CI_Controller {
 //            $res['error'] = $q;
 //        }
         
-        //$res['success'] = true;
+        $res['success'] = true;
         $res['checkoutid'] = $checkoutid;
         echo json_encode($res);
         
+//        $data['checkoutid'] = $checkoutid;
+//        $this->load->view('sales/sale_completed',$data);
+    }
+    
+    function saleCompleted() {
         
     }
     

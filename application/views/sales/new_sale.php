@@ -11,6 +11,7 @@
          </div>
          <div class="modal-body sm-padding-10 modal-body--column">
             <div class="pos-box__alerts"></div>
+            <div class="alert alert-danger hide">Select staff for all products.</div>
             <form class="simple_form row pos-box" id="new_sale">
                 <input type="hidden" name="sale[appointmentid]" id="appointment_id" value="0">
                <div class="col-sm-5 pos-box__item">
@@ -57,7 +58,7 @@
                            </div>
                         </div>
                         <div class="col-xs-4 col-sm-4 col-md-6">
-                           <div class="form-group no-margin text-right">
+                           <div class="form-group no-margin text-right js-change_client-div">
                               <a class="btn btn-default remove sm-m-t-5" href="javascript:void(0);" id="change_client"><span class="hidden-xs hidden-sm">Change Client</span>
                               <span class="visible-xs visible-sm">Change</span>
                               </a>
@@ -220,7 +221,7 @@
                                                                      <div class="select-wrapper">
                                                                          <select class="select required form-control text-left" include_blank="Select discount" name="sale[service][discount_id]" id="js-service-discount">
                                                                            <option value="">Select discount</option>
-                                                                           <?php foreach($discounts as $discount) {
+                                                                           <?php foreach($servicediscounts as $discount) {
                                                                                $t = ($discount['discount_type'] == 'fixed') ? ' (₹'.$discount['value'].') ' : ' ( '.$discount['value'].'%) ';
                                                                                $lbl = $discount['name'] . $t;
                                                                                echo "<option value='".$discount['id']."' data-distype='".$discount['discount_type']."' data-value='".$discount['value']."'>".$lbl."</option>";
@@ -358,7 +359,7 @@
         $('.invoice-placeholder').addClass('hidden');
         var p_id = $(this).data('productid'),
             exists = false,
-            saletotal = parseInt($('.sale-total-hd').val());
+            saletotal = parseFloat($('.sale-total-hd').val());
             
         var $pcheckout = $('#sale-item-row-product-tocopy').clone().attr('id', 'sale-item-row-product-' + p_id );
         
@@ -380,13 +381,15 @@
                 $('#quantity-presenter-' + p_id).html(quantity);
                 $('#quantity-' + p_id ).val(quantity);
                 
-                var fp = parseInt($('#js-fp-hd-' + p_id ).val());
-                $('#js-fp-' + p_id).html('₹'+(quantity*fp));
-                $('#full-price-' + p_id).val(quantity*fp);
+                var fp = parseFloat($('#js-fp-hd-' + p_id ).val()),
+                    qfp = Math.round((quantity*fp) * 100) / 100;
+                $('#js-fp-' + p_id).html('₹'+ qfp );
+                $('#full-price-' + p_id).val(qfp);
                 
-                var sp = parseInt($('#js-sp-hd-' + p_id ).val());
-                $('#js-sp-' + p_id).html('₹'+(quantity*sp));
-                $('#special-price-' + p_id).val(quantity*sp);
+                var sp = parseFloat($('#js-sp-hd-' + p_id ).val()),
+                    qsp = Math.round((quantity*sp) * 100) / 100;
+                $('#js-sp-' + p_id).html('₹'+ qsp );
+                $('#special-price-' + p_id).val(qsp);
                 
                 saletotal = (saletotal + sp);
                 
@@ -421,7 +424,7 @@
                     
                     $p_id.find('.remove-item-field').attr('id', 'remove-item-field-' + p_id );
                     
-                    saletotal = (saletotal + parseInt(products[x]['special_price']));
+                    saletotal = (saletotal + parseFloat(products[x]['special_price']));
                 }
             }
         }
@@ -437,29 +440,29 @@
         $(document).on( 'change', '#select-discount-' + p_id, function(){
             //debugger;
             var quantity = parseInt($('#quantity-' + p_id ).val()),
-                saletotal = parseInt($('.sale-total-hd').val());
+                saletotal = parseFloat($('.sale-total-hd').val());
                 
-            var val = parseInt($('option:selected', this).data('value')),
+            var val = parseFloat($('option:selected', this).data('value')),
                 type = $('option:selected', this).data('distype'),
-                unitprice = parseInt($('#unit-price-' + p_id).val());
+                unitprice = parseFloat($('#unit-price-' + p_id).val());
                 
             if($(this).val() == '') {
 
                 unitprice = (unitprice*quantity);
-                $('#js-sp-' + p_id).html(unitprice);
+                $('#js-sp-' + p_id).html('₹'+ unitprice);
                 $('#js-sp-hd-' + p_id).val(unitprice);
                 $('#special-price-' + p_id).val(unitprice);
 
             }else {                    
                 if(type == 'percentage') {
                     unitprice = ((unitprice*quantity) - (((unitprice) / 100) * (val*quantity)));
-                    $('#js-sp-' + p_id).html(unitprice);
+                    $('#js-sp-' + p_id).html('₹'+ unitprice);
                     $('#js-sp-hd-' + p_id).val(unitprice);
                     $('#special-price-' + p_id).val(unitprice);
 
                 }else{
                     var vl = ((unitprice*quantity) - (val*quantity));
-                    $('#js-sp-' + p_id).html(vl);
+                    $('#js-sp-' + p_id).html('₹'+ vl);
                     $('#js-sp-hd' + p_id).val(vl);
                     $('#special-price-' + p_id).val(vl);          
                 }                    
@@ -470,13 +473,13 @@
         
         $(document).on('click', '#remove-item-field-' + p_id, function(){
             $('#sale-item-row-product-' + p_id ).remove();
-            var sp = parseInt($('#special-price-' + p_id ).val()),
-                saletotal = parseInt($('.sale-total-hd').val());
+            var sp = parseFloat($('#special-price-' + p_id ).val()),
+                saletotal = parseFloat($('.sale-total-hd').val());
             
             //saletotal = saletotal - sp;
             show_saletotal();
             
-            if(!$.trim( $(".sale-item-container").html() )) {
+            if(!$.trim( $(".sale-item-container").html() ) && !$.trim($('.sale-service-container').html())) {
                 $('#apply_payment').attr('disabled', 'disabled');
             }
         });
@@ -493,12 +496,12 @@
     function show_saletotal() {
         var saletotal = 0;
         $.each( $("input[id^='special-price-']"), function () {
-            saletotal = saletotal + parseInt($(this).val());
+            saletotal = (saletotal + parseFloat($(this).val()));
         });
         
         if(!$.isEmptyObject(appointment)) {
-            var servicespecialprice = parseInt($('#service-special-price').val());
-            saletotal = saletotal + servicespecialprice;
+            var servicespecialprice = parseFloat($('#service-special-price').val());
+            saletotal = (saletotal + servicespecialprice);
         }        
         
         $('.sale-total-price').html('₹' + saletotal);
@@ -512,9 +515,9 @@
     
     $('#js-service-discount').change(function(){
             //debugger;
-        var val = parseInt($('option:selected', this).data('value')),
+        var val = parseFloat($('option:selected', this).data('value')),
             type = $('option:selected', this).data('distype'),
-            unitprice = parseInt($('#service-actual-special-price').val()),
+            unitprice = parseFloat($('#service-actual-special-price').val()),
             quantity = 1;
 
         if($(this).val() == '') {
@@ -526,12 +529,12 @@
         }else {                    
             if(type == 'percentage') {
                 unitprice = ((unitprice*quantity) - (((unitprice) / 100) * (val*quantity)));
-                $('#js-sp-service').html(unitprice);
+                $('#js-sp-service').html('₹'+ unitprice);
                 $('#service-special-price').val(unitprice);
 
             }else{
                 var vl = ((unitprice*quantity) - (val*quantity));
-                $('#js-sp-service').html(vl);
+                $('#js-sp-service').html('₹'+ vl);
                 $('#service-special-price').val(vl);
             }                    
         }
@@ -547,17 +550,20 @@
                 type: 'post',   
                 dataType: 'html',
                 data: $('form#new_sale').serialize(),
-                success: function(data) {
-                    
+                success: function(data) {                    
                     removeLoadingOverlay();
-                    $('#new-sale').remove();
-                    $('#new-payments').remove();
-                    $('body').append(data);
-                    $('#new-payments').modal({backdrop: 'static', keyboard: false});
-                    $('#new-payments').on('hidden.bs.modal', function(){
-                        $('.modal-backdrop').remove();
-                    });
-                    
+                    if(data.length == 0){
+                        $('.alert-danger').removeClass('hide');
+                        setTimeout(function() { $('.alert-danger').addClass('hide'); }, 3000);
+                    }else {
+                        $('#new-sale').remove();
+                        $('#new-payments').remove();
+                        $('body').append(data);
+                        $('#new-payments').modal({backdrop: 'static', keyboard: false});
+                        $('#new-payments').on('hidden.bs.modal', function(){
+                            $('.modal-backdrop').remove();
+                        });
+                    }
                 }
             });
         }
@@ -633,8 +639,8 @@
     }
      
      function show_client(appointment) {
-        if(appointment.clientid != '0') {
-            
+        $('.js-change_client-div').addClass('hidden');
+        if(appointment.clientid != '0') {            
             $("#sale_customer_id").val(appointment.clientid);
             $('.search-container, .buttons-container, .walkin').hide();
             $('.details-container').show();
@@ -647,7 +653,7 @@
             $('#walkin').val('0');
         
         }else{
-            $('#change_client').trigger("click");
+            //$('#change_client').trigger("click");
             $('.walkin_a').trigger( "click" );            
         }   
     }
