@@ -11,17 +11,16 @@ class User extends CI_Controller {
 
     public function account() {
         $data = $loggedUser = array();
-        $loggedUser = $this->session->userdata('logged_in');
+        $loggedUser = $this->session->userdata('salon_user');
 
-        if (isset($loggedUser)) {
-            $email = $loggedUser['sess_useremail'];
+//        if (isset($loggedUser)) {
+            $email = $loggedUser['email'];
             $data['user'] = $this->user_model->getUser($email);
-            $data['user'] = json_decode(json_encode($data['user']), True);
-
+            
             $this->load->layout('user/account', $data);
-        } else {
-            $this->load->view('login/index');
-        }
+//        } else {
+//            $this->load->view('login/index');
+//        }
     }
 
     public function saveAccount() {
@@ -39,7 +38,7 @@ class User extends CI_Controller {
             $returnArr = $this->user_model->update($id, $updateArr);
         }
         if ($returnArr['error'] == '') {
-            redirect('account');
+            redirect('user/account');
         }
     }
 

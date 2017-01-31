@@ -6,10 +6,6 @@
 !*/cache/index.html
 !*/cache/.htaccess
 
-#server specific
-application/config/config.php
-application/config/database.php
-
 user_guide/*
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
@@ -18,10 +14,13 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 # NetBeans specific
 nbproject/*
-nbproject/private/
+nbproject/private/*
 build/
 nbbuild/
 dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+
+application/config/config.php
+application/config/database.php

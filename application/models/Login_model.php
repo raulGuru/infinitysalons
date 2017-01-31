@@ -17,7 +17,7 @@ class Login_model extends CI_Model {
         $query = $this->db->get();
 
         if ($query->num_rows() == 1) {
-            $resultdata = 0;
+            $resultdata = array('status' => 1, 'data' => $query->row_array(), 'message' => 'active user found');
         } else {
             $this->db->select('*');
             $this->db->from('user');
@@ -26,19 +26,19 @@ class Login_model extends CI_Model {
             $query = $this->db->get();
 
             if ($query->num_rows() == 0) {
-                $resultdata = 1;
+                $resultdata = array('status' => 2, 'data' => $query->row_array(), 'message' => 'no user found');
             } else {
-                $resultdata = 2;
+                $resultdata = array('status' => 3, 'data' => $query->row_array(), 'message' => 'inactive user found');
             }
         }
         return $resultdata;
     }
 
     function userDetails($email, $password) {
-        $this->email = $email;
-        $this->password = $password;
-
-        $this->db->select('id,first_name,last_name,password,email,last_login_on,can_add,can_update,can_delete,updated_on');
+        if (!empty($email)) {
+            
+        }
+        $this->db->select('id,email,last_login_on,updated_on');
         $this->db->from('user');
         $where = "email='" . $this->email . "' AND password='" . $this->password . "' AND	status='active'";
         $this->db->where($where);
@@ -50,7 +50,6 @@ class Login_model extends CI_Model {
                 $updateTime = $value->updated_on;
                 $id = $value->id;
             }
-            date_default_timezone_set("Asia/Kolkata");
             $afilds = array('last_login_on' => $updateTime,
                 'updated_on' => date('Y-m-d H:i:s'));
 
@@ -60,6 +59,26 @@ class Login_model extends CI_Model {
         return $resultdata;
     }
 
-}
+    public function update_userSession($session_id, $user) {
+        if (!empty($session_id) && !empty($user)) {
+            //for login
+            $session = array('session_id' => $session_id);
+            if ($this->db->update('user', $session, array('id' => $user['id']))) {
+                return 'true';
+            } else {
+                return 'false';
+            }
+        } elseif ($session_id == '' && !empty($user)) {
+            //for logout
+            if ($this->db->update('user', array('session_id' => $session_id), array('id' => $user['id']))) {
+                return 'true';
+            } else {
+                return 'false';
+            }
+        }
+    }
 
+}
 ?>
+
+
