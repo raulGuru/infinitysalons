@@ -57,18 +57,23 @@ class Login extends CI_Controller {
     }
 
     public function logout() {
-        // Removing session data
-        $update_user = $this->login_model->update_userSession('', $this->session->userdata('salon_user'));
+        if (!empty($this->session->userdata('salon_user'))) {
+            // Removing session data
+            $update_user = $this->login_model->update_userSession('', $this->session->userdata('salon_user'));
 
-        if ($update_user == 'true') {
-            $this->session->unset_userdata('salon_user');
+            if ($update_user == 'true') {
+                $this->session->unset_userdata('salon_user');
 //            session_destroy();
 
-            $this->session->set_flashdata('flash_data', 'Successful logout!');
-            redirect('login');
+                $this->session->set_flashdata('flash_data', 'Successful logout!');
+                redirect('login');
+            } else {
+                $this->session->set_flashdata('flash_data', 'Something went wrong!');
+                redirect('login');
+            }
         } else {
-            $this->session->set_flashdata('flash_data', 'Something went wrong!');
-            redirect('login');
+            $this->session->set_flashdata('flash_data', '');
+                redirect('login');
         }
     }
 
