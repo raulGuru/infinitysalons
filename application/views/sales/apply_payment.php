@@ -2,7 +2,7 @@
    <div class="modal-dialog">
       <div class="modal-content no-border">
          <div class="modal-header clearfix text-left">
-            <button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+             <button aria-hidden="true" class="close" data-dismiss="modal" type="button" id="close-payment">
                 <i class="pg-close"></i><span>X</span>
             </button>
             <h3 class="text-center large-modal__title">
@@ -333,6 +333,10 @@
     $('.print-receipt').click(function(){
         var checkoutid = $(this).data('checkoutid');
         window.open(g.base_url + 'invoice/printinvoice?id='+checkoutid, '_blank');
+    });
+    
+    $('#close-payment').click(function(){
+        window.location = g.base_url + 'calendar';
     });
     
 </script>
