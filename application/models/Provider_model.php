@@ -42,7 +42,34 @@ class Provider_model extends CI_Model {
 
         $query = $this->db->get();
         $businessreferral = $query->result_array();
+
         return $businessreferral;
+    }
+
+    public function updateReferralSources($referral_id, $referral) {
+        $product['user_id'] = $this->user_id;
+
+        $ql = $this->db->get_where("businessreferral", array('referralname' => $referral['referralname']));
+        if ($ql->num_rows() > 1) {
+            return 'Name is not unique';
+        } else {
+            $this->db->update('businessreferral', $referral, array('id' => $referral_id));
+            return 'true';
+        }
+    }
+
+    public function insertReferralSources($referral) {
+        $product['user_id'] = $this->user_id;
+
+        $ql = $this->db->select('id')->from('businessreferral')->where('referralname', $referral['referralname'])->get();
+        print_r($this->db->last_query());
+        if ($ql->num_rows() > 0) {
+            return 'Name is not unique';
+        } else {
+            if ($this->db->insert("businessreferral", $referral)) {
+                return 'true';
+            }
+        }
     }
 
     public function getCancellationReasons($id = "") {

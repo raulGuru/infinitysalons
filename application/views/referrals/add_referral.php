@@ -22,8 +22,8 @@
                         </div>
                         <div class="form-group">
                             <label for="referral_source_active">
-                                <input name="referral_source[active]" type="hidden" value="0">
-                                <input class="ios-switch-cb" type="checkbox" value="<?php echo (!empty($referralSources['active'])) ? (($referralSources['active'] == 1) ? '1' : '0') : 1 ?>" <?php echo (!empty($referralSources['active'])) ? (($referralSources['active'] == 1) ? 'checked="checked"' : '') : 'checked="checked"'; ?> name="referral_source[active]" id="referral_source_active">
+                                <input name="referral_source[active]" type="hidden" value=<?php echo ((!empty($referralSources['active'])) ? $referralSources['active'] : "1") ?>>
+                                <input class="ios-switch-cb" type="checkbox" value="<?php echo ((!empty($referralSources['active'])) ? ($referralSources['active']) : "1") ?>" <?php echo (!empty($referralSources['active'])) ? (($referralSources['active'] == 1) ? 'checked="checked"' : '') : 'checked="checked"'; ?> name="referral_source[active]" id="referral_source_active">
                                 <span class="switchery m-r-10"></span>
                                 <span>Active</span>
                             </label>
