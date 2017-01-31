@@ -15,8 +15,8 @@
                     <div class="col-md-3">
                         <ul class="nav tabs-navigation" id="settings">
                             <li class="active sales_products"><a data-toggle="tab" href="#sales_products">Point of Sale</a></li>
-                            <li class="referral_sources"><a data-toggle="tab" href="#referral-sources">Referral Sources</a></li>
-                            <li class="cancellation_reasons"><a data-toggle="tab" href="#cancellation-reasons">Cancellation Reasons</a></li>
+<!--                            <li class="referral_sources"><a data-toggle="tab" href="#referral-sources">Referral Sources</a></li>
+                            <li class="cancellation_reasons"><a data-toggle="tab" href="#cancellation-reasons">Cancellation Reasons</a></li>-->
                         </ul>
                     </div>
                     <div class="col-md-9">
@@ -32,7 +32,7 @@
             </h3>
          </div>
       </div>
-      <div class="row">
+<!--      <div class="row">
          <div class="col-sm-12">
             <h5>
                Payment Types
@@ -62,7 +62,7 @@
             </div>
             <div class="clearfix"></div>
          </div>
-      </div>
+      </div>-->
      
       <div class="row">
          <div class="col-sm-12">
@@ -70,7 +70,7 @@
             <h5>
                Taxes
             </h5>
-            <div class="row">
+<!--            <div class="row">
                <div class="col-sm-12">
                   <div class="inputs">
                      <div class="form-group">
@@ -90,7 +90,7 @@
                      </div>
                   </div>
                </div>
-            </div>
+            </div>-->
             <div class="clearfix"></div>
             <div class="row">
                <div class="col-sm-12" id="tax-rates-container">
@@ -119,12 +119,12 @@
                </div>
             </div>
             <div class="clearfix"></div>
-            <hr>
+<!--            <hr>
             <h5>
                Staff Commissions
                <i class="icon-question-circle hint-icon v-align-middle" data-placement="bottom" data-toggle="tooltip" title="Changes to commission and tax settings will only apply to new invoices, existing invoices are not impacted"></i>
-            </h5>
-            <div class="inputs">
+            </h5>-->
+<!--            <div class="inputs">
                <div class="form-group">
                   <div class="controls form-inline">
                      <div class="form-group boolean optional provider_commission_before_discount">
@@ -140,18 +140,18 @@
                   </div>
                   <div class="help help-block visible-xs">Changes to commission and tax settings will only apply to new invoices, existing invoices are not impacted</div>
                </div>
-            </div>
+            </div>-->
          </div>
       </div>
    </div>
                                     
-                                    <div class="row m-t-40">
+<!--<div class="row m-t-40">
    <div class="col-lg-12">
       <div class="text-right">
          <input type="submit" name="commit" value="Save Changes" class="btn btn-success" id="submit-button">
       </div>
    </div>
-</div>
+</div>-->
 </div>
                                 
 

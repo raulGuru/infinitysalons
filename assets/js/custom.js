@@ -26,7 +26,7 @@ $(document).ready(function() {
     
     $(document).on("click", '.select-all-items', function(event) {
         $(".selection-list :checkbox").prop('checked', this.checked);
-    }); 
+    });
 });
 
 function loadingOverlay(){
@@ -77,6 +77,10 @@ function getTimeinFormat(date) {
     return strTime;
 }
 
-
-
-
+var myDecimal = {};
+myDecimal.round = function(number, precision) {
+    var factor = Math.pow(10, precision);
+    var tempNumber = number * factor;
+    var roundedTempNumber = Math.round(tempNumber);
+    return roundedTempNumber / factor;
+};

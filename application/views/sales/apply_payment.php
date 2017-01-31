@@ -2,7 +2,7 @@
    <div class="modal-dialog">
       <div class="modal-content no-border">
          <div class="modal-header clearfix text-left">
-            <button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+             <button aria-hidden="true" class="close" data-dismiss="modal" type="button" id="close-payment">
                 <i class="pg-close"></i><span>X</span>
             </button>
             <h3 class="text-center large-modal__title">
@@ -104,7 +104,7 @@
                               </div>
                            </div>
                         </div>
-                         <h4 class="text-center hidden-xs m-b-none pos-box-table__item">Invoice <?php echo $invoice_num; ?></h4>
+                         <h4 class="text-center hidden-xs m-b-none pos-box-table__item">Invoice</h4>
                         <div class="invoices pos-box-table__item">
                             <?php 
                                 $service = $sale['service'];
@@ -174,15 +174,15 @@
                                     foreach($taxes as $tax) {  ?>
                                     <div class="col-xs-8 invoice-row__item invoice-row__item--left invoice-row__payment"><?php echo 'Tax ( '.$tax['taxname'] .'  '.$tax['rate'].'% )'; ?></div>
                                      <div class="col-xs-4 invoice-row__item invoice-row__item--right invoice-row__payment">
-                                         <?php $taxcost = (($sale['sale-total'] / 100) * $tax['rate']);
-                                               $totaltax = $totaltax + $taxcost;
+                                         <?php $taxcost = round((($sale['sale-total'] / 100) * $tax['rate']), 2);
+                                               $totaltax = round($totaltax + $taxcost, 2);
                                              echo '₹'.$taxcost;
 
                                          ?>
                                      </div>
                                     <?php } 
                                              echo "<input type='hidden' class='hidden totaltax' name='total-tax' value='".$totaltax."'>";
-                                             $grand_total = $sale['sale-total'] + $totaltax;
+                                             $grand_total = round($sale['sale-total'] + $totaltax, 2);
                                     ?>
 
                                  </div>
@@ -194,7 +194,7 @@
                                  <div class="invoice-row">
                                     <div class="invoice-row__item invoice-row__item--big invoice-row__item--left text-uppercase"><span class="translation_missing" title="">Grand Total</span></div>
                                     <div class="invoice-row__item invoice-row__item--big invoice-row__item--right text-danger">
-                                        <input type="hidden" class="hidden paymentMethodId" name="payment-method-id" value="">
+                                        <input type="hidden" class="hidden paymentMethodName" name="payment-method-name" value="">
                                         <span id="paymentMethodName"></span>
                                         <input name="grand-total" id="grand-total-hd" type="hidden" value="<?php echo $grand_total; ?>" class="hidden">
                                         <span id="grand-total" class="m-l-5">₹<?php echo $grand_total; ?></span>
@@ -208,6 +208,7 @@
                          <div class="pos-box__btns bg-white pos-box-table__item">
                              <div class=""><input type="checkbox" value="1" checked="checked" name="include_tax" id="include_tax"><label class="no-margin">Include Tax</label></div>
                              <input type="submit" name="pay" value="Paid" class="btn btn-lg full-width payment-button btn-success js-submit" disabled="disabled">
+                             <a class="btn btn-lg btn-default print-receipt payment-box-btn bold hidden" data-checkoutid="" href="javascript:void(0);">Print Invoice</a>
                         </div>
                     </form>
                 </div> 
@@ -227,7 +228,7 @@
         var paymentMethodId = $(this).data('paymentMethodId'),
             paymentMethodName = $(this).data('paymentMethodName');
             
-        $('.paymentMethodId').val(paymentMethodId);
+        $('.paymentMethodName').val(paymentMethodName);
         $('#paymentMethodName').html(paymentMethodName);
         $('.js-submit').removeAttr('disabled');
     });
@@ -235,7 +236,7 @@
     $('.add-tip-btn').click(function(){
         var payment_tip = $('#payment_tip').val(),
             payment_tipped_employee_id = $('#payment_tipped_employee_id').val(),
-            totalamount = parseInt($('#grand-total-hd').val());
+            totalamount = parseFloat($('#grand-total-hd').val());
             
         if(payment_tip == '') {
             alert('Enter tip amount'); 
@@ -252,7 +253,7 @@
         $('#tip-amount').val(payment_tip);
         $('#tip-staff-id-hd').val(payment_tipped_employee_id);
         
-        totalamount = totalamount + parseInt(payment_tip);
+        totalamount = totalamount + (parseFloat(payment_tip));
         $('#grand-total-hd').val(totalamount);
         $('#grand-total').html('₹' + totalamount);
         
@@ -264,8 +265,8 @@
         $('.js-tip').addClass('hidden');
         $('.add-tip-container').removeClass('hidden');
         
-        var tip = parseInt($('#tip-amount').val()),
-            totalamount = parseInt($('#grand-total-hd').val());
+        var tip = parseFloat($('#tip-amount').val()),
+            totalamount = parseFloat($('#grand-total-hd').val());
         
         totalamount = totalamount - tip;
         $('#grand-total-hd').val(totalamount);
@@ -277,8 +278,8 @@
     });
     
     $('#include_tax').change(function(){
-        var totaltax = parseInt($('.totaltax').val()),
-            grandtotal = parseInt($('#grand-total-hd').val());
+        var totaltax = parseFloat($('.totaltax').val()),
+            grandtotal = parseFloat($('#grand-total-hd').val());
         if($(this).is(":checked")) {
             
             $('.js-sale-tax').removeClass('hidden');
@@ -299,21 +300,43 @@
     if (!event.isDefaultPrevented()) {
             event.preventDefault();
             
-            loadingOverlay();
+            //loadingOverlay();
             $.ajax({
                 url: g.base_url + 'sales/addPayment',
                 type: 'post',   
                 dataType: 'html',
                 data: $('form#new_payment').serialize(),
                 success: function(data) {
-                    //var json = $.parseJSON(data);
                     removeLoadingOverlay();
-                    window.location = g.base_url + 'invoice/printinvoice';
-
+                    
+                    var json = $.parseJSON(data);
+                    
+                    
+                    $('.payment-button').addClass('hidden');
+                    $('.payment-box').addClass('hidden');
+                    $('.print-receipt').removeClass('hidden').data('checkoutid', json.checkoutid);
+                    //window.open(g.base_url + 'invoice/printinvoice?id='+json.checkoutid, '_blank');
+                    
+//                    $('#sale-completed').remove();
+//                    $('#new-payments').remove();
+//                    $('body').append(data);
+//                    $('#sale-completed').modal({backdrop: 'static', keyboard: false});
+//                    $('#sale-completed').on('hidden.bs.modal', function(){
+//                        $('.modal-backdrop').remove();
+//                    });
                 }
             });
         
         }
+    });
+    
+    $('.print-receipt').click(function(){
+        var checkoutid = $(this).data('checkoutid');
+        window.open(g.base_url + 'invoice/printinvoice?id='+checkoutid, '_blank');
+    });
+    
+    $('#close-payment').click(function(){
+        window.location = g.base_url + 'calendar';
     });
     
 </script>

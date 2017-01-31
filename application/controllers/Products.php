@@ -23,16 +23,16 @@ class Products extends CI_Controller {
     }
     
     public function add() {
-        
+
         $product = $_POST['product'];
         $product_id = $_POST['product_id'];
         $values = array(
             'product_name' => trim($product['product_name']),
             'sku' => trim($product['sku']),
             'description' => $product['description'],
-            'cost_price' => !empty($product['cost_price']) ? $product['cost_price'] : 0,
-            'full_price' => !empty($product['full_price']) ? $product['full_price'] : 0,
-            'special_price' => (!empty($product['special_price']) ? $product['special_price'] : $product['full_price']),
+            'cost_price' => !empty($product['cost_price']) ? round($product['cost_price'], 2) : 0,
+            'full_price' => !empty($product['full_price']) ? round($product['full_price'], 2) : 0,
+            'special_price' => (!empty($product['special_price']) ? round($product['special_price'], 2) : $product['full_price']),
             'tax_rate_id' => (empty($product['tax_rate_id']) ? '0' : $product['tax_rate_id']),
             'commission_enabled' => (empty($product['commission_enabled']) ? '0' : $product['commission_enabled']),
             'quantity' => !empty($product['quantity']) ? $product['quantity'] : 0

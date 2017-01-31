@@ -86,7 +86,7 @@
                   </div>
                </div>
                <div class="modal-footer">
-                   <?php if($appointment['status'] != 'comp') { ?>
+                   <?php if($appointment['status'] != 'comp' || $appointment['status'] != 'paid') { ?>
                   <div class="pull-left">
                      <span class="btn-group m-r-5 sm-no-margin">
                      <a class="btn btn-danger" data-params='{"id":"<?php echo $appointment['appointment_id'] ?>"}' data-model="modal" data-modalid="cancelModal" href="/calendar/cancelBooking" id="cancel_booking"><span>Cancel</span>

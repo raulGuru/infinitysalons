@@ -79,8 +79,8 @@ class Services extends CI_Controller {
                 'tax_rate_id' => (empty($service['tax_rate_id']) ? "0" : $service['tax_rate_id']),
                 'voucher_enabled' => ($service['voucher_enabled']) ? $service['voucher_enabled'] : 0,
                 'voucher_expiration_period' => ($service['voucher_expiration_period']) ? $service['voucher_expiration_period'] : 0,
-                'price' => $service_pricing['service_pricing_price'],
-                'special_price' => $service_pricing['service_pricing_special_price'],
+                'price' => round($service_pricing['service_pricing_price'], 2),
+                'special_price' => round($service_pricing['service_pricing_special_price'], 2),
                 'duration' => $service_pricing['duration_value'],
                 'description' => $service['description']
             );
