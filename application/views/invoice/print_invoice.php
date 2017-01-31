@@ -3,115 +3,45 @@
     <head>
         <meta charset="utf-8">
         <title>Invoice</title>
-
-        <style>
-            .invoice-box{
-                max-width:800px;
-                margin:auto;
-                padding:30px;
-                border:1px solid #eee;
-                box-shadow:0 0 10px rgba(0, 0, 0, .15);
-                font-size:16px;
-                line-height:24px;
-                font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-                color:#555;
-            }
-
-            .invoice-box table{
-                width:100%;
-                line-height:inherit;
-                text-align:left;
-            }
-
-            .invoice-box table td{
-                padding:5px;
-                vertical-align:top;
-            }
-
-            .invoice-box table tr td:nth-child(2){
-                text-align:right;
-            }
-
-            .invoice-box table tr.top table td{
-                padding-bottom:20px;
-            }
-
-            .invoice-box table tr.top table td.title{
-                font-size:45px;
-                line-height:45px;
-                color:#333;
-            }
-
-            .invoice-box table tr.information table td{
-                padding-bottom:40px;
-            }
-
-            .invoice-box table tr.heading td{
-                background:#eee;
-                border-bottom:1px solid #ddd;
-                font-weight:bold;
-            }
-
-            .invoice-box table tr.details td{
-                padding-bottom:20px;
-            }
-
-            .invoice-box table tr.item td{
-                border-bottom:1px solid #eee;
-            }
-
-            .invoice-box table tr.item.last td{
-                border-bottom:none;
-            }
-
-            .invoice-box table tr.total td:nth-child(2){
-                border-top:2px solid #eee;
-                font-weight:bold;
-                text-align:center;
-            }
-
-            /*@media only screen and (max-width: 600px) {*/
-            @media print {
-                .invoice-box table tr.top table td{
-                    width:100%;
-                    display:block;
-                    text-align:center;
-                }
-
-                .invoice-box table tr.information table td{
-                    width:100%;
-                    display:block;
-                    text-align:center;
-                }
-            }
-        </style>
+        <link rel="stylesheet" media="all" href="<?php echo base_url('/assets/css/invoice.css') ?>">
+        <link rel="stylesheet" type="text/css" media="print" href="<?php echo base_url('/assets/css/invoice.css') ?>" />
     </head>
 
     <body>
         <div class="invoice-box">
             <table cellpadding="0" cellspacing="0">
                 <tr class="top">
-                    <td colspan="6">
+<!--                    <td colspan="6">
                         <table>
-                            <tr>
-                                <td class="title">
-                                    <img src="<?php echo base_url('/assets/Infinitylogo.jpg') ?>" style="width:100%; max-width:200px;">
-                                </td>
-
-                                <td style="display: table-cell">
-                                    Invoice number: <?php echo $checkout['invoicenumber'] ?><br>
-                                    Date: <?php echo date('F j, Y', strtotime($checkout['invoicedate'])) ?><br>
-                                    <!-- Due: February 1, 2015-->
-                                </td>
-                            </tr>
-                        </table>
+                            <tr>-->
+                    <td class="title">
+                        <img class="logo" src="<?php echo base_url('/assets/Infinitylogo.jpg') ?>">
                     </td>
-                </tr>
 
+                    <td>
+                        <br/>
+                        <br/>
+                        <span class="company_name header">INFINITY SALONS</span>
+                        <hr>
+                        <div class="clearfix"></div>
+                        <div class=" header">
+                            Invoice number: <?php echo $checkout['invoicenumber'] ?><br>
+                            Date: <?php echo date('F j, Y', strtotime($checkout['invoicedate'])) ?>
+                        </div>
+                        <br>
+                        <!-- Due: February 1, 2015-->
+                    </td>
+                    <!--                            </tr>
+                                            </table>
+                                        </td>-->
+                </tr>
+            </table>
+
+            <table cellpadding="0" cellspacing="0">
                 <tr class="information">
                     <td></td>
                     <td>
-                        Infinity Salon.<br>
+                        <br>
                     </td>
                     <td></td>
                     <td></td>
@@ -137,7 +67,7 @@
                 <?php if (!empty($services)) { ?>
                     <tr class="item">
                         <td><?php echo $services['servicename'] ?></td>
-                        <td><?php //echo $services['stafffname'] . ' ' . $services['stafflname'] ?></td>
+                        <td><?php //echo $services['stafffname'] . ' ' . $services['stafflname']           ?></td>
                         <td><?php echo '₹' . $services['specialprice'] ?></td>
                         <td><?php echo $services['quantity'] ?></td>
                         <td><?php
@@ -154,14 +84,14 @@
                         ?>
                         <tr class="item">
                             <td><?php echo $product['productname'] ?></td>
-                            <td><?php //echo $product['stafffname'] . ' ' . $product['stafflname'] ?></td>
+                            <td><?php //echo $product['stafffname'] . ' ' . $product['stafflname']           ?></td>
                             <td><?php echo '₹' . $product['specialprice'] ?></td>
                             <td><?php echo $product['quatity'] ?></td>
                             <td><?php echo (!empty($product['discountid'])) ? $product['discountvalue'] : '-'; ?></td>
                             <td><?php echo '₹' . $product['price'] ?></td>
                         </tr>
 
-                    <?php
+                        <?php
                     }
                 }
                 ?>
@@ -197,41 +127,43 @@
                     <td></td>
                     <td></td>
                 </tr>
-                
-                <?php if(!empty($tipdetails)) { ?>
-                        <tr class="heading">
-                            <td>Tip</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td> 
-                            <td></td>
-                        </tr>
-                        <tr class="item">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><?php echo $tipdetails['fname'] .' '.$tipdetails['lname'] ?></td>
-                            <td></td>
-                            <td><?php echo '₹'.$tipdetails['price'] ?></td>
-                        </tr>
-                            
 
-                <?php }?>
-                
-                        
-                <?php if(!empty($taxes)) { ?>
-                        <tr class="heading">
-                            <td>Tax</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td> 
-                            <td></td>
-                        </tr>
-                <?php $totaltax = 0;
-                    foreach($taxes as $tax) { ?>
-                        
+                <?php if (!empty($tipdetails)) { ?>
+                    <tr class="heading">
+                        <td>Tip</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td> 
+                        <td></td>
+                    </tr>
+                    <tr class="item">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><?php echo $tipdetails['fname'] . ' ' . $tipdetails['lname'] ?></td>
+                        <td></td>
+                        <td><?php echo '₹' . $tipdetails['price'] ?></td>
+                    </tr>
+
+
+                <?php } ?>
+
+
+                <?php if (!empty($taxes)) { ?>
+                    <tr class="heading">
+                        <td>Tax</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td> 
+                        <td></td>
+                    </tr>
+                    <?php
+                    $totaltax = 0;
+                    foreach ($taxes as $tax) {
+                        ?>
+
 
                         <tr class="item">
                             <td></td>
@@ -239,14 +171,17 @@
                             <td></td>
                             <td></td>
                             <td><?php echo $tax['taxname'] ?></td>
-                            <td><?php 
-                            $taxcost = (($checkoutinvoice['sale'] / 100) * $tax['rate']);
-                                               $totaltax = $totaltax + $taxcost;
-                                             echo '₹'.$taxcost;  ?></td>
+                            <td><?php
+                                $taxcost = (($checkoutinvoice['sale'] / 100) * $tax['rate']);
+                                $totaltax = $totaltax + $taxcost;
+                                echo '₹' . $taxcost;
+                                ?></td>
                         </tr>
-                <?php    }
-                } ?>
-                        
+                        <?php
+                    }
+                }
+                ?>
+
                 <tr class="heading">
                     <td></td>
                     <td></td>
