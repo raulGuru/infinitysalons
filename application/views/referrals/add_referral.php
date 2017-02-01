@@ -3,11 +3,14 @@
         <div class="modal-content-wrapper">
             <div class="modal-content">
                 <div class="modal-header clearfix text-center">
-                    <button aria-hidden="true" class="close" data-dismiss="modal" type="button">
-                        <i class="pg-close fs-14"></i>
+                    <button aria-hidden="true" class="close" data-dismiss="modal" type="button">X
+<!--                        <i class="pg-close fs-14"></i>-->
                     </button>
                     <h4><?php echo (!empty($referralSources['id'])) ? "Edit Referral Source" : "New Referral Source" ?></h4>
                 </div>
+                <?php echo '<pre>', print_r($referralSources), '</pre>';
+                //exit(); 
+                ?>
                 <form class="simple_form new_referral" id="new_referral" method="post">
                     <input type="hidden" name="referral_id" value="<?php echo $referralSources['id']; ?>"/>
                     <div class="modal-body">
@@ -22,8 +25,8 @@
                         </div>
                         <div class="form-group">
                             <label for="referral_source_active">
-                                <input name="referral_source[active]" type="hidden" value=<?php echo ((!empty($referralSources['active'])) ? $referralSources['active'] : "1") ?>>
-                                <input class="ios-switch-cb" type="checkbox" value="<?php echo ((!empty($referralSources['active'])) ? ($referralSources['active']) : "1") ?>" <?php echo (!empty($referralSources['active'])) ? (($referralSources['active'] == 1) ? 'checked="checked"' : '') : 'checked="checked"'; ?> name="referral_source[active]" id="referral_source_active">
+                                <input name="referral_source[active]" type="hidden" value="<?php echo ((empty($referralSources['active'])) ? 1 : ($referralSources['active'])) ?>">
+                                <input class="ios-switch-cb" type="checkbox" value="<?php echo ((empty($referralSources['active'])) ? 1 : ($referralSources['active'])) ?>" <?php echo ((!empty($referralSources['active'])) ? (($referralSources['active'] == 1) ? 'checked="checked"' : '') : 'checked="checked"'); ?> name="referral_source[active]" id="referral_source_active">
                                 <span class="switchery m-r-10"></span>
                                 <span>Active</span>
                             </label>
@@ -47,7 +50,6 @@
     $("#new_referral").validator().on("submit", function (event) {
         if (!event.isDefaultPrevented()) {
             event.preventDefault();
-            alert(g.base_url);
             $.ajax({
                 url: '/provider/addReferralSources',
                 type: 'post',
@@ -55,7 +57,7 @@
                 data: $('form#new_referral').serialize(),
                 success: function (data) {
                     if (data.success) {
-                        window.location = g.base_url + 'provider/settings';//location.pathname;
+                        window.location = g.base_url + 'provider/referral_sources';//location.pathname;
                     } else {
                         $('.alert-danger').removeClass('hide').html(data.error)
                     }
