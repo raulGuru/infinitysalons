@@ -62,7 +62,7 @@ class Provider_model extends CI_Model {
         $product['user_id'] = $this->user_id;
 
         $ql = $this->db->select('id')->from('businessreferral')->where('referralname', $referral['referralname'])->get();
-        print_r($this->db->last_query());
+
         if ($ql->num_rows() > 0) {
             return 'Name is not unique';
         } else {
@@ -83,6 +83,33 @@ class Provider_model extends CI_Model {
         $query = $this->db->get();
         $businesscancels = $query->result_array();
         return $businesscancels;
+    }
+
+    public function updateCancellationReasons($cancellation_id, $cancellationReasons) {
+        $product['user_id'] = $this->user_id;
+
+        $ql = $this->db->get_where("businesscancels", array('cancelreason' => $cancellationReasons['cancelreason']));
+
+        if ($ql->num_rows() > 1) {
+            return 'Name is not unique';
+        } else {
+            $this->db->update('businesscancels', $cancellationReasons, array('id' => $cancellation_id));
+            return 'true';
+        }
+    }
+
+    public function insertCancellationReasons($cancellationReasons) {
+        $product['user_id'] = $this->user_id;
+
+        $ql = $this->db->select('id')->from('businesscancels')->where('cancelreason', $cancellationReasons['cancelreason'])->get();
+
+        if ($ql->num_rows() > 0) {
+            return 'Name is not unique';
+        } else {
+            if ($this->db->insert("businesscancels", $cancellationReasons)) {
+                return 'true';
+            }
+        }
     }
 
     public function getPosPaymentTypes($id = "") {

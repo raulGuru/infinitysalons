@@ -17,42 +17,21 @@ class Provider extends CI_Controller {
         $data['cancellationReasons'] = $this->getCancellationReasons();
         $data['referralSources'] = $this->getReferralSources();
         $data['payment_types'] = $this->getPosPaymentTypes();
-        //$data['taxes'] = $this->getPosTaxes();
-        $query = $this->db->get_where("businesstax");
-        $data['taxes'] = $query->result_array();
+        $data['taxes'] = $this->getPosTaxes();
 
-        $this->load->layout('provider/business_settings', $data);
-    }
-
-    public function getPosPaymentTypes() {
-        $returnArr['title'] = "Pos Payment Types";
-        $returnArr['data'] = $this->provider_model->getPosPaymentTypes();
-        return $returnArr;
-    }
-
-    public function getPosTaxes() {
-        $returnArr['title'] = "Pos Taxes";
-        $returnArr['data'] = $this->provider_model->getPosTaxes();
-        return $returnArr;
-    }
-
-    public function editPosPaymentTypes() {
-        $id = $_GET['id'];
-
-        $data['data'] = $this->provider_model->getCancellationReasons($id);
-        $data['mode'] = 'edit';
-
-        $this->load->view('provider/add_cancellations_reason');
-    }
-
-    public function newCancellation() {
-        $this->load->view('cancellations/add_cancellation');
+//        echo '<pre>', print_r($data), '</pre>';
+//        exit();
+        $this->load->layout('provider/business_settings_new', $data);
     }
 
     public function getCancellationReasons($id = '') {
         $returnArr['title'] = "Cancellation Reasons";
         $returnArr['data'] = $this->provider_model->getCancellationReasons($id);
         return $returnArr;
+    }
+
+    public function newCancellation() {
+        $this->load->view('cancellations/add_cancellation');
     }
 
     public function editCancellationReasons() {
@@ -67,22 +46,22 @@ class Provider extends CI_Controller {
     }
 
     public function addCancellationReasons() {
-        $referral_source = $_POST['referral_source'];
-        $referral_id = $_POST['referral_id'];
+        $cancellationReasons = $_POST['cancellation_reason'];
+        $cancellation_id = $_POST['cancellation_id'];
 
         $values = array(
 //            'id' => $referral_id,
-            'referralname' => $referral_source['name'],
-            'active' => $referral_source['active'],
+            'cancelreason' => $cancellationReasons['name'],
+            'active' => 1,
             'date' => date('Y-m-d H:i:s'),
         );
 
-        if (!empty($referral_id)) {
-            $q = $this->provider_model->updateReferralSources($referral_id, $values);
+        if (!empty($cancellation_id)) {
+            $q = $this->provider_model->updateCancellationReasons($cancellation_id, $values);
         } else {
-            $q = $this->provider_model->insertReferralSources($values);
+            $q = $this->provider_model->insertCancellationReasons($values);
         }
-
+        
         if ($q == 'true') {
             $res['success'] = true;
         } else {
@@ -91,18 +70,14 @@ class Provider extends CI_Controller {
         echo json_encode($res);
     }
 
-    public function deleteCancellationReason() {
-        
-    }
-
-    public function newReferral() {
-        $this->load->view('referrals/add_referral');
-    }
-
     public function getReferralSources($id = '') {
         $returnArr['title'] = "Referral Sources";
         $returnArr['data'] = $this->provider_model->getReferralSources($id);
         return $returnArr;
+    }
+
+    public function newReferral() {
+        $this->load->view('referrals/add_referral');
     }
 
     public function editReferralSources() {
@@ -111,7 +86,7 @@ class Provider extends CI_Controller {
         $referralSources = $this->provider_model->getReferralSources($id);
         $data['mode'] = 'edit';
         $data['referralSources'] = $referralSources[0];
-//        echo '<pre>';print_r($data); die;
+
         $this->load->view('referrals/add_referral', $data);
     }
 
@@ -141,6 +116,19 @@ class Provider extends CI_Controller {
         echo json_encode($res);
     }
 
+    public function getPosPaymentTypes() {
+        $returnArr['title'] = "Pos Payment Types";
+        $returnArr['data'] = $this->provider_model->getPosPaymentTypes();
+        return $returnArr;
+    }
+
+    public function getPosTaxes() {
+        $returnArr['title'] = "Pos Taxes";
+        $returnArr['data'] = $this->provider_model->getPosTaxes();
+
+        return $returnArr;
+    }
+
     public function newTax() {
         $data = array();
         if (!empty($_GET['id'])) {
@@ -162,6 +150,24 @@ class Provider extends CI_Controller {
         }
         $res['success'] = true;
         echo json_encode($res);
+    }
+
+    public function taxes() {
+        $returnArr['taxes'] = $this->provider_model->getPosTaxes();
+
+        $this->load->layout('taxes/index', $returnArr);
+    }
+
+    public function referral_sources() {
+        $returnArr['referralSources'] = $this->provider_model->getReferralSources();
+
+        $this->load->layout('referrals/index', $returnArr);
+    }
+
+    public function cancellation_reasons() {
+        $returnArr['cancellationReasons'] = $this->provider_model->getCancellationReasons();
+
+        $this->load->layout('cancellations/index', $returnArr);
     }
 
 }

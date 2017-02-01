@@ -103,7 +103,7 @@
                            </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($taxes as $tax){ ?>
+                            <?php foreach($taxes['data'] as $tax){ ?>
                                 <tr data-href="/provider/newTax" data-params='{"id":"<?php echo $tax['id'] ?>"}' data-model="modal" data-modalid="newTaxModal" class="clickable-row tax_rate" id="tax_<?php echo $tax['id'] ?>">
                                 <td><?php echo $tax['taxname']; ?></td>
                                 <td><?php echo $tax['rate'] ?></td>
