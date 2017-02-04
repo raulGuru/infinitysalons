@@ -10,7 +10,7 @@
         <title>Infinity Salon</title>
         <link href="<?php echo base_url('assets/css/fullcalendar.min.css') ?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/updated-bootstrap.css') ?>" rel="stylesheet">
-        <link href="<?php //echo base_url('assets/css/bootstrap.css')  ?>" rel="stylesheet">
+        <link href="<?php //echo base_url('assets/css/bootstrap.css')   ?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css') ?>" rel="stylesheet">
 
         <script src="<?php echo base_url('assets/js/jquery.min.js') ?>"></script>
@@ -19,7 +19,7 @@
         <script src="<?php echo base_url('assets/js/jquery-ui.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/dataTables.bootstrap.min.js') ?>"></script>
-        <script src="<?php //echo base_url('assets/js/custom1.js')  ?>"></script>
+        <script src="<?php //echo base_url('assets/js/custom1.js')   ?>"></script>
         <script src="<?php echo base_url('assets/js/bootstrap.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/fullcalendar.js') ?>"></script>    
         <script src="<?php echo base_url('assets/js/custom.js') ?>"></script>
@@ -48,6 +48,10 @@
                             <li class="js-dashboard"><a href="/dashboard">Home</a></li>
                             <li class="js-calendar"><a href="/calendar">Calendar</a></li>
                             <li class="js-customers"><a href="/customers">Clients</a></li>
+                            <li class="js-services"><a href="/services">Services</a></li>
+                            <li class="js-products"><a href="/products">Products</a></li>
+                            <li class="js-employees"><a href="/employees">Staff</a></li>                                  
+                            <li class="js-provider"><a href="/provider/settings">Setup</a></li>                                   
                             <!--                <li class=" dropdown">
                                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sales</a>
                                               <ul class="dropdown-menu">
@@ -58,7 +62,7 @@
                                               </ul>
                                             </li>-->
                             <!--<li class=""><a href="/reports/appointments-summary">Reports</a></li>-->
-                            <li class=" dropdown js-setup" id="settings-dropdown">
+<!--                            <li class=" dropdown js-setup" id="settings-dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Setup</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="/services/">Services</a></li>
@@ -67,7 +71,7 @@
                                     <li><a href="/employees">Staff</a></li>
                                     <li><a href="/provider/settings">Business Settings</a></li>
                                 </ul>
-                            </li>
+                            </li>-->
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="active dropdown">
@@ -79,9 +83,9 @@
                                     <li>		
                                         <a href="/user/account">My Settings</a>		
                                     </li>
-                                    <li>		
+<!--                                    <li>		
                                         <a href="/provider/settings">Business Settings</a>		
-                                    </li>
+                                    </li>-->
                                     <li>		
                                         <a href="/logout">Logout</a>		
                                     </li>
@@ -95,8 +99,8 @@
         <!-- START PAGE CONTENT -->
         <script>
             var c_class = '<?php echo $this->router->fetch_class(); ?>';
-            if (c_class == 'services' || c_class == 'products' || c_class == 'discounts' || c_class == 'employees' || c_class == 'provider') {
-                c_class = 'setup';
-            }
+//            if (c_class == 'services' || c_class == 'products' || c_class == 'discounts' || c_class == 'employees' || c_class == 'provider') {
+//                c_class = 'setup';
+//            }
             $('.navbar-nav .js-' + c_class).addClass('active');
         </script>

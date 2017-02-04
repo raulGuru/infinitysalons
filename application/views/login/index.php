@@ -12,7 +12,7 @@
         <meta content="#36434a" name="msapplication-TileColor">
         <meta content="/mstile-144x144.png?v=rMMnxJlqdL" name="msapplication-TileImage">
         <meta content="#ffffff" name="theme-color">
-        <link rel="stylesheet" media="all" href="//d3ith3umqn03s3.cloudfront.net/assets/application-11002f05b9198749711068d74feebf5b6287f9b4b3f893159c9ab4d67fcae406.css">
+        <link rel="stylesheet" media="all" href="<?php echo base_url('assets/css/updated-bootstrap.css') ?>">
 
     </head>
     <body class="fixed-header registration  pace-done">
