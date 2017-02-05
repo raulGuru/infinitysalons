@@ -36,6 +36,53 @@ class User_model extends CI_Model {
         return $returnArr;
     }
 
+    public function getUserById($id = '') {
+        $this->db->select('user.id, user.first_name, user.last_name, user.email, user.last_login_on, user.mobile, user.session_id, user.status, user.updated_on, userpermissions.userid, userpermissions.home, userpermissions.calender, userpermissions.clients, userpermissions.services, userpermissions.products, userpermissions.discounts, userpermissions.staff, userpermissions.businesssetting, userpermissions.roster');
+
+        if (isset($id) && $id != '') {
+            $this->db->where('user.id', $id);
+        }
+
+        $this->db->from('user');
+        $this->db->join('userpermissions', 'user.id = userpermissions.userid', 'left');
+//        $this->db->get_compiled_select();
+        $result = $this->db->get();
+        $returnArr = $result->result_array();
+
+        return $returnArr;
+    }
+
+    public function updateAllPermissions($id) {
+        if (!empty($id)) {
+            $columnArr = array(
+                'home' => '0',
+                'calender' => '0',
+                'clients' => '0',
+                'services' => '0',
+                'products' => '0',
+                'discounts' => '0',
+                'staff' => '0',
+                'businesssetting' => '0',
+                'roster' => '0'
+            );
+            if ($this->db->update('userpermissions', $columnArr, array('userid' => $id))) {
+                return 'true';
+            } else {
+                return 'false';
+            }
+        }
+    }
+
+    public function updateUserPermissions($id, $permissionCols) {
+        if (!empty($id) && !empty($permissionCols)) {
+            if ($this->db->update('userpermissions', $permissionCols, array('userid' => $id))) {
+                return 'true';
+            } else {
+                return 'false';
+            }
+        }
+    }
+
 }
 
 ?>
