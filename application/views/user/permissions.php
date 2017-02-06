@@ -215,7 +215,6 @@
 <script>
     $('#userid').change(function (e) {
         var userid = $(this).val();
-
         if (userid === '') {
             $('#submit-button').prop("disabled", true);
             $('input:checkbox').prop('checked', 'checked');
@@ -225,7 +224,6 @@
             $.get('/user/getUserPermissions', {userid: userid}, function (data) {
                 removeLoadingOverlay();
                 var res = $.parseJSON(data);
-
                 var homeVal = res.home;
                 var calenderVal = res.calender;
                 var clientsVal = res.clients;
@@ -235,7 +233,6 @@
                 var staffVal = res.staff;
                 var businesssettingVal = res.businesssetting;
                 var rosterVal = res.roster;
-
                 $('#home').val(homeVal);
                 $('#calender').val(calenderVal);
                 $('#clients').val(clientsVal);
@@ -245,55 +242,46 @@
                 $('#staff').val(staffVal);
                 $('#businesssetting').val(businesssettingVal);
                 $('#roster').val(rosterVal);
-
                 if (homeVal == '0') {
                     $('#home').removeAttr("checked");
                 } else if (homeVal == '1') {
                     $('#home').prop('checked', true);
                 }
-
                 if (calenderVal == '0') {
                     $('#calender').removeAttr("checked");
                 } else if (calenderVal == '1') {
                     $('#calender').prop('checked', true);
                 }
-
                 if (clientsVal == '0') {
                     $('#clients').removeAttr("checked");
                 } else if (clientsVal == '1') {
                     $('#clients').prop('checked', true);
                 }
-
                 if (servicesVal == '0') {
                     $('#services').removeAttr("checked");
                 } else if (servicesVal == '1') {
                     $('#services').prop('checked', true);
                 }
-
                 if (productsVal == '0') {
                     $('#products').removeAttr("checked");
                 } else if (productsVal == '1') {
                     $('#products').prop('checked', true);
                 }
-
                 if (discountsVal == '0') {
                     $('#discounts').removeAttr("checked");
                 } else if (discountsVal == '1') {
                     $('#discounts').prop('checked', true);
                 }
-
                 if (staffVal == '0') {
                     $('#staff').removeAttr("checked");
                 } else if (staffVal == '1') {
                     $('#staff').prop('checked', true);
                 }
-
                 if (businesssettingVal == '0') {
                     $('#businesssetting').removeAttr("checked");
                 } else if (businesssettingVal == '1') {
                     $('#businesssetting').prop('checked', true);
                 }
-
                 if (rosterVal == '0') {
                     $('#roster').removeAttr("checked");
                 } else if (rosterVal == '1') {

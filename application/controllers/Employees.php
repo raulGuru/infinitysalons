@@ -27,7 +27,7 @@ class Employees extends CI_Controller {
     }
     
     public function add() {
-
+        
         $post = $_POST['employee'];
         if(empty($post['service_ids'])) {
             $q = 'Services must be selected (at least 1 required)';
@@ -45,7 +45,7 @@ class Employees extends CI_Controller {
                 'email' => $post['email'],
                 'notes' => $post['notes'],
                 'start_date' => $start_date,
-                'end_date' => (!empty($end_date)) ? $end_date : NULL,
+                'end_date' => (!empty($post['employment_end_date'])) ? $end_date : NULL,
                 'active' => '1'
             );
             if(!empty($staff_id)) {

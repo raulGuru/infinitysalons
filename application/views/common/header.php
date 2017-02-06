@@ -21,7 +21,8 @@
         <script src="<?php echo base_url('assets/js/dataTables.bootstrap.min.js') ?>"></script>
         <script src="<?php //echo base_url('assets/js/custom1.js')   ?>"></script>
         <script src="<?php echo base_url('assets/js/bootstrap.js') ?>"></script>
-        <script src="<?php echo base_url('assets/js/fullcalendar.js') ?>"></script>    
+        <script src="<?php echo base_url('assets/js/fullcalendar.js') ?>"></script>
+        <script src="<?php echo base_url('assets/js/accounting.min.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/custom.js') ?>"></script>
 
 

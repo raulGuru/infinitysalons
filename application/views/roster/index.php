@@ -190,7 +190,6 @@
 <script>
     $('#staff_id').change(function (e) {
         var staff_id = $(this).val();
-
         if (staff_id === '') {
             $('#submit-button').prop("disabled", true);
             $('input:checkbox').prop('checked', 'checked');
@@ -200,7 +199,6 @@
             $.get('/roster/getUserRoster', {staffid: staff_id}, function (data) {
                 removeLoadingOverlay();
                 var res = $.parseJSON(data);
-
                 var sundayVal = res.sunday;
                 var mondayVal = res.monday;
                 var tuesdayVal = res.tuesday;
@@ -208,7 +206,6 @@
                 var thursdayVal = res.thursday;
                 var fridayVal = res.friday;
                 var saturdayVal = res.saturday;
-
                 $('#sunday').val(sundayVal);
                 $('#monday').val(mondayVal);
                 $('#tuesday').val(tuesdayVal);
@@ -216,43 +213,36 @@
                 $('#thursday').val(thursdayVal);
                 $('#friday').val(fridayVal);
                 $('#saturday').val(saturdayVal);
-
                 if (sundayVal == '0') {
                     $('#sunday').removeAttr("checked");
                 } else if (sundayVal == '1') {
                     $('#sunday').prop('checked', true);
                 }
-
                 if (mondayVal == '0') {
                     $('#monday').removeAttr("checked");
                 } else if (mondayVal == '1') {
                     $('#monday').prop('checked', true);
                 }
-
                 if (tuesdayVal == '0') {
                     $('#tuesday').removeAttr("checked");
                 } else if (tuesdayVal == '1') {
                     $('#tuesday').prop('checked', true);
                 }
-
                 if (wednesdayVal == '0') {
                     $('#wednesday').removeAttr("checked");
                 } else if (wednesdayVal == '1') {
                     $('#wednesday').prop('checked', true);
                 }
-
                 if (thursdayVal == '0') {
                     $('#thursday').removeAttr("checked");
                 } else if (thursdayVal == '1') {
                     $('#thursday').prop('checked', true);
                 }
-
                 if (fridayVal == '0') {
                     $('#friday').removeAttr("checked");
                 } else if (fridayVal == '1') {
                     $('#friday').prop('checked', true);
                 }
-
                 if (saturdayVal == '0') {
                     $('#saturday').removeAttr("checked");
                 } else if (saturdayVal == '1') {

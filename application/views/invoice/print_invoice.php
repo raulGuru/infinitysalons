@@ -49,12 +49,12 @@
                     <td>
                         <?php
                         if (!empty($client)) {
-                            echo $client['firstname'] . ' ' . $client['lastname'] . '. </br>' . $client['mobile'];
+                            echo $client['firstname'] . ' ' . $client['lastname'] . ' </br>' . $client['mobile'];
                         }
                         ?>
                     </td>
                 </tr>
-
+                <?php $fmt = Common::formatMoney(); ?>
                 <tr class="heading">
                     <td>Item</td>
                     <td></td>
@@ -64,19 +64,19 @@
                     <td>Price</td>
                 </tr>
 
-                <?php if (!empty($services)) { ?>
+                <?php if (!empty($services)) { 
+                        foreach($services as $service) { ?>
                     <tr class="item">
-                        <td><?php echo $services['servicename'] ?></td>
+                        <td><?php echo $service['servicename'] ?></td>
                         <td><?php //echo $services['stafffname'] . ' ' . $services['stafflname']           ?></td>
-                        <td><?php echo '₹' . $services['specialprice'] ?></td>
-                        <td><?php echo $services['quantity'] ?></td>
-                        <td><?php
-                            $value = ($services['discounttype'] == 'percentage') ? ($services['discountvalue'] . '% off') : ('₹' . $services['discountvalue'] . ' off');
-                            echo (!empty($services['discountname'])) ? $value : '-';
+                        <td><?php echo $fmt->format($service['specialprice']) ?></td>
+                        <td><?php echo $service['quantity'] ?></td>
+                        <td><?php echo (!empty($service['discountid'])) ? $service['discountvalue'] : '-';
                             ?></td> 
-                        <td><?php echo '₹' . $services['price'] ?></td>
+                        <td><?php echo $fmt->format($service['price']) ?></td>
                     </tr>     
-                <?php } ?>
+                <?php   }
+                     } ?>
 
                 <?php
                 if (!empty($products)) {
@@ -85,10 +85,10 @@
                         <tr class="item">
                             <td><?php echo $product['productname'] ?></td>
                             <td><?php //echo $product['stafffname'] . ' ' . $product['stafflname']           ?></td>
-                            <td><?php echo '₹' . $product['specialprice'] ?></td>
+                            <td><?php echo $fmt->format($product['specialprice']) ?></td>
                             <td><?php echo $product['quatity'] ?></td>
                             <td><?php echo (!empty($product['discountid'])) ? $product['discountvalue'] : '-'; ?></td>
-                            <td><?php echo '₹' . $product['price'] ?></td>
+                            <td><?php echo $fmt->format($product['price']) ?></td>
                         </tr>
 
                         <?php
@@ -114,10 +114,7 @@
                     <td></td>
                     <td></td>
                     <td>Total</td>
-
-                    <td>
-                        <?php echo '₹' . $checkoutinvoice['sale'] ?>
-                    </td>
+                    <td> <?php echo $fmt->format($checkoutinvoice['sale']) ?> </td>
                 </tr>
                 <tr>
                     <td></td>
@@ -143,12 +140,11 @@
                         <td></td>
                         <td><?php echo $tipdetails['fname'] . ' ' . $tipdetails['lname'] ?></td>
                         <td></td>
-                        <td><?php echo '₹' . $tipdetails['price'] ?></td>
+                        <td><?php echo $fmt->format($tipdetails['price']) ?></td>
                     </tr>
 
 
                 <?php } ?>
-
 
                 <?php if (!empty($taxes)) { ?>
                     <tr class="heading">
@@ -161,10 +157,7 @@
                     </tr>
                     <?php
                     $totaltax = 0;
-                    foreach ($taxes as $tax) {
-                        ?>
-
-
+                    foreach ($taxes as $tax) { ?>
                         <tr class="item">
                             <td></td>
                             <td></td>
@@ -172,23 +165,23 @@
                             <td></td>
                             <td><?php echo $tax['taxname'] ?></td>
                             <td><?php
-                                $taxcost = (($checkoutinvoice['sale'] / 100) * $tax['rate']);
-                                $totaltax = $totaltax + $taxcost;
-                                echo '₹' . $taxcost;
-                                ?></td>
+                                    $taxcost = round((($checkoutinvoice['sale'] / 100) * $tax['rate']), 2);
+                                    $totaltax = $totaltax + $taxcost;
+                                    echo $fmt->format($taxcost);
+                                ?>
+                            </td>
                         </tr>
                         <?php
                     }
                 }
                 ?>
-
                 <tr class="heading">
                     <td></td>
                     <td></td>
                     <td></td>
                     <td>Grand Total</td>
                     <td></td>
-                    <td><?php echo '₹' . $checkoutinvoice['totalprice']; ?></td>
+                    <td><?php echo $fmt->format($checkoutinvoice['totalprice']); ?></td>
                 </tr>
             </table>
         </div>

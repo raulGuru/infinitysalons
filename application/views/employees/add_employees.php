@@ -212,8 +212,9 @@
                </div>
             </form>
          </div>
-      </div>
-   </div>
+        </div>
+       </div>
+    </div>
 </div>
 
 <script>
@@ -222,8 +223,10 @@
     var start_date = '';
     $( ".isDatepicker" ).datepicker();    
     if(!$.isEmptyObject(staff)) {
-        start_date = staff.start_date;  
-        $("#employee_employment_end_date").datepicker("setDate", new Date(staff.end_date));
+        start_date = staff.start_date;
+        if(staff.end_date) {
+            $("#employee_employment_end_date").datepicker("setDate", new Date(staff.end_date));
+        }
     }
     $("#employee_employment_start_date").datepicker("setDate", new Date(start_date));
     
