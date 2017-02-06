@@ -28,9 +28,6 @@ $config['base_url'] = 'http://infinitysalons.com/';
 //$config['base_url'] = (isset($_SERVER['HTTPS']) ? "https://" : "http://") . $_SERVER['HTTP_HOST'];
 $config['site_url'] = $config['base_url'];
 
-
-$config['user_id'] = '12345';
-
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -106,7 +103,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
