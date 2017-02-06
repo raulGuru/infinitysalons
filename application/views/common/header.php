@@ -52,7 +52,7 @@
                             <li class="js-services"><a href="/services">Services</a></li>
                             <li class="js-products"><a href="/products">Products</a></li>
                             <li class="js-employees"><a href="/employees">Staff</a></li>                                  
-                            <li class="js-provider"><a href="/provider/settings">Setup</a></li>                                   
+                            <li class="js-setup"><a href="/provider/settings">Setup</a></li>                                   
                             <!--                <li class=" dropdown">
                                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sales</a>
                                               <ul class="dropdown-menu">
@@ -100,8 +100,8 @@
         <!-- START PAGE CONTENT -->
         <script>
             var c_class = '<?php echo $this->router->fetch_class(); ?>';
-//            if (c_class == 'services' || c_class == 'products' || c_class == 'discounts' || c_class == 'employees' || c_class == 'provider') {
-//                c_class = 'setup';
-//            }
+            if (c_class == 'discounts' || c_class == 'user' || c_class == 'provider') {
+                c_class = 'setup';
+            }
             $('.navbar-nav .js-' + c_class).addClass('active');
         </script>
