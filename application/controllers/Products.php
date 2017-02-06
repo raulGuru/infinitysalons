@@ -1,27 +1,30 @@
 <?php
+
 class Products extends CI_Controller {
-    
+
     protected $user_id;
+
     function __construct() {
         parent::__construct();
         $this->load->model('products_model');
-        $this->user_id = $this->config->item('user_id');
+//        $this->user_id = $this->config->item('user_id');
+        $this->user_id = $this->session->userdata['salon_user']['id'];
     }
-    
+
     public function index() {
-        
-        $products = $this->products_model->get($_GET['search'], $_GET['sort'], $_GET['direction']);        
+
+        $products = $this->products_model->get($_GET['search'], $_GET['sort'], $_GET['direction']);
         $data['products'] = $products;
         $data['search'] = $_GET['search'];
         //$data['sort'] = $_GET['sort'];
         //$data['direction'] = $_GET['direction'];
         $this->load->layout('products/index', $data);
     }
-    
-    public function newProduct() {        
+
+    public function newProduct() {
         $this->load->view('products/add_product');
     }
-    
+
     public function add() {
 
         $product = $_POST['product'];
@@ -37,28 +40,29 @@ class Products extends CI_Controller {
             'commission_enabled' => (empty($product['commission_enabled']) ? '0' : $product['commission_enabled']),
             'quantity' => !empty($product['quantity']) ? $product['quantity'] : 0
         );
-        if(!empty($product_id)) {
+        if (!empty($product_id)) {
             $q = $this->products_model->update($product_id, $values);
-        }else {
+        } else {
             $q = $this->products_model->insert($values);
-        }        
-        if($q == 'true'){
-                $res['success'] = true;
-        }else{
+        }
+        if ($q == 'true') {
+            $res['success'] = true;
+        } else {
             $res['error'] = $q;
         }
         echo json_encode($res);
     }
-    
+
     public function edit() {
         $query = $this->db->get_where('products', array('id' => $_GET['id']));
         $data['product'] = $query->row_array();
         $data['mode'] = 'edit';
         $this->load->view('products/add_product', $data);
     }
-    
+
     public function delete() {
         $this->db->delete('products', array('id' => $this->input->post('id')));
         echo 'true';
     }
+
 }

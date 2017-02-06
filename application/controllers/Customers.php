@@ -5,12 +5,15 @@ class Customers extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('customers_model');
-        $this->user_id = $this->config->item('user_id');
+//        $this->user_id = $this->config->item('user_id');
+        $this->user_id = $this->session->userdata['salon_user']['id'];
     }
     
     public function index() {
         
-        $query = $this->db->get("clients");
+        $query = $this->db
+                    ->where('id <>','1')
+                    ->get('clients');
         $data['customers'] = $query->result_array();
         $this->load->layout('customers/index', $data);
     }

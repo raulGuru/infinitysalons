@@ -5,7 +5,8 @@ class Employees extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('employees_model');
-        $this->user_id = $this->config->item('user_id');
+//        $this->user_id = $this->config->item('user_id');
+        $this->user_id = $this->session->userdata['salon_user']['id'];
     }
     
     public function index() {
@@ -53,14 +54,13 @@ class Employees extends CI_Controller {
                 if($q == 'true') {
                     $this->db->update('staffservices', array('allowed' => '0'), array('staff_id' => $staff_id));
                     foreach($post['service_ids'] as $service_id) {
-                        $this->db->update('staffservices', array('allowed' => '1'), array('staff_id' => $staff_id, 'service_id' => $service_id));
-                        
-                        $staffservicecommision = array(
-                                'service_commision' => !empty($post['service_commission']) ? $post['service_commission'] : 0,
-                                'product_commision' => !empty($post['product_commission']) ? $post['product_commission'] : 0
-                            );
-                        $this->db->update('staffservicecommision', $staffservicecommision, array('staff_id' => $staff_id));                        
+                        $this->db->update('staffservices', array('allowed' => '1'), array('staff_id' => $staff_id, 'service_id' => $service_id));                   
                     }
+                    $staffservicecommision = array(
+                        'service_commision' => !empty($post['service_commission']) ? $post['service_commission'] : 0,
+                        'product_commision' => !empty($post['product_commission']) ? $post['product_commission'] : 0
+                    );
+                    $this->db->update('staffservicecommision', $staffservicecommision, array('staff_id' => $staff_id));
                 }
             }else
             {
@@ -69,13 +69,6 @@ class Employees extends CI_Controller {
                     $staff_id = $q;
                     if(!empty($post['service_ids'])) {
                         foreach($post['service_ids'] as $service_id) {
-                            $staffservicecommision = array(
-                                'staff_id' => $staff_id,
-                                'service_commision' => !empty($post['service_commission']) ? $post['service_commission'] : 0,
-                                'product_commision' => !empty($post['product_commission']) ? $post['product_commission'] : 0
-                            );                
-                            $this->db->insert("staffservicecommision", $staffservicecommision);
-
                             $staffservices = array(
                                 'staff_id' => $staff_id,
                                 'service_id' => $service_id,
@@ -84,6 +77,24 @@ class Employees extends CI_Controller {
                             $this->db->insert("staffservices", $staffservices);
                         }
                     }
+                    $staffservicecommision = array(
+                        'staff_id' => $staff_id,
+                        'service_commision' => !empty($post['service_commission']) ? $post['service_commission'] : 0,
+                        'product_commision' => !empty($post['product_commission']) ? $post['product_commission'] : 0
+                    );                
+                    $this->db->insert("staffservicecommision", $staffservicecommision);
+                            
+                    $staffroster = array(
+                        'staffid' => $staff_id,
+                        'sunday' => '1',
+                        'monday' => '1',
+                        'tuesday' => '1',
+                        'wednesday' => '1',
+                        'thursday' => '1',
+                        'friday' => '1',
+                        'saturday' => '1'
+                    );
+                    $this->db->insert("staffroster", $staffroster);
                     $q = 'true';
                 }
 

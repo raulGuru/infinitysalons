@@ -6,7 +6,8 @@ class Sales_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
-        $this->user_id = $this->config->item('user_id');
+//        $this->user_id = $this->config->item('user_id');
+        $this->user_id = $this->session->userdata['salon_user']['id'];
     }
 
     public function getReferralSources($id = "") {

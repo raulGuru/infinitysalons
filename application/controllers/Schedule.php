@@ -5,7 +5,8 @@ class Schedule extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('schedule_model');
-        $this->user_id = $this->config->item('user_id');
+//        $this->user_id = $this->config->item('user_id');
+        $this->user_id = $this->session->userdata['salon_user']['id'];
     }
     
     public function index() {
