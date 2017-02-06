@@ -19,8 +19,6 @@ class Provider extends CI_Controller {
         $data['payment_types'] = $this->getPosPaymentTypes();
         $data['taxes'] = $this->getPosTaxes();
 
-//        echo '<pre>', print_r($data), '</pre>';
-//        exit();
         $this->load->layout('provider/business_settings_new', $data);
     }
 
@@ -40,7 +38,6 @@ class Provider extends CI_Controller {
         $cancellationReasons = $this->provider_model->getCancellationReasons($id);
         $data['mode'] = 'edit';
         $data['cancellationReasons'] = $cancellationReasons[0];
-//        echo '<pre>';print_r($data); //die;
 
         $this->load->view('cancellations/add_cancellation', $data);
     }
@@ -52,7 +49,7 @@ class Provider extends CI_Controller {
         $values = array(
 //            'id' => $referral_id,
             'cancelreason' => $cancellationReasons['name'],
-            'active' => 1,
+            'active' => '1',
             'date' => date('Y-m-d H:i:s'),
         );
 
@@ -61,13 +58,18 @@ class Provider extends CI_Controller {
         } else {
             $q = $this->provider_model->insertCancellationReasons($values);
         }
-        
+
         if ($q == 'true') {
             $res['success'] = true;
         } else {
             $res['error'] = $q;
         }
         echo json_encode($res);
+    }
+
+    public function deleteCancellationReason() {
+        $this->db->delete('businesscancels', array('id' => $this->input->post('id')));
+        echo 'true';
     }
 
     public function getReferralSources($id = '') {
@@ -114,6 +116,11 @@ class Provider extends CI_Controller {
         }
         $res['success'] = true;
         echo json_encode($res);
+    }
+
+    public function deleteReferralSource() {
+        $this->db->delete('businessreferral', array('id' => $this->input->post('id')));
+        echo 'true';
     }
 
     public function getPosPaymentTypes() {

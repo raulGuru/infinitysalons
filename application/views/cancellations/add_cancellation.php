@@ -24,6 +24,11 @@
                     </div>
                     <div class="modal-footer">
                         <div class="pull-left">
+                            <?php if (!empty($cancellationReasons['id'])) { ?>
+                                <a id="delete-cancellation-reason" class="btn btn-danger" rel="nofollow" data-id="<?php echo $cancellationReasons['id']; ?>" href="javascript:void(0);">
+                                    Delete
+                                </a>
+                            <?php } ?>
                         </div>
                         <button aria-hidden="true" class="btn btn-default" data-dismiss="modal" type="button">
                             Cancel
@@ -56,4 +61,15 @@
         }
     });
 
+    $('#delete-cancellation-reason').click(function () {
+        $.ajax({
+            url: g.base_url + 'provider/deleteCancellationReason',
+            type: 'post',
+            dataType: 'json',
+            data: {id: $(this).data('id')},
+            success: function (data) {
+                window.location = g.base_url + 'provider/cancellation_reasons';
+            }
+        });
+    });
 </script>

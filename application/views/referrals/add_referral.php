@@ -8,9 +8,6 @@
                     </button>
                     <h4><?php echo (!empty($referralSources['id'])) ? "Edit Referral Source" : "New Referral Source" ?></h4>
                 </div>
-                <?php echo '<pre>', print_r($referralSources), '</pre>';
-                //exit(); 
-                ?>
                 <form class="simple_form new_referral" id="new_referral" method="post">
                     <input type="hidden" name="referral_id" value="<?php echo $referralSources['id']; ?>"/>
                     <div class="modal-body">
@@ -25,8 +22,8 @@
                         </div>
                         <div class="form-group">
                             <label for="referral_source_active">
-                                <input name="referral_source[active]" type="hidden" value="<?php echo ((empty($referralSources['active'])) ? 1 : ($referralSources['active'])) ?>">
-                                <input class="ios-switch-cb" type="checkbox" value="<?php echo ((empty($referralSources['active'])) ? 1 : ($referralSources['active'])) ?>" <?php echo ((!empty($referralSources['active'])) ? (($referralSources['active'] == 1) ? 'checked="checked"' : '') : 'checked="checked"'); ?> name="referral_source[active]" id="referral_source_active">
+                                <input name="referral_source[active]" type="hidden" value="0" />
+                                <input class="ios-switch-cb" type="checkbox" value="1" <?php echo (($referralSources['active'] != '') ? (($referralSources['active'] == 1) ? 'checked="checked"' : '') : 'checked="checked"') ?> name="referral_source[active]" id="referral_source_active">
                                 <span class="switchery m-r-10"></span>
                                 <span>Active</span>
                             </label>
@@ -34,6 +31,12 @@
                     </div>
                     <div class="modal-footer">
                         <div class="pull-left">
+                            <?php if (!empty($referralSources['id'])) { ?>
+                                <a id="delete-referral-source" class="btn btn-danger" rel="nofollow" data-id="<?php echo $referralSources['id']; ?>" href="javascript:void(0);">
+                                    Delete
+                                </a>
+                            <?php } ?>
+
                         </div>
                         <button aria-hidden="true" class="btn btn-default" data-dismiss="modal" type="button">
                             Cancel
@@ -46,6 +49,14 @@
     </div>
 </div>
 <script>
+    $('#referral_source_active').click(function (e) {
+        var referralSourceActive = $(this).val();
+        if (referral_source_active == '0') {
+            $('#referral_source_active').removeProp("checked");
+        } else if (referral_source_active == '1') {
+            $('#referral_source_active').prop("checked", "true");
+        }
+    });
 
     $("#new_referral").validator().on("submit", function (event) {
         if (!event.isDefaultPrevented()) {
@@ -66,4 +77,15 @@
         }
     });
 
+    $('#delete-referral-source').click(function () {
+        $.ajax({
+            url: g.base_url + 'provider/deleteReferralSource',
+            type: 'post',
+            dataType: 'json',
+            data: {id: $(this).data('id')},
+            success: function (data) {
+                window.location = g.base_url + 'provider/referral_sources';
+            }
+        });
+    });
 </script>
