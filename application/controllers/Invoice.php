@@ -51,15 +51,34 @@ class Invoice extends CI_Controller {
             $data['taxes'] = $checkoutbusinesstax;
         }
         
-        $queryservices = $this->db->query("SELECT a.quantity AS quantity, a.price AS price, b.special_price AS specialprice,
+//        $queryservices = $this->db->query("SELECT a.quantity AS quantity, a.price AS price, b.special_price AS specialprice,
+//                                    b.name AS servicename,
+//                                    c.first_name AS stafffname, c.last_name AS stafflname,
+//                                    d.name AS discountname, d.value AS discountvalue, d.discount_type AS discounttype
+//                                    FROM checkoutservices a
+//                                    INNER JOIN services b ON a.serviceid = b.id
+//                                    INNER JOIN staff c ON a.staffid = c.id
+//                                    LEFT JOIN discounts d ON a.discountid = d.id AND a.checkoutid='$checkoutid'");
+//        $servicedetails = $queryservices->result_array(); 
+//        $data['services'] = $servicedetails;
+        
+        $queryservices = $this->db->query("SELECT a.quantity AS quantity, a.price AS price, a.discountid, b.special_price AS specialprice,
                                     b.name AS servicename,
-                                    c.first_name AS stafffname, c.last_name AS stafflname,
-                                    d.name AS discountname, d.value AS discountvalue, d.discount_type AS discounttype
+                                    c.first_name AS stafffname, c.last_name AS stafflname
                                     FROM checkoutservices a
                                     INNER JOIN services b ON a.serviceid = b.id
                                     INNER JOIN staff c ON a.staffid = c.id
-                                    LEFT JOIN discounts d ON a.discountid = d.id AND a.checkoutid='$checkoutid'");
-        $servicedetails = $queryservices->row_array(); 
+                                    AND a.checkoutid='$checkoutid'");
+        $servicedetails = $queryservices->result_array();
+        if(!empty($servicedetails)) {
+            foreach($servicedetails as $k => $servicedetail) {
+                $querydiscounts = $this->db->get_where('discounts', array('id' => $servicedetail['discountid']));
+                $discount = $querydiscounts->row_array();
+                $servicedetails[$k]['discountname'] = $discount['name'];
+                $value = ($discount['discount_type'] == 'percentage') ? ($discount['value'].'% off') : ('₹'.$discount['value'].' off');
+                $servicedetails[$k]['discountvalue'] = $value;
+            }
+        }
         $data['services'] = $servicedetails;
         
         $querycheckoutproducts = $this->db->get_where('checkoutproducts', array('checkoutid' => $checkoutid));
