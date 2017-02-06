@@ -40,7 +40,6 @@ class Sales extends CI_Controller {
         $data['sale'] = $sale;
         $querystaff = $this->db->get_where('staff', array('active' => '1'));
         $data['staffs'] = $querystaff->result_array();
-        $data['invoice_num'] = date('Y-m-d') .'-'.time();
         $querytax = $this->db->get("businesstax");
         $data['taxes'] = $querytax->result_array();
         
@@ -49,15 +48,14 @@ class Sales extends CI_Controller {
     
     function appointmentSale() {
 
-        $appointment_id = $_POST['appid'];        
-        $queryaap = $this->db->query("SELECT a.id AS appointment_id, a.clientid AS clientid, a.date AS appointment_date, a.notes AS booking_notes, s.serviceid AS service_id, s.staffid AS staff_id, s.time AS appointment_time, s.duration, t.status, t.cancelid, c.firstname AS fname_c, c.lastname AS lname_c, c.mobile, c.notes, v.name AS service, v.price, v.special_price, f.first_name AS fname_s, f.last_name AS lname_s
-                                FROM appointment a
-                                INNER JOIN appointmentservices s ON a.id = s.appointmentid
-                                INNER JOIN appointmentstatus t ON a.id = t.appointmentid
-                                LEFT JOIN clients c ON a.clientid = c.id
-                                INNER JOIN services v ON s.serviceid = v.id
-                                INNER JOIN staff f ON s.staffid = f.id AND a.id='$appointment_id'");
-        $data['appointmentdetails'] = $queryaap->row_array();
+        $appointment_id = $_POST['appid'];
+        if(empty($appointment_id))
+            return;
+        
+        $appointmentdetails = Common::getAppointmentDetails($appointment_id);
+        $appointment = $appointmentdetails[0];
+        $data['appointment'] = $appointment;
+        $data['services'] = $appointment['services'];
         
         $query = $this->db->get_where('products', array('quantity !=' => '0'));
         $data['products'] = $query->result_array();
@@ -81,8 +79,8 @@ class Sales extends CI_Controller {
         $sale = $this->session->userdata('sale');
         
         $payment = $_POST;
-        $ses['payment'] = $payment;
-        $this->session->set_userdata($ses);
+//        $ses['payment'] = $payment;
+//        $this->session->set_userdata($ses);
         
         $invoicedate = date('Y-m-d H:i:s', strtotime($sale['invoice_date']));
         
@@ -100,8 +98,8 @@ class Sales extends CI_Controller {
         $checkoutinvoice = array(
             'checkoutid' => $checkoutid,
             'invoicedate' => $invoicedate,
-            'totalprice' => round($payment['grand-total'], 2),
-            'sale' => round($payment['sale-total'], 2),
+            'totalprice' => Common::parseMoney($payment['grand-total']),
+            'sale' => Common::parseMoney($payment['sale-total']),
             'businesspaytype' => $payment['payment-method-name'],
             'notes' => NULL,
             'tax' => ($payment['include_tax']) ? '1' : '0',
@@ -120,8 +118,8 @@ class Sales extends CI_Controller {
                     'productid' => $productid,
                     'staffid' => $product['staff-id'],
                     'quatity' => $qnt,
-                    'price' => $product['special_price'],
-                    'fullprice' => $product['full_price'],
+                    'price' => Common::parseMoney($product['special_price']),
+                    'fullprice' => Common::parseMoney($product['full_price']),
                     'discountid' => (!empty($product['discount_id'])) ? $product['discount_id'] : NULL
                 );
                 $this->db->insert("checkoutproducts", $insp);
@@ -131,17 +129,19 @@ class Sales extends CI_Controller {
         }
         
         if(!empty($sale['service'])) {
-            $service = $sale['service'];
-            $checkoutservices = array(
-                'checkoutid' => $checkoutid,
-                'serviceid' => $service['item-id'],
-                'staffid' => $service['staff-id'],
-                'quantity' => $service['quantity'],
-                'price' => $service['special_price'],
-                'fullprice' => $service['full_price'],
-                'discountid' => (!empty($service['discount_id'])) ? $service['discount_id'] : NULL
-            );
-            $this->db->insert("checkoutservices", $checkoutservices);
+            $services = $sale['service'];
+            foreach($services as $service) {
+                $checkoutservices = array(
+                    'checkoutid' => $checkoutid,
+                    'serviceid' => $service['item-id'],
+                    'staffid' => $service['staff-id'],
+                    'quantity' => $service['quantity'],
+                    'price' => Common::parseMoney($service['special_price']),
+                    'fullprice' => Common::parseMoney($service['full_price']),
+                    'discountid' => (!empty($service['discount_id'])) ? $service['discount_id'] : NULL
+                );
+                $this->db->insert("checkoutservices", $checkoutservices);
+            }            
         }
         
         if(!empty($payment['tip-amount'])) {

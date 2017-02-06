@@ -140,7 +140,7 @@
                               </ul>
                            </div>
                         </div>
-                        <div class="sale-box__alerts sale-box__alerts--top hidden" style="display: block;"></div>
+                        <div class="sale-box__alerts sale-box__alerts--top hidden"></div>
                      </div>
                   </div>
                </div>
@@ -184,21 +184,23 @@
                                       <div class="row sm-no-margin">
                                             <div class="col-lg-12 sale-items">
                                                 <div class="sale-service-container">
-                                                    <?php if(!empty($appointmentdetails)) { ?>
-                                                    <div class="full-height row sale-item sale-item-row-nil-class sale-item-row-nil-class-new  sale-item--editable sale-item-row-service" tabindex="-1" id="sale-service-item">
-                                                        <input class="hidden" type="hidden" name="sale[service][item-id]" value="<?php echo $appointmentdetails['service_id'] ?>">
-                                                            <input value="Service" class="hidden" name="sale[service][item-type]" type="hidden">
-                                                            <input value="<?php echo $appointmentdetails['service'] ?>" class="hidden" type="hidden" name="sale[service][item-name]">
+                                                    <?php if(!empty($services)) { 
+                                                            foreach($services as $service) { 
+                                                                $k = $service['service_id']; ?>
+                                                    
+                                                    <div class="full-height row sale-item sale-item-row-nil-class sale-item-row-nil-class-new sale-item-row-service" tabindex="-1" id="sale-service-item-<?php echo $k; ?>">
+                                                            <input value="<?php echo $service['service'] ?>" class="hidden" type="hidden" name="sale[service][<?php echo $k; ?>][item-name]">
                                                             <div class="invoice-row row">
                                                                <div class="col-sm-12 col-md-8 invoice-row__item invoice-row__item--left">
                                                                   <span class="quantity-presenter m-r-15">1</span>
-                                                                  <span class="item-label invoice-row__name js-full-text"><?php echo $appointmentdetails['service'] ?></span>
+                                                                  <span class="item-label invoice-row__name js-full-text"><?php echo $service['service'] ?></span>
                                                                </div>
                                                                <div class="col-sm-12 col-md-4 invoice-row__item invoice-row__item--right">
                                                                   <div>
-                                                                      <input type="hidden" value="<?php echo $appointmentdetails['special_price'] ?>" name="sale[service][special_price]" id="service-special-price">
-                                                                      <input type="hidden" value="<?php echo $appointmentdetails['price'] ?>" name="sale[service][full_price]">
-                                                                      <span class="price-presenter"><span><span><s class="js-fp">₹<?php echo $appointmentdetails['price'] ?></s></span><span class="text-danger m-l-10 js-sp" id="js-sp-service">₹<?php echo $appointmentdetails['special_price'] ?></span></span></span>
+                                                                      <input type="hidden" value="<?php echo $service['special_price'] ?>" name="sale[service][<?php echo $k; ?>][og_special_price]" id="js-og-sp-service-hd-<?php echo $k; ?>">
+                                                                      <input type="hidden" value="<?php echo $service['special_price'] ?>" name="sale[service][<?php echo $k; ?>][special_price]" id="js-sp-service-hd-<?php echo $k; ?>">
+                                                                      <input type="hidden" value="<?php echo $service['price'] ?>" name="sale[service][<?php echo $k; ?>][full_price]">
+                                                                      <span class="price-presenter"><span><span><s class="js-fp">₹<?php echo $service['price'] ?></s></span><span class="text-danger m-l-10 js-sp" id="js-sp-service-<?php echo $k; ?>">₹<?php echo $service['special_price'] ?></span></span></span>
                                                                   </div>
                                                                </div>
                                                             </div>
@@ -206,20 +208,21 @@
                                                                <div class="col-md-2 col-sm-6 col-xs-6 sale-tax-group sm-p-r-5 md-p-r-7">
                                                                   <div class="form-group">
                                                                      <label for="">Quantity</label>
-                                                                     <input min="0" class="numeric integer optional form-control quantity" pattern="\d*" type="number" step="1" readonly="readonly" name="sale[service][quantity]" value="1">
+                                                                     <input min="0" class="numeric integer optional form-control quantity" pattern="\d*" type="number" step="1" readonly="readonly" name="sale[service][<?php echo $k; ?>][quantity]" value="1">
                                                                   </div>
                                                                </div>
                                                                <div class="col-md-2 col-sm-6 col-xs-6 sm-p-l-5 md-p-l-7">
                                                                   <div class="form-group">
                                                                      <label for="">Price</label>
-                                                                     <input step="0.01" min="0" class="numeric float optional form-control unit-price numeric-disabled" placeholder="0.00" type="number" disabled="disabled" value="<?php echo $appointmentdetails['special_price'] ?>" id="service-actual-special-price">
+                                                                     <input step="0.01" min="0" class="numeric float optional form-control unit-price numeric-disabled" placeholder="0.00" type="number" disabled="disabled" value="<?php echo $service['special_price'] ?>" id="service-actual-special-price-<?php echo $k; ?>">
                                                                   </div>
                                                                </div>
                                                                <div class="col-md-4 col-sm-12 col-xs-12">
                                                                   <div class="form-group special-discount-group">
                                                                      <label class="hidden-xs hidden-sm" for="">Discount</label>
                                                                      <div class="select-wrapper">
-                                                                         <select class="select required form-control text-left" include_blank="Select discount" name="sale[service][discount_id]" id="js-service-discount">
+                                                                         <input class="hidden service-id" type="hidden" name="sale[service][<?php echo $k; ?>][item-id]" value="<?php echo $service['service_id'] ?>">
+                                                                         <select class="select required form-control text-left service-discount" include_blank="Select discount" name="sale[service][<?php echo $k; ?>][discount_id]" id="js-service-discount-<?php echo $k; ?>">
                                                                            <option value="">Select discount</option>
                                                                            <?php foreach($servicediscounts as $discount) {
                                                                                $t = ($discount['discount_type'] == 'fixed') ? ' (₹'.$discount['value'].') ' : ' ( '.$discount['value'].'%) ';
@@ -233,28 +236,17 @@
                                                                <div class="col-md-4 col-sm-12 col-xs-12 sale-item-employee">
                                                                   <div class="form-group no-padding">
                                                                      <label class="hidden-xs hidden-sm" for="">Staff</label>
-                                                                     <div class="select-wrapper">
-                                                                         <select include_blank="Select staff" class="select optional block form-control" readonly="readonly" name="sale[service][staff-id]">
-                                                                           <option value="">Select staff</option>
-                                                                           <?php foreach($staffs as $staff) {
-                                                                               $selected = ($staff['id'] == $appointmentdetails['staff_id']) ? "selected=selected" : '';
-                                                                               echo "<option $selected value='".$staff['id']."'>".$staff['first_name'] .' '.$staff['last_name']."</option>";
-                                                                           } ?>
-                                                                        </select>
-                                                                     </div>
+                                                                     <input class="form-control" type="text" readonly="readonly" value="<?php echo $service['fname_s'] .' '.$service['lname_s'] ?>">
+                                                                     <input type="hidden" value="<?php echo $service['staff_id'] ?>" name="sale[service][<?php echo $k; ?>][staff-id]">
                                                                   </div>
                                                                </div>
                                                             </div>
                                                          </div>
-                                                        
-                                                    <?php } ?>                                                    
+                                                            <?php }
+                                                            } ?>                                                    
                                                 </div>
                                                 
-                                               <div class="sale-item-container">
-                                                
-                                                    
-                                                  
-                                               </div>
+                                               <div class="sale-item-container"></div>
                                             </div>
                                          </div>
                                       
@@ -349,8 +341,7 @@
 
 
 
-<script>
-    
+<script>    
     
     var products = <?php echo json_encode($products); ?>;
     
@@ -358,8 +349,7 @@
         //debugger;
         $('.invoice-placeholder').addClass('hidden');
         var p_id = $(this).data('productid'),
-            exists = false,
-            saletotal = parseFloat($('.sale-total-hd').val());
+            exists = false;
             
         var $pcheckout = $('#sale-item-row-product-tocopy').clone().attr('id', 'sale-item-row-product-' + p_id );
         
@@ -382,16 +372,14 @@
                 $('#quantity-' + p_id ).val(quantity);
                 
                 var fp = parseFloat($('#js-fp-hd-' + p_id ).val()),
-                    qfp = Math.round((quantity*fp) * 100) / 100;
+                    qfp = accounting.formatMoney(quantity*fp);
                 $('#js-fp-' + p_id).html('₹'+ qfp );
                 $('#full-price-' + p_id).val(qfp);
                 
                 var sp = parseFloat($('#js-sp-hd-' + p_id ).val()),
-                    qsp = Math.round((quantity*sp) * 100) / 100;
+                    qsp = accounting.formatMoney(quantity*sp);
                 $('#js-sp-' + p_id).html('₹'+ qsp );
                 $('#special-price-' + p_id).val(qsp);
-                
-                saletotal = (saletotal + sp);
                 
                 $('#select-discount-' + p_id).trigger("change");
                 
@@ -423,8 +411,6 @@
                     $p_id.find('.employee_id').attr('id', 'select-employee_id-' + p_id ).attr('name', 'sale[items_attributes]['+ p_id +'][staff-id]');
                     
                     $p_id.find('.remove-item-field').attr('id', 'remove-item-field-' + p_id );
-                    
-                    saletotal = (saletotal + parseFloat(products[x]['special_price']));
                 }
             }
         }
@@ -439,8 +425,7 @@
                 
         $(document).on( 'change', '#select-discount-' + p_id, function(){
             //debugger;
-            var quantity = parseInt($('#quantity-' + p_id ).val()),
-                saletotal = parseFloat($('.sale-total-hd').val());
+            var quantity = parseInt($('#quantity-' + p_id ).val());
                 
             var val = parseFloat($('option:selected', this).data('value')),
                 type = $('option:selected', this).data('distype'),
@@ -448,20 +433,20 @@
                 
             if($(this).val() == '') {
 
-                unitprice = (unitprice*quantity);
+                unitprice = accounting.formatMoney(unitprice*quantity);
                 $('#js-sp-' + p_id).html('₹'+ unitprice);
                 $('#js-sp-hd-' + p_id).val(unitprice);
                 $('#special-price-' + p_id).val(unitprice);
 
             }else {                    
                 if(type == 'percentage') {
-                    unitprice = ((unitprice*quantity) - (((unitprice) / 100) * (val*quantity)));
+                    unitprice = accounting.formatMoney((unitprice*quantity) - (((unitprice) / 100) * (val*quantity)));
                     $('#js-sp-' + p_id).html('₹'+ unitprice);
                     $('#js-sp-hd-' + p_id).val(unitprice);
                     $('#special-price-' + p_id).val(unitprice);
 
                 }else{
-                    var vl = ((unitprice*quantity) - (val*quantity));
+                    var vl = accounting.formatMoney((unitprice*quantity) - (val*quantity));
                     $('#js-sp-' + p_id).html('₹'+ vl);
                     $('#js-sp-hd' + p_id).val(vl);
                     $('#special-price-' + p_id).val(vl);          
@@ -472,11 +457,8 @@
         });
         
         $(document).on('click', '#remove-item-field-' + p_id, function(){
-            $('#sale-item-row-product-' + p_id ).remove();
-            var sp = parseFloat($('#special-price-' + p_id ).val()),
-                saletotal = parseFloat($('.sale-total-hd').val());
+            $('#sale-item-row-product-' + p_id ).remove()
             
-            //saletotal = saletotal - sp;
             show_saletotal();
             
             if(!$.trim( $(".sale-item-container").html() ) && !$.trim($('.sale-service-container').html())) {
@@ -489,57 +471,26 @@
             $('#sale-item-row-product-' + p_id ).addClass('sale-item--editable');
             
             $('.sale-service-container').find('.sale-item-row-service').removeClass('sale-item--editable');
-        });
-        
+        });        
     });
     
     function show_saletotal() {
         var saletotal = 0;
         $.each( $("input[id^='special-price-']"), function () {
-            saletotal = (saletotal + parseFloat($(this).val()));
+            var v = accounting.unformat($(this).val());
+            saletotal = parseFloat(saletotal) + v;
         });
         
         if(!$.isEmptyObject(appointment)) {
-            var servicespecialprice = parseFloat($('#service-special-price').val());
-            saletotal = (saletotal + servicespecialprice);
+            $.each( $("input[id^='js-sp-service-hd-']"), function () {
+                var v = accounting.unformat($(this).val());
+                saletotal = parseFloat(saletotal) + v;
+            });
         }        
-        
+        saletotal = accounting.formatMoney(saletotal);
         $('.sale-total-price').html('₹' + saletotal);
         $('.sale-total-hd').val(saletotal);
     }
-    
-    $('.sale-item-row-service').click(function(){
-        $(".sale-item-container").find('.sale-item-row-product').removeClass('sale-item--editable');
-        $('.sale-item-row-service').addClass('sale-item--editable');
-    });
-    
-    $('#js-service-discount').change(function(){
-            //debugger;
-        var val = parseFloat($('option:selected', this).data('value')),
-            type = $('option:selected', this).data('distype'),
-            unitprice = parseFloat($('#service-actual-special-price').val()),
-            quantity = 1;
-
-        if($(this).val() == '') {
-
-            unitprice = (unitprice*quantity);
-            $('#js-sp-service').html(unitprice);
-            $('#service-special-price').val(unitprice);
-
-        }else {                    
-            if(type == 'percentage') {
-                unitprice = ((unitprice*quantity) - (((unitprice) / 100) * (val*quantity)));
-                $('#js-sp-service').html('₹'+ unitprice);
-                $('#service-special-price').val(unitprice);
-
-            }else{
-                var vl = ((unitprice*quantity) - (val*quantity));
-                $('#js-sp-service').html('₹'+ vl);
-                $('#service-special-price').val(vl);
-            }                    
-        }
-        show_saletotal();
-    });
     
     $("#new_sale").validator().on("submit", function (event) { 
     if (!event.isDefaultPrevented()) {
@@ -623,22 +574,49 @@
      $('#sale_invoice_date').datepicker( {maxDate : 0 } ).datepicker("setDate", dateToday);
      $('#sale_due_date').datepicker( {minDate : 0 } ).datepicker("setDate", dateToday);
      
-    var appointment = <?php echo json_encode($appointmentdetails); ?>;
+    var appointment = <?php echo json_encode($appointment); ?>;
     if(!$.isEmptyObject(appointment)) {
-        
         $('#appointment_id').val(appointment.appointment_id);
-        
         $('.invoice-placeholder').addClass('hidden');
-
-        $('.sale-total-price').html('₹' + appointment.special_price);
-        $('.sale-total-hd').val(appointment.special_price);
-
-        $('#apply_payment').removeAttr('disabled');
-
         show_client(appointment);
+        show_saletotal();
+        $('#apply_payment').removeAttr('disabled');
+        
+        $('.sale-item-row-service').click(function(){
+            $(".sale-item-container").find('.sale-item-row-product').removeClass('sale-item--editable');
+            $(".sale-service-container").find('.sale-item-row-service').removeClass('sale-item--editable');
+            $(".sale-service-container").find('#'+$(this).attr('id')).addClass('sale-item--editable');
+        });
+    
+        $('.service-discount').change(function(){
+            var $this = $(this);
+            var serviceid = $this.parent('div').find('.service-id').val(),
+                val = parseFloat($('option:selected', this).data('value')),
+                type = $('option:selected', this).data('distype'),
+                ogsp = accounting.unformat($('#js-og-sp-service-hd-'+serviceid).val()),
+                price = 0;
+
+            if($(this).val() == '') {
+                $('#js-sp-service-'+serviceid).html('₹'+ ogsp);
+                $('#js-sp-service-hd-'+serviceid).val(ogsp);
+
+            }else {
+                if(type == 'percentage') {
+                    price = accounting.formatMoney(ogsp - ((ogsp / 100) * val));
+                    $('#js-sp-service-'+serviceid).html('₹'+ price);
+                    $('#js-sp-service-hd-'+serviceid).val(price);
+
+                }else{
+                    price = accounting.formatMoney(ogsp - val);
+                    $('#js-sp-service-'+serviceid).html('₹'+ price);
+                    $('#js-sp-service-hd-'+serviceid).val(price);
+                }                    
+            }
+            show_saletotal();
+        });
     }
      
-     function show_client(appointment) {
+    function show_client(appointment) {
         $('.js-change_client-div').addClass('hidden');
         if(appointment.clientid != '0') {            
             $("#sale_customer_id").val(appointment.clientid);

@@ -107,9 +107,9 @@
                          <h4 class="text-center hidden-xs m-b-none pos-box-table__item">Invoice</h4>
                         <div class="invoices pos-box-table__item">
                             <?php 
-                                $service = $sale['service'];
-                                if(!empty($service)) { ?>
-                            
+                                $services = $sale['service'];
+                                if(!empty($services)) { 
+                                    foreach($services as $service) { ?>
                                 <div class="invoice-row invoice-row-product row">
                                   <div class="col-sm-8 invoice-row__item invoice-row__item--left">
                                       <span class="m-r-15"><?php echo $service['quantity'] ?></span>
@@ -119,8 +119,8 @@
                                       <s>₹<?php echo $service['full_price'] ?></s><span class="text-danger m-l-10">₹<?php echo $service['special_price'] ?></span>
                                   </div>
                                </div>
-                                    
-                            <?php     } 
+                            <?php   } 
+                                } 
                             
                                 $items = $sale['items_attributes'];
                                 foreach($items as $item) { ?>
@@ -174,15 +174,16 @@
                                     foreach($taxes as $tax) {  ?>
                                     <div class="col-xs-8 invoice-row__item invoice-row__item--left invoice-row__payment"><?php echo 'Tax ( '.$tax['taxname'] .'  '.$tax['rate'].'% )'; ?></div>
                                      <div class="col-xs-4 invoice-row__item invoice-row__item--right invoice-row__payment">
-                                         <?php $taxcost = round((($sale['sale-total'] / 100) * $tax['rate']), 2);
-                                               $totaltax = round($totaltax + $taxcost, 2);
-                                             echo '₹'.$taxcost;
-
+                                         <?php 
+                                            $salet = Common::parseMoney($sale['sale-total']);
+                                            $taxcost = round((( $salet/ 100) * $tax['rate']), 2);
+                                            $totaltax = ($totaltax + $taxcost);
+                                            echo '₹'.$taxcost;
                                          ?>
                                      </div>
                                     <?php } 
                                              echo "<input type='hidden' class='hidden totaltax' name='total-tax' value='".$totaltax."'>";
-                                             $grand_total = round($sale['sale-total'] + $totaltax, 2);
+                                             $grand_total = round($salet + $totaltax, 2);
                                     ?>
 
                                  </div>
@@ -208,7 +209,7 @@
                          <div class="pos-box__btns bg-white pos-box-table__item">
                              <div class=""><input type="checkbox" value="1" checked="checked" name="include_tax" id="include_tax"><label class="no-margin">Include Tax</label></div>
                              <input type="submit" name="pay" value="Paid" class="btn btn-lg full-width payment-button btn-success js-submit" disabled="disabled">
-                             <a class="btn btn-lg btn-default print-receipt payment-box-btn bold hidden" data-checkoutid="" href="javascript:void(0);">Print Invoice</a>
+                             <a class="btn btn-lg btn-default view-receipt payment-box-btn bold hidden" data-checkoutid="" href="javascript:void(0);">View Invoice</a>
                         </div>
                     </form>
                 </div> 
@@ -233,12 +234,9 @@
         $('.js-submit').removeAttr('disabled');
     });
     
-    $('.add-tip-btn').click(function(){
-        var payment_tip = $('#payment_tip').val(),
-            payment_tipped_employee_id = $('#payment_tipped_employee_id').val(),
-            totalamount = parseFloat($('#grand-total-hd').val());
+    $('.add-tip-btn').click(function(){        
             
-        if(payment_tip == '') {
+        if($('#payment_tip').val() == '') {
             alert('Enter tip amount'); 
             return false;
         }
@@ -247,13 +245,16 @@
             alert('Select Staff to tip'); 
             return false;
         }
+        
+        var payment_tip = parseFloat($('#payment_tip').val()).toFixed(2),
+            payment_tipped_employee_id = $('#payment_tipped_employee_id').val();
 
         $('.js-tip').removeClass('hidden');
         $('.js-tip-amount').html('₹' + payment_tip);
         $('#tip-amount').val(payment_tip);
         $('#tip-staff-id-hd').val(payment_tipped_employee_id);
         
-        totalamount = totalamount + (parseFloat(payment_tip));
+        var totalamount = parseFloat(parseFloat($('#grand-total-hd').val()) + parseFloat(payment_tip)).toFixed(2);
         $('#grand-total-hd').val(totalamount);
         $('#grand-total').html('₹' + totalamount);
         
@@ -265,10 +266,7 @@
         $('.js-tip').addClass('hidden');
         $('.add-tip-container').removeClass('hidden');
         
-        var tip = parseFloat($('#tip-amount').val()),
-            totalamount = parseFloat($('#grand-total-hd').val());
-        
-        totalamount = totalamount - tip;
+        var totalamount = parseFloat(parseFloat($('#grand-total-hd').val()) - parseFloat($('#tip-amount').val())).toFixed(2);
         $('#grand-total-hd').val(totalamount);
         $('#grand-total').html('₹' + totalamount);
         
@@ -280,19 +278,20 @@
     $('#include_tax').change(function(){
         var totaltax = parseFloat($('.totaltax').val()),
             grandtotal = parseFloat($('#grand-total-hd').val());
+            
         if($(this).is(":checked")) {
             
             $('.js-sale-tax').removeClass('hidden');
-            grandtotal = grandtotal + totaltax;
-            $('#grand-total-hd').val(grandtotal);
-            $('#grand-total').html('₹'+grandtotal);
+            var gt = parseFloat(grandtotal + totaltax).toFixed(2);
+            $('#grand-total-hd').val(gt);
+            $('#grand-total').html('₹'+gt);
             
         }else {
             
             $('.js-sale-tax').addClass('hidden');
-            grandtotal = grandtotal - totaltax;
-            $('#grand-total-hd').val(grandtotal);
-            $('#grand-total').html('₹'+grandtotal);
+            var gt = parseFloat(grandtotal - totaltax).toFixed(2);
+            $('#grand-total-hd').val(gt);
+            $('#grand-total').html('₹'+gt);
         }
     });
     
@@ -300,7 +299,7 @@
     if (!event.isDefaultPrevented()) {
             event.preventDefault();
             
-            //loadingOverlay();
+            loadingOverlay();
             $.ajax({
                 url: g.base_url + 'sales/addPayment',
                 type: 'post',   
@@ -310,11 +309,9 @@
                     removeLoadingOverlay();
                     
                     var json = $.parseJSON(data);
-                    
-                    
                     $('.payment-button').addClass('hidden');
                     $('.payment-box').addClass('hidden');
-                    $('.print-receipt').removeClass('hidden').data('checkoutid', json.checkoutid);
+                    $('.view-receipt').removeClass('hidden').data('checkoutid', json.checkoutid);
                     //window.open(g.base_url + 'invoice/printinvoice?id='+json.checkoutid, '_blank');
                     
 //                    $('#sale-completed').remove();
@@ -330,7 +327,7 @@
         }
     });
     
-    $('.print-receipt').click(function(){
+    $('.view-receipt').click(function(){
         var checkoutid = $(this).data('checkoutid');
         window.open(g.base_url + 'invoice/printinvoice?id='+checkoutid, '_blank');
     });
