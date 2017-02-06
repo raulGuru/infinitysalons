@@ -15,8 +15,9 @@ class Login extends CI_Controller {
 
     public function index() {
         // Check for user login process
-        if ($_POST) {
-            $result = $this->login_model->loginAuthentication($_POST);
+        $userarr = $this->input->post();
+        if (isset($userarr) && !empty($userarr)) {
+            $result = $this->login_model->loginAuthentication($userarr);
 
             if (!empty($result) && $result['status'] == 1) {
                 $data = array(
@@ -73,7 +74,7 @@ class Login extends CI_Controller {
             }
         } else {
             $this->session->set_flashdata('flash_data', '');
-                redirect('login');
+            redirect('login');
         }
     }
 
