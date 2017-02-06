@@ -49,7 +49,7 @@
                     <td>
                         <?php
                         if (!empty($client)) {
-                            echo $client['firstname'] . ' ' . $client['lastname'] . '. </br>' . $client['mobile'];
+                            echo $client['firstname'] . ' ' . $client['lastname'] . ' </br>' . $client['mobile'];
                         }
                         ?>
                     </td>

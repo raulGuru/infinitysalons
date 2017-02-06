@@ -14,28 +14,6 @@ class Invoice extends CI_Controller {
         $checkout= $querycheckout->row_array();
         $checkout['invoicenumber'] = strtotime($checkout['timestamp']) .'-I'.$checkoutid.'-A'.$checkout['appointmentid'].'-C'.$checkout['clientid'];
         $data['checkout'] = $checkout;
-
-//        if($checkout['appointmentid'] != 0) {
-//            $appointmentid = $checkout['appointmentid'];            
-//            $queryaap = $this->db->query("SELECT a.id AS appointment_id, a.clientid AS clientid, a.date AS appointment_date, a.notes AS booking_notes, s.serviceid AS service_id, s.staffid AS staff_id, s.time AS appointment_time, s.duration, t.status, t.cancelid, c.firstname AS fname_c, c.lastname AS lname_c, c.mobile, c.notes, v.name AS service, v.price, v.special_price, f.first_name AS fname_s, f.last_name AS lname_s
-//                                FROM appointment a
-//                                INNER JOIN appointmentservices s ON a.id = s.appointmentid
-//                                INNER JOIN appointmentstatus t ON a.id = t.appointmentid
-//                                LEFT JOIN clients c ON a.clientid = c.id
-//                                INNER JOIN services v ON s.serviceid = v.id
-//                                INNER JOIN staff f ON s.staffid = f.id AND a.id='$appointmentid'");
-//            $appointmentdetails = $queryaap->row_array();            
-//        }
-//        
-//        if($checkout['clientid'] != 0) {            
-//            $queryclients = $this->db->get_where('clients', array('id' => $checkout['clientid']));
-//            $clients= $queryclients->row_array();
-//            $appointmentdetails['fname_c'] = $clients['firstname'];
-//            $appointmentdetails['lname_c'] = $clients['lastname'];
-//            $appointmentdetails['mobile'] = $clients['mobile'];
-//        }
-//        
-//        $data['appointmentdetails'] = $appointmentdetails;
         
         $queryclients = $this->db->get_where('clients', array('id' => $checkout['clientid']));
         $clients = $queryclients->row_array();
