@@ -14,7 +14,9 @@
                   <div class="modal-body sm-padding-10">
                      <div class="notice"></div>
                      <p>The following services will be cancelled</p>
-                     <p><?php echo $appointment['service'] .' with '. $appointment['fname_s'] .' '. $appointment['lname_s'] .' on '.date("l, F j Y, g:ia", strtotime($appointment['appointment_time']))  ?> </p>
+                     <?php foreach($appointment['services'] as $service) {
+                         echo "<p>".$service['service'] .' with '. $service['fname_s'] .' '. $service['lname_s'] .' on '.date("l, F j Y, g:ia", strtotime($service['appointment_time']))."</p>";
+                     } ?>
                      <div class="form-group">
                         <label class="string optional" for="cancel_booking_cancellation_reason_id">Cancellation reason</label>
                         <div class="select-wrapper">

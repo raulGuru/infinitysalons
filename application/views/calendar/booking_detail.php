@@ -9,14 +9,15 @@
                <?php if(empty($appointment['clientid'])) { ?>
                     <h5 class="no-padding">Walk-In</h5>
                <?php } else { ?>
-                    <h5 class="no-margin bold"><a class="view-button" href="/customer/view/<?php echo $appointment['clientid'] ?>"><?php echo $appointment['fname_c'].' '.$appointment['lname_c']; ?></a></h5>
+<!--                    <h5 class="no-margin bold"><a class="view-button" href="/customer/view/<?php //echo $appointment['clientid'] ?>"><?php //echo $appointment['fname_c'].' '.$appointment['lname_c']; ?></a></h5>-->
+                    <h5 class="no-margin bold"><?php echo $appointment['fname_c'].' '.$appointment['lname_c']; ?></h5>
                     <div class="fs-16"><span><?php echo $appointment['mobile'] ?></span></div>                   
                 <?php }?>
                <!--<span class="label customer-label label-unpaid">₹793 Unpaid</span>-->
             </div>
             <div class="view-form">
                <div class="modal-body sm-padding-10">
-                  <?php if(!empty($appointment['clientid'])) { ?>
+                  <?php if(!empty($appointment['notes'])) { ?>
                   <div class="row">
                      <div class="col-sm-9">
                         <div class="row">
@@ -35,7 +36,7 @@
                            <tbody>
                               <tr>
                                  <th>Service</th>
-                                 <td><?php echo $appointment['service'] ?></td>
+                                 <td><?php echo $service['service'] ?></td>
                               </tr>
                               <tr>
                                  <th>Date</th>
@@ -43,17 +44,17 @@
                               </tr>
                               <tr>
                                  <th>Time</th>
-                                 <td><?php echo $appointment['app_t_format'] ?> ( <?php echo hrsmins($appointment['duration']) ?> )</td>
+                                 <td><?php echo $service['app_t_format'] ?> ( <?php echo hrsmins($service['duration']) ?> )</td>
                               </tr>
                               <tr>
                                  <th>Staff</th>
-                                 <td><?php echo $appointment['fname_s'] .' '. $appointment['lname_s'] ?>
+                                 <td><?php echo $service['fname_s'] .' '. $service['lname_s'] ?>
                                  </td>
                               </tr>
                               <tr>
                                  <th>Price</th>
                                  <td>
-                                     <s>₹<?php echo $appointment['price'] ?></s><span class="text-danger m-l-10"><?php echo !empty($appointment['special_price']) ? '₹'.$appointment['special_price'].'' : ''; ?> </span>
+                                     <s>₹<?php echo $service['price'] ?></s><span class="text-danger m-l-10"><?php echo !empty($service['special_price']) ? '₹'.$service['special_price'].'' : ''; ?> </span>
                                  </td>
                               </tr>
                               <tr>
@@ -86,7 +87,7 @@
                   </div>
                </div>
                <div class="modal-footer">
-                   <?php if($appointment['status'] != 'comp' || $appointment['status'] != 'paid') { ?>
+                   <?php if($appointment['status'] != 'comp') { ?>
                   <div class="pull-left">
                      <span class="btn-group m-r-5 sm-no-margin">
                      <a class="btn btn-danger" data-params='{"id":"<?php echo $appointment['appointment_id'] ?>"}' data-model="modal" data-modalid="cancelModal" href="/calendar/cancelBooking" id="cancel_booking"><span>Cancel</span>
@@ -130,7 +131,7 @@
     });
     
     $('.checkout-button').click(function(){
-       
+       loadingOverlay();
        $.ajax({
             url: g.base_url + 'sales/appointmentSale',
             type: 'post',   
