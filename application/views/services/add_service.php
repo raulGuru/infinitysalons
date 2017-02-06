@@ -444,7 +444,7 @@
                                         </div> -->
                                     </div>
                                     <div class="col-md-8 right-modal-column-md">
-                                        <div class="form-group sm-m-t-20">
+<!--                                        <div class="form-group sm-m-t-20">
                                             <label for="service_pricing_type">Pricing Type</label>
                                             <div class="select-wrapper">
                                                 <select include_blank="false" selected="selected" class="select optional pricing-type full-width form-control" name="service[pricing_type]" id="service_pricing_type">
@@ -452,7 +452,7 @@
                                                     <option value="multiple">Multiple</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div>-->
                                         <div class="row pricing-level-labels-row">
                                             <div class="col-sm-3 col-xs-4 col-sm-4">
                                                 <div class="form-label">
@@ -546,7 +546,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row m-t-20 attached-fields sm-m-t-20">
+<!--                                        <div class="row m-t-20 attached-fields sm-m-t-20">
                                             <div class="col-sm-9 col-xs-6 no-padding">
                                                 <div class="form-group no-margin middle-item">
                                                     <label for="service_extra_time_type">Extra time type</label>
@@ -613,7 +613,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>-->
                                         <!--<div class="col-md-6 right-modal-column-md">-->
                                         <div class="form-group m-t-20 text optional service_description">
                                             <label class="text optional control-label" for="service_description">Service Description</label>
