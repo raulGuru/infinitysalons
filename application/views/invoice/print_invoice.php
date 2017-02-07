@@ -64,19 +64,23 @@
                     <td>Price</td>
                 </tr>
 
-                <?php if (!empty($services)) { 
-                        foreach($services as $service) { ?>
-                    <tr class="item">
-                        <td><?php echo $service['servicename'] ?></td>
-                        <td><?php //echo $services['stafffname'] . ' ' . $services['stafflname']           ?></td>
-                        <td><?php echo $fmt->format($service['specialprice']) ?></td>
-                        <td><?php echo $service['quantity'] ?></td>
-                        <td><?php echo (!empty($service['discountid'])) ? $service['discountvalue'] : '-';
-                            ?></td> 
-                        <td><?php echo $fmt->format($service['price']) ?></td>
-                    </tr>     
-                <?php   }
-                     } ?>
+                <?php
+                if (!empty($services)) {
+                    foreach ($services as $service) {
+                        ?>
+                        <tr class="item">
+                            <td><?php echo $service['servicename'] ?></td>
+                            <td><?php //echo $services['stafffname'] . ' ' . $services['stafflname']                   ?></td>
+                            <td><?php echo $fmt->format($service['specialprice']) ?></td>
+                            <td><?php echo $service['quantity'] ?></td>
+                            <td><?php echo (!empty($service['discountid'])) ? $service['discountvalue'] : '-';
+                        ?></td> 
+                            <td><?php echo $fmt->format($service['price']) ?></td>
+                        </tr>     
+                        <?php
+                    }
+                }
+                ?>
 
                 <?php
                 if (!empty($products)) {
@@ -84,7 +88,7 @@
                         ?>
                         <tr class="item">
                             <td><?php echo $product['productname'] ?></td>
-                            <td><?php //echo $product['stafffname'] . ' ' . $product['stafflname']           ?></td>
+                            <td><?php //echo $product['stafffname'] . ' ' . $product['stafflname']                   ?></td>
                             <td><?php echo $fmt->format($product['specialprice']) ?></td>
                             <td><?php echo $product['quatity'] ?></td>
                             <td><?php echo (!empty($product['discountid'])) ? $product['discountvalue'] : '-'; ?></td>
@@ -108,7 +112,7 @@
 
                 <tr class="heading">
                     <td>
-                        <?php //echo $checkoutinvoice['businesspaytype'] ?>
+                        <?php //echo $checkoutinvoice['businesspaytype']   ?>
                     </td>
                     <td></td>
                     <td></td>
@@ -157,7 +161,8 @@
                     </tr>
                     <?php
                     $totaltax = 0;
-                    foreach ($taxes as $tax) { ?>
+                    foreach ($taxes as $tax) {
+                        ?>
                         <tr class="item">
                             <td></td>
                             <td></td>
@@ -165,9 +170,9 @@
                             <td></td>
                             <td><?php echo $tax['taxname'] ?></td>
                             <td><?php
-                                    $taxcost = round((($checkoutinvoice['sale'] / 100) * $tax['rate']), 2);
-                                    $totaltax = $totaltax + $taxcost;
-                                    echo $fmt->format($taxcost);
+                                $taxcost = round((($checkoutinvoice['sale'] / 100) * $tax['rate']), 2);
+                                $totaltax = $totaltax + $taxcost;
+                                echo $fmt->format($taxcost);
                                 ?>
                             </td>
                         </tr>
@@ -184,6 +189,21 @@
                     <td><?php echo $fmt->format($checkoutinvoice['totalprice']); ?></td>
                 </tr>
             </table>
+            <div class="divFooter">
+                <table>
+                    <tfoot>
+                        <tr style="font-size: 12px">
+                            <td colspan="2">
+                                Shop No. 19 & 20, Bhumiraj Manor Co-op Housing Society,<br>
+                                Plot No. 3, Sector 14, Sanpada, Navi Mumbai-400705
+                            </td>
+                            <td style="width: 300px">
+                                Service tax code(Registration Number): AATPC9486BSD001
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
         <script>
             //window.print();
