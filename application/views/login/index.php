@@ -8,7 +8,7 @@
         <meta content="" name="description">
         <meta content="" name="author">
         <link href="/favicon.ico?v=rMMnxJlqdL" rel="shortcut icon">
-        <meta content="Shedul" name="application-name">
+        <meta content="Infinity Salon" name="application-name">
         <meta content="#36434a" name="msapplication-TileColor">
         <meta content="/mstile-144x144.png?v=rMMnxJlqdL" name="msapplication-TileImage">
         <meta content="#ffffff" name="theme-color">
@@ -38,7 +38,7 @@
             </div>
             <div class="login-container bg-white">
                 <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-35 sm-no-margin">
-                    <!--<a href="https://www.shedul.com"><img height="22" src="//d3ith3umqn03s3.cloudfront.net/assets/shedul-full-logo-light-bg-63d8928125e4469dabc395245bcf0485bd621c9184acdafcf5a4320189ec9669.png" alt="Shedul full logo light bg"></a>-->
+                    <!--<a href="https://www.infinitysalons.com"><img height="22" src="//d3ith3umqn03s3.cloudfront.net/assets/infinitysalons-full-logo-light-bg-63d8928125e4469dabc395245bcf0485bd621c9184acdafcf5a4320189ec9669.png" alt="Infinity Salon full logo light bg"></a>-->
                     <h3>Login to your account</h3>
                     <!-- START Login Form -->
                     <form class="simple_form p-t-15" novalidate="novalidate" id="new_employee" action="/login" accept-charset="UTF-8" method="post">
@@ -64,7 +64,7 @@
                             <div class="col-md-12">
                                 <!--<a href="/password/recover">Unable to login?</a>-->
                                 <br>
-                                <!--                                <a target="_blank" href="https://shedul.uservoice.com">Visit Shedul support centre</a>-->
+                                <!--                                <a target="_blank" href="https://infinitysalons.uservoice.com">Visit Infinity Salons support centre</a>-->
                                 <br>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                                             <div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">
                                                 <div class="col-sm-9 no-padding m-t-10">
                                                     <p>
-                                                        Don't have a free Shedul account yet?
+                                                        Don't have a free Infinity Salons account yet?
                                                         <a class="btn btn-default m-t-10" href="/sign-up">Register your business</a>
                                                     </p>
                                                 </div>

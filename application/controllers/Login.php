@@ -37,6 +37,10 @@ class Login extends CI_Controller {
                 $update_user = $this->login_model->update_userSession($session_id, $data);
                 if ($update_user == 'true') {
                     $data['sessionId'] = $session_id;
+                    
+                    $q = $this->db->get_where('userpermissions', array('id' => $data['id']));
+                    $data['useraccess'] = $q->row_array();
+                    
                     $this->session->set_userdata('salon_user', $data);
 
                     redirect('/dashboard');

@@ -39,6 +39,11 @@ class User extends CI_Controller {
             $updateAll = $this->user_model->updateAllPermissions($userid);
             if ($updateAll == 'true') {
                 $updateUserPerms = $this->user_model->updateUserPermissions($userid, $permissionColumns);
+                
+                if($this->session->userdata('salon_user')['id'] == $_POST['userid']) {
+                    
+                }
+                
                 $this->session->set_flashdata('user_perms_update_mesg', 'User permission information has been successfully updated.');
             } else {
                 $this->session->set_flashdata('user_perms_update_mesg', 'Something went wrong!');

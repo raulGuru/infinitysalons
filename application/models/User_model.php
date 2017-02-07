@@ -28,12 +28,12 @@ class User_model extends CI_Model {
         return $returnArr;
     }
     public function getUserById($id = '') {
-        $this->db->select('user.id, user.first_name, user.last_name, user.email, user.last_login_on, user.mobile, user.session_id, user.status, user.updated_on, userpermissions.userid, userpermissions.home, userpermissions.calender, userpermissions.clients, userpermissions.services, userpermissions.products, userpermissions.discounts, userpermissions.staff, userpermissions.businesssetting, userpermissions.roster');
+        $this->db->select('user.*, userpermissions.*');
         if (isset($id) && $id != '') {
             $this->db->where('user.id', $id);
         }
         $this->db->from('user');
-        $this->db->join('userpermissions', 'user.id = userpermissions.userid', 'left');
+        $this->db->join('userpermissions', 'user.id = userpermissions.userid', 'inner');
 //        $this->db->get_compiled_select();
         $result = $this->db->get();
         $returnArr = $result->result_array();
@@ -47,10 +47,8 @@ class User_model extends CI_Model {
                 'clients' => '0',
                 'services' => '0',
                 'products' => '0',
-                'discounts' => '0',
                 'staff' => '0',
-                'businesssetting' => '0',
-                'roster' => '0'
+                'setup' => '0'
             );
             if ($this->db->update('userpermissions', $columnArr, array('userid' => $id))) {
                 return 'true';

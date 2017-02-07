@@ -21,7 +21,7 @@
                                                 <div class="row m-b-20">
                                                     <div class="col-sm-12">
                                                         <h3 class="m-t-none">User Permssions</h3>
-                                                        <p>Setup which sections are accessible to each user permission level. All logged in staff can access the calendar, and owner accounts have full system access.</p>
+                                                        <p>Setup which sections are accessible to each user permission level. All logged in staff has full system access.</p>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -132,7 +132,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row clearfix">
+<!--                                                    <div class="row clearfix">
                                                         <div class="col-xs-4 no-padding">
                                                             <div class="form-group no-padding no-margin">
                                                                 <div class="fs-14 permission-type form-control">Discounts</div>
@@ -146,7 +146,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div>-->
                                                     <div class="row clearfix">
                                                         <div class="col-xs-4 no-padding">
                                                             <div class="form-group no-padding no-margin">
@@ -162,7 +162,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row clearfix">
+<!--                                                    <div class="row clearfix">
                                                         <div class="col-xs-4 no-padding">
                                                             <div class="form-group no-padding no-margin">
                                                                 <div class="fs-14 permission-type form-control">Business Settings</div>
@@ -192,7 +192,22 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>-->
+<div class="row clearfix">
+                                                        <div class="col-xs-4 no-padding">
+                                                            <div class="form-group no-padding no-margin">
+                                                                <div class="fs-14 permission-type form-control">Setup</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-2 text-center no-padding">
+                                                            <div class="form-group">
+                                                                <div class="attached-field-last check-success checkbox form-control no-margin">
+                                                                    <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[setup]" id="setup" onclick="$(this).val(this.checked ? 1 : 0)">
+                                                                    <label for="setup">&nbsp;</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 <div class="row m-b-20 m-t-20">
                                                     <div class="col-sm-12">
                                                         <input type="submit" name="commit" value="Save Changes" class="btn btn-success" id="submit-button" disabled="true">
@@ -229,19 +244,21 @@
                 var clientsVal = res.clients;
                 var servicesVal = res.services;
                 var productsVal = res.products;
-                var discountsVal = res.discounts;
+                //var discountsVal = res.discounts;
                 var staffVal = res.staff;
-                var businesssettingVal = res.businesssetting;
-                var rosterVal = res.roster;
+                //var businesssettingVal = res.businesssetting;
+                //var rosterVal = res.roster;
+                var setupVal = res.setup;
                 $('#home').val(homeVal);
                 $('#calender').val(calenderVal);
                 $('#clients').val(clientsVal);
                 $('#services').val(servicesVal);
                 $('#products').val(productsVal);
-                $('#discounts').val(discountsVal);
+                //$('#discounts').val(discountsVal);
                 $('#staff').val(staffVal);
-                $('#businesssetting').val(businesssettingVal);
-                $('#roster').val(rosterVal);
+                //$('#businesssetting').val(businesssettingVal);
+                //$('#roster').val(rosterVal);
+                $('#setup').val(setupVal);
                 if (homeVal == '0') {
                     $('#home').removeAttr("checked");
                 } else if (homeVal == '1') {
@@ -267,25 +284,30 @@
                 } else if (productsVal == '1') {
                     $('#products').prop('checked', true);
                 }
-                if (discountsVal == '0') {
-                    $('#discounts').removeAttr("checked");
-                } else if (discountsVal == '1') {
-                    $('#discounts').prop('checked', true);
-                }
+//                if (discountsVal == '0') {
+//                    $('#discounts').removeAttr("checked");
+//                } else if (discountsVal == '1') {
+//                    $('#discounts').prop('checked', true);
+//                }
                 if (staffVal == '0') {
                     $('#staff').removeAttr("checked");
                 } else if (staffVal == '1') {
                     $('#staff').prop('checked', true);
                 }
-                if (businesssettingVal == '0') {
-                    $('#businesssetting').removeAttr("checked");
-                } else if (businesssettingVal == '1') {
-                    $('#businesssetting').prop('checked', true);
-                }
-                if (rosterVal == '0') {
-                    $('#roster').removeAttr("checked");
-                } else if (rosterVal == '1') {
-                    $('#roster').prop('checked', true);
+//                if (businesssettingVal == '0') {
+//                    $('#businesssetting').removeAttr("checked");
+//                } else if (businesssettingVal == '1') {
+//                    $('#businesssetting').prop('checked', true);
+//                }
+//                if (rosterVal == '0') {
+//                    $('#roster').removeAttr("checked");
+//                } else if (rosterVal == '1') {
+//                    $('#roster').prop('checked', true);
+//                }
+                if (setupVal == '0') {
+                    $('#setup').removeAttr("checked");
+                } else if (setupVal == '1') {
+                    $('#setup').prop('checked', true);
                 }
             });
         }

@@ -31,7 +31,7 @@
         <script>
             var g = {};
             g['base_url'] = '<?php echo base_url(); ?>';
-        </script>  
+        </script>
         <div class="header">
             <nav class="navbar navbar-inverse">
                 <div class="container">
@@ -42,37 +42,35 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"><img alt="Shedul" width="30" height="30" src="<?php echo base_url('assets/logo.png') ?>"></a>
+                        <a class="navbar-brand" href="#">
+                            <img alt="Infinity Salon" width="35" height="45" src="<?php echo base_url('assets/header_infinityLogo.png') ?>">
+                        </a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="js-dashboard"><a href="/dashboard">Home</a></li>
-                            <li class="js-calendar"><a href="/calendar">Calendar</a></li>
-                            <li class="js-customers"><a href="/customers">Clients</a></li>
-                            <li class="js-services"><a href="/services">Services</a></li>
-                            <li class="js-products"><a href="/products">Products</a></li>
-                            <li class="js-employees"><a href="/employees">Staff</a></li>                                  
-                            <li class="js-setup"><a href="/provider/settings">Setup</a></li>                                   
-                            <!--                <li class=" dropdown">
-                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sales</a>
-                                              <ul class="dropdown-menu">
-                                                <li><a href="/reports/appointments-list">Appointments</a></li>
-                                                <li><a href="/reports/sales-list">Invoices</a></li>
-                                                <li><a href="/reports/transactions">Payments</a></li>
-                                                <li><a href="/reports/daily-sales">Daily Sales</a></li>
-                                              </ul>
-                                            </li>-->
-                            <!--<li class=""><a href="/reports/appointments-summary">Reports</a></li>-->
-<!--                            <li class=" dropdown js-setup" id="settings-dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">Setup</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="/services/">Services</a></li>
-                                    <li><a href="/products">Products</a></li>
-                                    <li><a href="/discounts">Discounts</a></li>
-                                    <li><a href="/employees">Staff</a></li>
-                                    <li><a href="/provider/settings">Business Settings</a></li>
-                                </ul>
-                            </li>-->
+                            <?php
+                                if($useraccess['home']) {
+                                    echo "<li class='js-dashboard'><a href='/dashboard'>Home</a></li>";
+                                }
+                                if($useraccess['calender']) {
+                                    echo "<li class='js-calendar'><a href='/calendar'>Calendar</a></li>";
+                                }
+                                if($useraccess['clients']) {
+                                    echo "<li class='js-customers'><a href='/customers'>Clients</a></li>";
+                                }
+                                if($useraccess['services']) {
+                                    echo "<li class='js-services'><a href='/services'>Services</a></li>";
+                                }
+                                if($useraccess['products']) {
+                                    echo "<li class='js-products'><a href='/products'>Products</a></li>";
+                                }
+                                if($useraccess['staff']) {
+                                    echo "<li class='js-employees'><a href='/employees'>Staff</a></li>";
+                                }
+                                if($useraccess['setup']) {
+                                    echo "<li class='js-setup'><a href='/provider/settings'>Setup</a></li>";
+                                }
+                            ?>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="active dropdown">
