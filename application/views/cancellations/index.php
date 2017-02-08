@@ -25,23 +25,29 @@
                                     <th></th>
                                     <th class="p-l-none">Name</th>
                                     <th>Date Added</th>
+                                    <!--<th>Status</th>-->
                                 </tr>
                             </thead>
                             <tbody class="cancellation-reasons-container ui-sortable">
                                 <?php
-//                                echo '<pre>', print_r($cancellationReasons), '</pre>';
-//                                exit();
                                 if (isset($cancellationReasons) && !empty($cancellationReasons)) {
                                     foreach ($cancellationReasons as $cancellation) {
                                         ?>
                                         <tr class="clickable-row" data-params='{"id":"<?php echo $cancellation['id']; ?>"}' data-model="modal" data-modalid="newCancellationModal" href="/provider/editCancellationReasons">
                                             <td class="icon-reorder ui-sortable-handle"></td>
                                             <td class="p-l-none">
-                                                    <?php echo $cancellation['cancelreason'] ?>
+                                                <?php echo $cancellation['cancelreason'] ?>
                                             </td>
                                             <td>
                                                 <?php echo date("F j, Y, g:i a", strtotime($cancellation['date'])); ?>
                                             </td>
+<!--                                            <td>
+                                                <?php //if ($cancellation['active']) { ?>
+                                                    <span class="label label-success">Active</span>
+                                                <?php //} else { ?>
+                                                    <span class="label label-fail">Inactive</span>
+                                                <?php //} ?>
+                                            </td>-->
                                         </tr>
                                         <?php
                                     }

@@ -132,21 +132,21 @@
                                                             </div>
                                                         </div>
                                                     </div>
-<!--                                                    <div class="row clearfix">
-                                                        <div class="col-xs-4 no-padding">
-                                                            <div class="form-group no-padding no-margin">
-                                                                <div class="fs-14 permission-type form-control">Discounts</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xs-2 text-center no-padding">
-                                                            <div class="form-group">
-                                                                <div class="attached-field-last check-success checkbox form-control no-margin">
-                                                                    <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[discounts]" id="discounts" onclick="$(this).val(this.checked ? 1 : 0)">
-                                                                    <label for="discounts">&nbsp;</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
+                                                    <!--                                                    <div class="row clearfix">
+                                                                                                            <div class="col-xs-4 no-padding">
+                                                                                                                <div class="form-group no-padding no-margin">
+                                                                                                                    <div class="fs-14 permission-type form-control">Discounts</div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="col-xs-2 text-center no-padding">
+                                                                                                                <div class="form-group">
+                                                                                                                    <div class="attached-field-last check-success checkbox form-control no-margin">
+                                                                                                                        <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[discounts]" id="discounts" onclick="$(this).val(this.checked ? 1 : 0)">
+                                                                                                                        <label for="discounts">&nbsp;</label>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>-->
                                                     <div class="row clearfix">
                                                         <div class="col-xs-4 no-padding">
                                                             <div class="form-group no-padding no-margin">
@@ -162,38 +162,38 @@
                                                             </div>
                                                         </div>
                                                     </div>
-<!--                                                    <div class="row clearfix">
-                                                        <div class="col-xs-4 no-padding">
-                                                            <div class="form-group no-padding no-margin">
-                                                                <div class="fs-14 permission-type form-control">Business Settings</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xs-2 text-center no-padding">
-                                                            <div class="form-group">
-                                                                <div class="attached-field-last check-success checkbox form-control no-margin">
-                                                                    <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[businesssetting]" id="businesssetting" onclick="$(this).val(this.checked ? 1 : 0)">
-                                                                    <label for="businesssetting">&nbsp;</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <!--                                                    <div class="row clearfix">
+                                                                                                            <div class="col-xs-4 no-padding">
+                                                                                                                <div class="form-group no-padding no-margin">
+                                                                                                                    <div class="fs-14 permission-type form-control">Business Settings</div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="col-xs-2 text-center no-padding">
+                                                                                                                <div class="form-group">
+                                                                                                                    <div class="attached-field-last check-success checkbox form-control no-margin">
+                                                                                                                        <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[businesssetting]" id="businesssetting" onclick="$(this).val(this.checked ? 1 : 0)">
+                                                                                                                        <label for="businesssetting">&nbsp;</label>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="row clearfix">
+                                                                                                            <div class="col-xs-4 no-padding">
+                                                                                                                <div class="form-group no-padding no-margin">
+                                                                                                                    <div class="fs-14 permission-type form-control">Roster</div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="col-xs-2 text-center no-padding">
+                                                                                                                <div class="form-group">
+                                                                                                                    <div class="attached-field-last check-success checkbox form-control no-margin">
+                                                                                                                        <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[roster]" id="roster" onclick="$(this).val(this.checked ? 1 : 0)">
+                                                                                                                        <label for="roster">&nbsp;</label>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>-->
                                                     <div class="row clearfix">
-                                                        <div class="col-xs-4 no-padding">
-                                                            <div class="form-group no-padding no-margin">
-                                                                <div class="fs-14 permission-type form-control">Roster</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xs-2 text-center no-padding">
-                                                            <div class="form-group">
-                                                                <div class="attached-field-last check-success checkbox form-control no-margin">
-                                                                    <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[roster]" id="roster" onclick="$(this).val(this.checked ? 1 : 0)">
-                                                                    <label for="roster">&nbsp;</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
-<div class="row clearfix">
                                                         <div class="col-xs-4 no-padding">
                                                             <div class="form-group no-padding no-margin">
                                                                 <div class="fs-14 permission-type form-control">Setup</div>
@@ -208,9 +208,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <div class="row m-b-20 m-t-20">
-                                                    <div class="col-sm-12">
-                                                        <input type="submit" name="commit" value="Save Changes" class="btn btn-success" id="submit-button" disabled="true">
+                                                    <div class="row m-b-20 m-t-20">
+                                                        <div class="col-sm-12">
+                                                            <input type="submit" name="commit" value="Save Changes" class="btn btn-success" id="submit-button" disabled="true">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </form>
@@ -223,8 +224,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-3 no-padding full-height table-cell hidden-xs hidden-sm">
+        <div class="col-md-3 no-padding full-height table-cell hidden-xs hidden-sm">
+        </div>
     </div>
 </div>
 <script>
