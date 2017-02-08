@@ -20,11 +20,10 @@ class Employees extends CI_Controller {
     
     public function newEmp() {
         
-        $query = $this->db->get_where('services', array('user_id' => $this->user_id));
+        $query = $this->db->get_where('services');
         $services = $query->result_array();
         foreach($services as $service => $s) { 
-            $services[$service]['service_id'] = $s['id']; 
-            
+            $services[$service]['service_id'] = $s['id'];            
         }
         $data['services'] = $services;
         $this->load->view('employees/add_employees', $data);
@@ -116,7 +115,10 @@ class Employees extends CI_Controller {
         $staff_id = $_GET['id'];
         $staff = $this->db->get_where('staff', array('id' => $staff_id))->row_array();
         
-        $query_staffservices = $this->db->query("SELECT a.id AS id, a.service_id as service_id, a.allowed as allowed, b.name FROM staffservices a, services b WHERE a.staff_id = $staff_id and a.service_id = b.id");
+        $query_staffservices = $this->db->query("SELECT a.id AS id, a.id AS service_id, a.name, b.allowed
+                                                FROM `services` a
+                                                LEFT JOIN `staffservices` b
+                                                ON a.id = b.service_id AND b.staff_id=$staff_id");
         $staffservices = $query_staffservices->result_array();
         
         $staffservicecommision = $this->db->get_where('staffservicecommision', array('staff_id' => $staff_id))->row_array();
