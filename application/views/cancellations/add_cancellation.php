@@ -52,7 +52,7 @@
                 data: $('form#new_cancellation_reason').serialize(),
                 success: function (data) {
                     if (data.success) {
-                        window.location = g.base_url + 'provider/cancellation_reasons';//location.pathname;
+                        window.location = g.base_url + 'provider/cancellations';//location.pathname;
                     } else {
                         $('.alert-danger').removeClass('hide').html(data.error)
                     }
@@ -68,7 +68,7 @@
             dataType: 'json',
             data: {id: $(this).data('id')},
             success: function (data) {
-                window.location = g.base_url + 'provider/cancellation_reasons';
+                window.location = g.base_url + 'provider/cancellations';
             }
         });
     });

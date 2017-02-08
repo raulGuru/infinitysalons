@@ -68,7 +68,7 @@
                                     echo "<li class='js-employees'><a href='/employees'>Staff</a></li>";
                                 }
                                 if($useraccess['setup']) {
-                                    echo "<li class='js-setup'><a href='/provider/settings'>Setup</a></li>";
+                                    echo "<li class='js-setup'><a href='/provider'>Setup</a></li>";
                                 }
                             ?>
                         </ul>
