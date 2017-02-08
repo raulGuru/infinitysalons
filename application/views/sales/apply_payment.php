@@ -26,9 +26,9 @@
                                  <div class="payment-type-form pos-box__item pos-box__item--thin">
                                     <div class="payment-forms__scrollable m-t-10">
                                        <div class="payment-methods payment-box__btns">
-                                          <button class="btn btn-lg btn-success  js-payment-method" data-payment-method-id="1" data-payment-method-name="Cash">Cash</button>
-                                          <button class="btn btn-lg btn-success js-payment-method" data-payment-method-id="3" data-payment-method-name="Card">Card</button>
-                                          <button class="btn btn-lg btn-success js-payment-method" data-payment-method-id="2" data-payment-method-name="Other">Other</button>                                          
+                                          <button class="btn btn-lg btn-success  js-payment-method paymentmethod-btn" data-payment-method-id="1" data-payment-method-name="Cash">Cash</button>
+                                          <button class="btn btn-lg btn-success js-payment-method paymentmethod-btn" data-payment-method-id="3" data-payment-method-name="Card">Card</button>
+                                          <button class="btn btn-lg btn-success js-payment-method paymentmethod-btn" data-payment-method-id="2" data-payment-method-name="Other">Other</button>                                          
                                        </div>
                                     </div>
                                  </div>
