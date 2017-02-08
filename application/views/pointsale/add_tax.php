@@ -57,7 +57,7 @@
                 success: function(data) {
                     if(data.success){
                         //location.reload();
-                        window.location = g.base_url + 'provider/settings';
+                        window.location = g.base_url + 'provider/taxes';
                     }
                     else{
                         $('.alert-danger').removeClass('hide').html(data.error)
