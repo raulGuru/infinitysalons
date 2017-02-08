@@ -12,7 +12,7 @@ class Roster_model extends CI_Model {
             $this->db->where('staff.id', $id);
         }
         $this->db->from('staff');
-        $this->db->join('roster', 'staff.id = roster.staffid', 'left');
+        $this->db->join('staffroster', 'staff.id = staffroster.staffid', 'left');
 //        $this->db->get_compiled_select();
         $result = $this->db->get();
         $returnArr = $result->result_array();
@@ -29,7 +29,7 @@ class Roster_model extends CI_Model {
                 'friday' => '0',
                 'saturday' => '0'
             );
-            if ($this->db->update('roster', $columnArr, array('staffid' => $id))) {
+            if ($this->db->update('staffroster', $columnArr, array('staffid' => $id))) {
                 return 'true';
             } else {
                 return 'false';
@@ -38,7 +38,7 @@ class Roster_model extends CI_Model {
     }
     public function updateStaffRoster($id, $rosterColumns) {
         if (!empty($id) && !empty($rosterColumns)) {
-            if ($this->db->update('roster', $rosterColumns, array('staffid' => $id))) {
+            if ($this->db->update('staffroster', $rosterColumns, array('staffid' => $id))) {
                 return 'true';
             } else {
                 return 'false';
