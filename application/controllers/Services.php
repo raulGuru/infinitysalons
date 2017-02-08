@@ -11,6 +11,8 @@ class Services extends CI_Controller {
 
 	public function index()
 	{
+            Common::checkUserHasAccess('services');
+            
             $data = array();
             $query = $this->db->get_where("service_group", array('user_id' => $this->user_id));
             $data['groups'] = $query->result_array();

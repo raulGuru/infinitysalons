@@ -79,7 +79,15 @@
                                  <div class="select-wrapper">
                                     <select class="select required full-width form-control" include_blank="Select source" name="customer[referral_id]" id="customer_referral_source_id">
                                        <option value="">Select source</option>
-                                       <option value="1" selected="selected">Walk-In</option>
+                                       <?php 
+                                       foreach ($referralSources as $referralSource) {
+                                           if($referralSource['id'] == $customer['referral_id']) {
+                                               $selected = 'selected="selected"';
+                                           } else {
+                                               $selected = '';
+                                           }
+                                       echo '<option value="'. $referralSource['id'] . '"' . $selected . '>'. $referralSource['referralname'].'</option>';
+                                        } ?>
                                     </select>
                                  </div>
                               </div>

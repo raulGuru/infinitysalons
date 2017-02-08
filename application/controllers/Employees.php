@@ -10,6 +10,9 @@ class Employees extends CI_Controller {
     }
     
     public function index() {
+        
+        Common::checkUserHasAccess('staff');
+        
         $query = $this->db->get("staff");
         $data['staffs'] = $query->result_array();
         $this->load->layout('employees/index', $data);

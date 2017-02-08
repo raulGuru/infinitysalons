@@ -60,6 +60,15 @@ class Common {
         return floatval(preg_replace('/[^\d\.]/', '', $m));
     }
     
+    public function checkUserHasAccess($module) {
+        $CI = & get_instance();
+        $useraccess = $CI->session->userdata['salon_user']['useraccess'];
+        if($useraccess[$module]) {
+            return true;
+        }else {
+            redirect('errors/denied');
+        }
+    }    
 }
 
 

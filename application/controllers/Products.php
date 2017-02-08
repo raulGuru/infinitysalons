@@ -12,6 +12,8 @@ class Products extends CI_Controller {
     }
 
     public function index() {
+        
+        Common::checkUserHasAccess('products');
 
         $products = $this->products_model->get($_GET['search'], $_GET['sort'], $_GET['direction']);
         $data['products'] = $products;

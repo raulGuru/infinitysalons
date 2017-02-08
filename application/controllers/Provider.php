@@ -7,12 +7,15 @@ class Provider extends CI_Controller {
         $this->load->model('provider_model');
     }
 
-    public function index() {
-        $data['title'] = "Your Application Title";
-        $this->load->layout('services/index', $data);
-    }
+//    public function index() {
+//        $data['title'] = "Your Application Title";
+//        $this->load->layout('services/index', $data);
+//    }
 
-    public function settings() {
+    public function index() {
+        
+        Common::checkUserHasAccess('setup');
+        
         $data['title'] = "Business Settings";
         $data['cancellationReasons'] = $this->getCancellationReasons();
         $data['referralSources'] = $this->getReferralSources();
@@ -171,9 +174,8 @@ class Provider extends CI_Controller {
         $this->load->layout('referrals/index', $returnArr);
     }
 
-    public function cancellation_reasons() {
+    public function cancellations() {
         $returnArr['cancellationReasons'] = $this->provider_model->getCancellationReasons();
-
         $this->load->layout('cancellations/index', $returnArr);
     }
 

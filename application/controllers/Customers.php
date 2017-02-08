@@ -11,15 +11,19 @@ class Customers extends CI_Controller {
     
     public function index() {
         
+        Common::checkUserHasAccess('clients');
+
         $query = $this->db
-                    ->where('id <>','1')
-                    ->get('clients');
+                ->where('id <>', '1')
+                ->get('clients');
         $data['customers'] = $query->result_array();
+        $data['referralSources'] = $this->db->get_where('businessreferral', array('active' => '1'))->result_array();
         $this->load->layout('customers/index', $data);
     }
     
     public function newCustomer() {
-        $this->load->view('customers/add_customer');
+        $data['referralSources'] = $this->db->get_where('businessreferral', array('active' => '1'))->result_array();
+        $this->load->view('customers/add_customer', $data);
     }
     
     public function add() {
@@ -77,6 +81,8 @@ class Customers extends CI_Controller {
             $customer_id = $_GET['id'];
             $data['customer'] = $this->db->get_where('clients', array('id' => $customer_id))->row_array();
         }
+        $data['referralSources'] = $this->db->get_where('businessreferral', array('active' => '1'))->result_array();
+
         $this->load->view('customers/add_customer', $data);
     }
     

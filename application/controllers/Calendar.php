@@ -11,6 +11,8 @@ class Calendar extends CI_Controller {
     
     function index() {
         
+        Common::checkUserHasAccess('calender');
+        
         $events = array();
         $e = 0;
         $appointmentdetails = Common::getAppointmentDetails();
