@@ -31,7 +31,7 @@
                                             <label for="service_name">Service Name</label>
                                             <input class="string optional form-control full-width" autofocus="autofocus" placeholder="e.g. Haircut" type="text" name="service[name]" id="service_name" required>
                                         </div>
-<!--                                        <div class="form-group">
+                                        <div class="form-group">
                                             <label for="service_subcategory_id"><span class="translation_missing">Treatment Type</span>
                                             </label>
                                             <div class="select-wrapper">
@@ -423,7 +423,7 @@
                                                     </optgroup>
                                                 </select>
                                             </div>
-                                        </div>-->
+                                        </div>
                                         <div class="form-group">
                                             <label for="service_gender">Available for</label>
                                             <div class="select-wrapper">
@@ -466,7 +466,7 @@
                                             </div>
                                             <div class="col-sm-3 col-xs-4 sm-p-l-0 col-sm-4">
                                                 <div class="form-label">
-                                                    Actual price
+                                                    Special price
                                                 </div>
                                             </div>
                                             <div class="col-sm-3 name-header form-group no-margin col-sm-4" style="display: none;">
@@ -536,12 +536,12 @@
                                                 </div>
                                                 <div class="col-sm-3 col-xs-4 col-sm-4">
                                                     <div class="form-group">
-                                                        <input class="numeric decimal optional form-control add-decimals" placeholder="0.00" type="number" step="any" name="service[service_pricing_levels_attributes][0][service_pricing_price]" id="service_service_pricing_levels_attributes_0_price" value="" required="required">
+                                                        <input class="numeric decimal optional form-control add-decimals" placeholder="0.00" type="number" step="any" name="service[service_pricing_levels_attributes][0][service_pricing_price]" id="service_service_pricing_levels_attributes_0_price" value="">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-3 col-xs-4 col-sm-4">
                                                     <div class="form-group multi-level-special-price">
-                                                        <input class="numeric decimal optional form-control add-decimals attached-field-last" placeholder="0.00" type="number" step="any" name="service[service_pricing_levels_attributes][0][service_pricing_special_price]" id="service_service_pricing_levels_attributes_0_special_price" value="<?php echo $service['special_price']; ?>" required="required">
+                                                        <input class="numeric decimal optional form-control add-decimals attached-field-last" placeholder="0.00" type="number" step="any" name="service[service_pricing_levels_attributes][0][service_pricing_special_price]" id="service_service_pricing_levels_attributes_0_special_price" value="<?php echo $service['special_price']; ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -715,7 +715,7 @@
         if ('<?php echo $mode; ?>' == 'edit') {
             var service = <?php echo json_encode($service); ?>;
             $('#service_name').val(service['name']);
-            //$('#service_subcategory_id').val(service['subcategory_id']);
+            $('#service_subcategory_id').val(service['subcategory_id']);
             $('#service_id').val(service['id']);
             $('#service_gender option[value="' + service['gender'] + '"]').attr('selected', 'selected');
             $('#service_pricing_type option[value="' + service['pricing_type'] + '"]').attr('selected', 'selected');

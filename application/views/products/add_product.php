@@ -54,12 +54,12 @@
                                  </div>
                                  <div class="col-md-4">
                                     <div class="form-group">
-                                       <label class="decimal required" for="product_special_price">Actual price</label>
+                                       <label class="decimal optional" for="product_special_price">Special price</label>
                                        <div class="input-group">
                                           <div class="input-group-addon">
                                              ₹
                                           </div>
-                                           <input class="numeric decimal optional form-control add-decimals" placeholder="0.00" type="number" step="any" name="product[special_price]" id="product_special_price" required="required" value="<?php echo $product['special_price'] ?>">
+                                           <input class="numeric decimal optional form-control add-decimals" placeholder="0.00" type="number" step="any" name="product[special_price]" id="product_special_price" value="<?php echo $product['special_price'] ?>">
                                        </div>
                                     </div>
                                  </div>
