@@ -58,7 +58,7 @@
                 <tr class="heading">
                     <td>Item</td>
                     <td></td>
-                    <td>Special Price</td>
+                    <td>Actual Price</td>
                     <td>Quantity</td>
                     <td> &nbsp;Discount<br>(each item)</td> 
                     <td>Price</td>
@@ -168,7 +168,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><?php echo $tax['taxname'] ?></td>
+                            <td><?php echo $tax['taxname'] .' ('.$tax['rate'].'%)' ?></td>
                             <td><?php
                                 $taxcost = round((($checkoutinvoice['sale'] / 100) * $tax['rate']), 2);
                                 $totaltax = $totaltax + $taxcost;
@@ -190,6 +190,7 @@
                 </tr>
             </table>
             <div class="divFooter">
+                <hr>
                 <table>
                     <tfoot>
                         <tr style="font-size: 12px">
