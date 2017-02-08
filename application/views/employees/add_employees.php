@@ -49,7 +49,7 @@
                                            <input class="string optional tel-input form-control" data-default-country="in" pattern="\d*" type="text" name="employee[mobile_number]" id="employee_mobile_number" placeholder="9123456789" value="<?php echo $staff['mobile_number'] ?>" maxlength="15">
                                        </div>
                                     </div>
-                                     <div class="form-group email required employee_email"><label class="email required control-label" for="employee_email"><abbr title="required">*</abbr> Email</label><input class="string email required form-control" placeholder="mail@example.com" type="email" name="employee[email]" id="employee_email" value="<?php echo $staff['email'] ?>"></div>
+                                     <div class="form-group email required employee_email"><label class="email required control-label" for="employee_email"><abbr title="required">*</abbr> Email (will be used for login)</label><input class="string email required form-control" placeholder="mail@example.com" type="email" name="employee[email]" id="employee_email" required="required" value="<?php echo $staff['email'] ?>"></div>
                                     <!--div class="m-t-20 form-group">
                                        <label for="employee_role">User Permission
                                        <i class="icon-question-circle hint-icon" data-placement="bottom" data-toggle="tooltip" title="When saved, this staff member will receive email instructions to setup their own login password"></i>
