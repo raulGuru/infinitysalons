@@ -74,7 +74,7 @@ class Services extends CI_Controller {
         $values = array(
                 'name' => $service['name'],
                 'group_id' => $service['group_id'],
-                'subcategory_id' => $service['subcategory_id'],
+                'subcategory_id' => 0,//$service['subcategory_id'],
                 'extra_time_type' => (empty($service['extra_time_type']) ? '' : $service['extra_time_type']),
                 'extra_time_in_seconds' => (empty($service['extra_time_in_seconds']) ? 0 : $service['extra_time_in_seconds']),
                 'gender' => $service['gender'],
