@@ -1698,7 +1698,7 @@ pre code {
     width: 8.33333333%
 }
 .col-xs-2 {
-    width: 16.66666667%
+    width: 27.66666667%
 }
 .col-xs-3 {
     width: 25%
@@ -24877,8 +24877,8 @@ ul.services li.service a.name {
 #editAppointment .booking-services .service-booking-select .selectize-control {
     height: inherit
 }
-#newAppointment .booking-services .js-booking-row,
-#editAppointment .booking-services .js-booking-row {
+.booking-services .js-booking-row,
+.booking-services .js-booking-row {
     margin-bottom: 20px
 }
 #newAppointment .booking-services .js-booking-row .primary-booking-main .form-group .icon-trash,
@@ -30089,6 +30089,10 @@ table.fc-border-separate {
     -moz-appearance: none !important;
     filter: Alpha(Opacity=0) !important;
     opacity: 0 !important
+}
+
+.paymentmethod-btn {
+    margin-left: 55px;
 }
 @-moz-document url-prefix() {
     .selectizer-container select.selectizer-native {
