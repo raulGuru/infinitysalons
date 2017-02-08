@@ -231,7 +231,7 @@
                                                             <h3 class="no-margin hidden-xs">Cancellation Reasons</h3>
                                                         </div>
                                                         <div class="col-xs-8 col-sm-6 text-right">
-                                                            <a class="btn btn-success event-link" data-remote="true" href="/cancellation_reasons/new"><span class="translation_missing" title="translation missing: en.providers.cancellation_reasons.new_cancellation_reason">New Cancellation Reason</span></a>
+                                                            <a class="btn btn-success event-link" data-remote="true" href="/cancellations/new"><span class="translation_missing" title="translation missing: en.providers.cancellation_reasons.new_cancellation_reason">New Cancellation Reason</span></a>
                                                         </div>
                                                     </div>
                                                     <div class="row m-t-20">
