@@ -165,7 +165,7 @@
                                                    <div class="form-group no-padding select">
                                                       <div class="select-wrapper">
                                                          <select label="false" class="select optional form-control js-select-time" selected="selected" name="booking[services][0][time_start_field]" id="booking_time_start_field">
-                                                            <option value="00:00">12:00am</option>
+<!--                                                            <option value="00:00">12:00am</option>
                                                             <option value="00:05">12:05am</option>
                                                             <option value="00:10">12:10am</option>
                                                             <option value="00:15">12:15am</option>
@@ -272,7 +272,7 @@
                                                             <option value="08:40">8:40am</option>
                                                             <option value="08:45">8:45am</option>
                                                             <option value="08:50">8:50am</option>
-                                                            <option value="08:55">8:55am</option>
+                                                            <option value="08:55">8:55am</option>-->
                                                             <option value="09:00">9:00am</option>
                                                             <option value="09:05">9:05am</option>
                                                             <option value="09:10">9:10am</option>
@@ -429,7 +429,7 @@
                                                             <option value="21:45">9:45pm</option>
                                                             <option value="21:50">9:50pm</option>
                                                             <option value="21:55">9:55pm</option>
-                                                            <option value="22:00">10:00pm</option>
+<!--                                                            <option value="22:00">10:00pm</option>
                                                             <option value="22:05">10:05pm</option>
                                                             <option value="22:10">10:10pm</option>
                                                             <option value="22:15">10:15pm</option>
@@ -452,7 +452,7 @@
                                                             <option value="23:40">11:40pm</option>
                                                             <option value="23:45">11:45pm</option>
                                                             <option value="23:50">11:50pm</option>
-                                                            <option value="23:55">11:55pm</option>
+                                                            <option value="23:55">11:55pm</option>-->
                                                          </select>
                                                       </div>
                                                    </div>
@@ -618,7 +618,7 @@
             if(staffid == selstaffid) {
                 if(val[swd] == 0) {
                     $('.notice').removeClass('hide');
-                    $( "a.notice-msg" ).after( "<span><b>"+val.first_name+" "+val.last_name+"</b> isn’t working on <b>"+swd+"</b>, but you can still book them.<br></span>" );
+                    $( "a.notice-msg" ).after( "<span><b>"+val.first_name+" "+val.last_name+"</b> isn’t working on <b>"+swd+"</b>.<br></span>" );
                 }
             }
         });
@@ -744,6 +744,10 @@
    
    var sd = <?php echo json_encode($sd); ?>;
    var st = <?php echo json_encode($st); ?>;
+   var selstaffid = '<?php echo $selstaffid; ?>';
+   if( selstaffid !== '' ) {
+       $('#booking_employee_id option[value="'+selstaffid+'"]').attr('selected','selected');
+   } 
    if(sd !== null) {
        $('#booking_date').datepicker().datepicker("setDate", new Date(sd));
        $('#booking_time_start_field option[value="'+ st +'"]').attr('selected','selected');

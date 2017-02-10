@@ -4,7 +4,6 @@
       <div class="container-fluid full-height">
          <div id="calendar">
             <div class="toolbar">
-               <form >
                   <div class="left-controls">
                      <div data-href="/calendar/newBooking" data-model="modal" data-modalid="newBooking" class="btn btn-success navigate hidden-xs" title="Create appointment" data-original-title="Create appointment" data-toggle="tooltip" data-placement="bottom">
                         <i class="icon-plus"></i>
@@ -15,9 +14,19 @@
                         <span>Create product sale</span>
                      </div>
                      <div class="select-location dropdown">
-                        <div class="btn btn-default toggle-button visible-xs visible-sm" title="Select Location">
-                           <i class="left s-icon-home"></i>
+                         <form id="form-staff" method="POST" action="">
+                             <input type="hidden" name="calview" id="calview" value="<?php echo $calview; ?>">
+                         <div class="select-wrapper">
+                             <select class="form-control select-staff" name="staffid">
+                                    <option value="">All staff</option>
+                                <?php foreach($staffs as $staff) {
+                                    $name = $staff['first_name'] .' '.$staff['last_name'];
+                                    $sel = ($staff['id'] == $selstaffid) ? 'selected="selected"' : '';
+                                    echo "<option value='".$staff['id']."' $sel>".$name."</option>";
+                                }?>
+                            </select>
                         </div>
+                        </form>
                      </div>
                   </div>
                </form>
@@ -62,25 +71,23 @@
 
 <script>
     
+    $('.select-staff').change(function(){
+         this.form.submit();
+    });
+    
     var appointmentdetails = <?php echo json_encode($appointmentdetails); ?>;
     var calEvent = <?php echo json_encode($events); ?>
-    
-        /*var calEvent = [];
-        $.each(appointmentdetails, function(key, val){
-            var appts = {};
-            appts= {'title' : val['appointment_id'], 'start' : val['app_start'], 'end' : val['app_end'], 'color' : '#339966'};
-            calEvent.push(appts);
-        });*/
     
     var date = new Date(),
         d = date.getDate(),
         m = date.getMonth(),
         y = date.getFullYear(),
         h = date.getHours(),
-        m = date.getMinutes();
+        m = date.getMinutes(),
+        defview = '<?php echo ($calview == 'd') ? 'agendaDay' : 'agendaWeek'; ?>';
         
     $(document).ready(function() {
-        
+
         var calendar =  $('#appointment_calender').fullCalendar({
             
                 header: {
@@ -88,7 +95,7 @@
 			center: 'title',
 			right: 'agendaWeek,agendaDay'
 		},
-                defaultView:'agendaWeek',
+                defaultView: defview,
 		events: calEvent,
 		//editable: false,
                 selectable: true,
@@ -96,6 +103,8 @@
                 slotDuration: '00:05:00',
                 allDaySlot:false,
                 scrollTime : h+':'+m,
+                minTime: "09:45:00",
+                maxTime: "22:45:00",
 		select: function(start, end, allDay) {
                     var st = moment(start).format('HH:mm'),
                         sd = moment(start).format('YYYY-MM-DD');
@@ -104,7 +113,13 @@
                 eventMouseover: function(calEvent, jsEvent) {
                     $(this).popover({
                         html: true,
-                        placement: 'auto right',
+                        //placement: 'auto right',
+                        placement: function () {
+                            if($('#calview').val() == 'd') {
+                                return "bottom";
+                            }
+                            return "auto right";
+                        },
                         content: function() {
                             
                             var app_detail = calEvent.app_detail;
@@ -132,6 +147,10 @@
                             service_id = calEvent.service_id;
                     loadBookingModal(appointment_id, service_id);
                 }                
+        }).on('click', '.fc-agendaWeek-button', function() {
+            $('#calview').val('w');
+        }).on('click', '.fc-agendaDay-button', function() {
+            $('#calview').val('d');
         });
         
         function loadBookingModal(a_id, s_id) {
@@ -149,7 +168,7 @@
         
         function loadNewBookingModal(sd, st) {
             
-            $.get('/calendar/newBooking', {sd : sd, st : st}, function(data) {
+            $.get('/calendar/newBooking', { sd : sd, st : st, selstaffid : $('.select-staff').val() }, function(data) {
                 $('#newBooking').remove();
                 $('body').append(data);
                 $('#newBooking').modal({backdrop: 'static', keyboard: false});

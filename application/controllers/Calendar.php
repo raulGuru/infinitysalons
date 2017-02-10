@@ -11,11 +11,22 @@ class Calendar extends CI_Controller {
     
     function index() {
         
+//        echo '<pre>', print_r($_POST), '</pre>';
+//        exit();
+
         Common::checkUserHasAccess('calender');
         
         $events = array();
         $e = 0;
-        $appointmentdetails = Common::getAppointmentDetails();
+        $calview = (!empty($_POST['calview'])) ? $_POST['calview'] : 'w';
+        //$_POST['staffid'] = 2;
+        if(isset($_POST) && !empty($_POST['staffid'])) {
+            $selstaffid = $_POST['staffid'];
+            $appointmentdetails = Common::appointmentsByStaff($selstaffid);
+        }else {
+            $appointmentdetails = Common::getAppointmentDetails();
+        }
+        
         foreach($appointmentdetails as $appointment) {
 
             $services = $appointment['services'];
@@ -74,6 +85,13 @@ class Calendar extends CI_Controller {
         }
         $data['events'] = $events;
         $data['appointmentdetails'] = $appointmentdetails;
+        
+        $staff = $this->db->get_where('staff', array('active' => '1'));       
+        $data['staffs'] = $staff->result_array();
+        
+        $data['selstaffid'] = $selstaffid;
+        $data['calview'] = $calview;
+        
         $this->load->layout('calendar/index', $data);
     }
     
@@ -82,7 +100,10 @@ class Calendar extends CI_Controller {
         if(!empty($_GET['sd'])) {
             $data['sd'] = $_GET['sd'];
             $data['st'] = $_GET['st'];
-        }            
+        }
+        if(!empty($_GET['selstaffid'])) {
+            $data['selstaffid'] = $_GET['selstaffid'];
+        }
         $data['services'] = $this->db->get("services")->result_array();
         
         $staffq = $this->db->query("SELECT a.id, a.first_name, a.last_name, b.*
@@ -133,24 +154,6 @@ class Calendar extends CI_Controller {
                 $this->db->insert('appointmentservices', $appointmentservices);                
             }
             
-            /*
-            $app_t = $booking['time_start_field'];            
-            $combinedDT = date('Y-m-d H:i:s', strtotime("$app_d $app_t"));
-            
-            $appointmentservices = array(
-                'appointmentid' => $appointmentid,
-                'serviceid' => $booking['service_pricing_level_id'],
-                'staffid' => $booking['employee_id'],
-                'time' => $combinedDT,
-                'duration' => $booking['duration_value']
-            );
-            if(!empty($appointment_id)) {
-                $this->db->update('appointmentservices', $appointmentservices, array('appointmentid' => $appointment_id));
-            }else {
-                $this->db->insert('appointmentservices', $appointmentservices);
-            }
-            */
-            
             $appointmentstatus = array(
                 'appointmentid' => $appointmentid,
                 'status' => 'cnf',
@@ -190,76 +193,6 @@ class Calendar extends CI_Controller {
         $data['service'] = $service;
         $this->load->view('calendar/booking_detail', $data);
     }
-    
-    /*
-    private function getAppointmentDetailsnew($appointment_id){
-        
-        $where = "WHERE t.status != 'canc' AND t.status != 'paid' ";
-        if(!empty($appointment_id)) {
-            $where = ' AND a.id='.$appointment_id.'';
-        }
-        
-        $query = $this->db->query("SELECT a.id AS appointment_id, a.clientid AS clientid, a.date AS appointment_date, a.notes AS booking_notes, t.status, t.cancelid, c.firstname AS fname_c, c.lastname AS lname_c, c.mobile, c.notes 
-                        FROM appointment a
-                        INNER JOIN appointmentstatus t ON a.id = t.appointmentid
-                        INNER JOIN clients c ON a.clientid = c.id $where");
-        $appointment_array = $query->result_array();
-        
-        $appointments = array();
-        foreach($appointment_array as $key => $appointment) {
-            
-            $appointments[$key] = $appointment;
-            
-            $services = array();
-            $squery = $this->db->query("SELECT s.serviceid AS service_id, s.staffid AS staff_id, s.time AS appointment_time, s.duration, v.name AS service, v.price, v.special_price, f.first_name AS fname_s, f.last_name AS lname_s
-                        FROM appointmentservices s 
-                        INNER JOIN services v ON s.serviceid = v.id 
-                        INNER JOIN staff f ON s.staffid = f.id
-                        WHERE s.appointmentid = '".$appointment['appointment_id']."' ");
-            $ser_array = $squery->result_array();
-            foreach($ser_array as $k => $ser) {
-                $services[$k] = $ser;
-                
-                $start_t = $ser['appointment_time'];  
-                $end_t = date("Y-m-d H:i:s", (strtotime($start_t)+(60*$ser['duration'])));
-                $services[$k]['start_time'] = $start_t; 
-                $services[$k]['end_time'] = $end_t;
-                $services[$k]['app_t_format'] = date('h:ia', strtotime($start_t)) ." - ".date('h:ia', strtotime($end_t));
-            }
-            $appointments[$key]['services'] = $services;
-            $appointments[$key]['reference_id'] = 'REFAPP'.$appointment['appointment_id'].'CL'.$appointment['clientid'];
-        }
-        return $appointments;        
-    }
-    
-    private function getAppointmentDetails($appointment_id) {
-        
-        $where = "WHERE t.status != 'canc' AND t.status != 'paid' ";
-        if(!empty($appointment_id)) {
-            $where = ' AND a.id='.$appointment_id.'';
-        }
-        
-        $query = $this->db->query("SELECT a.id AS appointment_id, a.clientid AS clientid, a.date AS appointment_date, a.notes AS booking_notes, s.serviceid AS service_id, s.staffid AS staff_id, s.time AS appointment_time, s.duration, t.status, t.cancelid, c.firstname AS fname_c, c.lastname AS lname_c, c.mobile, c.notes, v.name AS service, v.price, v.special_price, f.first_name AS fname_s, f.last_name AS lname_s
-                                FROM appointment a
-                                INNER JOIN appointmentservices s ON a.id = s.appointmentid
-                                INNER JOIN appointmentstatus t ON a.id = t.appointmentid
-                                LEFT JOIN clients c ON a.clientid = c.id
-                                INNER JOIN services v ON s.serviceid = v.id
-                                INNER JOIN staff f ON s.staffid = f.id $where");
-        $appointment_array = $query->result_array();
-        $appointments = array();
-        foreach($appointment_array as $key => $appointment) {
-            $appointments[$key] = $appointment;
-            $start_t = $appointment['appointment_time'];  
-            $end_t = date("Y-m-d H:i:s", (strtotime($start_t)+(60*$appointment['duration'])));
-            $appointments[$key]['start_time'] = $start_t; 
-            $appointments[$key]['end_time'] = $end_t;
-            $appointments[$key]['app_t_format'] = date('h:ia', strtotime($start_t)) ." - ".date('h:ia', strtotime($end_t));
-            $appointments[$key]['reference_id'] = 'REFAPP'.$appointment['appointment_id'].'CL'.$appointment['clientid'];
-        }
-        return $appointments;
-    }
-    */
     
     public function changeStatus() {
         $id = $_GET['id'];
