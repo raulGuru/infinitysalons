@@ -3,14 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="shortcut icon" href="">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo base_url('assets/favicon-32x32.png') ?>">
         <title>Infinity Salon</title>
         <link href="<?php echo base_url('assets/css/fullcalendar.min.css') ?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/updated-bootstrap.css') ?>" rel="stylesheet">
-        <link href="<?php //echo base_url('assets/css/bootstrap.css')   ?>" rel="stylesheet">
+        <!--<link href="<?php //echo base_url('assets/css/bootstrap.css')   ?>" rel="stylesheet">-->
         <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css') ?>" rel="stylesheet">
 
         <script src="<?php echo base_url('assets/js/jquery.min.js') ?>"></script>
@@ -19,7 +16,6 @@
         <script src="<?php echo base_url('assets/js/jquery-ui.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/dataTables.bootstrap.min.js') ?>"></script>
-        <script src="<?php //echo base_url('assets/js/custom1.js')   ?>"></script>
         <script src="<?php echo base_url('assets/js/bootstrap.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/fullcalendar.js') ?>"></script>
         <script src="<?php echo base_url('assets/js/accounting.min.js') ?>"></script>
@@ -65,7 +61,12 @@
                                     echo "<li class='js-products'><a href='/products'>Products</a></li>";
                                 }
                                 if($useraccess['staff']) {
-                                    echo "<li class='js-employees'><a href='/employees'>Staff</a></li>";
+                                    $li = "";
+                                    $li .= "<li class='js-employees dropdown'>";
+                                    $li .= "<a class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='javascript:void(0);'>Staff</a>";
+                                    $li .= "<ul class='dropdown-menu'><li><a href='/employees'>Staff</a></li><li><a href='/roster'>Roster</a></li></ul>";
+                                    $li .= "</li>";
+                                    echo $li;
                                 }
                                 if($useraccess['setup']) {
                                     echo "<li class='js-setup'><a href='/provider'>Setup</a></li>";
@@ -100,6 +101,9 @@
             var c_class = '<?php echo $this->router->fetch_class(); ?>';
             if (c_class == 'discounts' || c_class == 'user' || c_class == 'provider') {
                 c_class = 'setup';
+            }
+            if(c_class == 'roster') {
+                c_class = 'employees';
             }
             $('.navbar-nav .js-' + c_class).addClass('active');
         </script>
