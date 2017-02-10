@@ -11,6 +11,9 @@ class Roster extends CI_Controller {
 //        print_r($this->user_id); die;
     }
     function index() {
+        
+        Common::checkUserHasAccess('staff');
+        
         $data['staffs'] = $this->roster_model->getUserById();
         $this->load->layout('roster/index', $data);
     }
