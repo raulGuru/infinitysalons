@@ -9,11 +9,17 @@ class Calendar extends CI_Controller {
     }
     
     function index() {
+        
         Common::checkUserHasAccess('calender');
+        
+        $sesStaffid = $this->session->userdata['salon_user']['staffid'];
         
         $events = array();
         $e = 0;
         $calview = (!empty($_POST['calview'])) ? $_POST['calview'] : 'w';
+        if(($sesStaffid != 0)) {
+            $_POST['staffid'] = $sesStaffid;
+        }
         //$_POST['staffid'] = 2;
         if(isset($_POST) && !empty($_POST['staffid'])) {
             $selstaffid = $_POST['staffid'];
@@ -86,6 +92,8 @@ class Calendar extends CI_Controller {
         
         $data['selstaffid'] = $selstaffid;
         $data['calview'] = $calview;
+        
+        $data['sesStaffid'] = $sesStaffid;
         
         $this->load->layout('calendar/index', $data);
     }

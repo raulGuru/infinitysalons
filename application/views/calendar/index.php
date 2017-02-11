@@ -17,7 +17,7 @@
                          <form id="form-staff" method="POST" action="">
                              <input type="hidden" name="calview" id="calview" value="<?php echo $calview; ?>">
                          <div class="select-wrapper">
-                             <select class="form-control select-staff" name="staffid">
+                             <select class="form-control select-staff" name="staffid" <?php  echo ($sesStaffid != 0) ? 'disabled="disabled"' : ''; ?>>
                                     <option value="">All staff</option>
                                 <?php foreach($staffs as $staff) {
                                     $name = $staff['first_name'] .' '.$staff['last_name'];
