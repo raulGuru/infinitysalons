@@ -30,9 +30,7 @@ class Login extends CI_Controller {
                         'last_name' => $result['data']['last_name'],
                         'last_login_on' => $result['data']['last_login_on'],
                         'mobile' => $result['data']['mobile'],
-                        'can_add' => $result['data']['can_add'],
-                        'can_update' => $result['data']['can_update'],
-                        'can_delete' => $result['data']['can_delete'],
+                        'staffid' => $result['data']['staffid'],
                         'status' => $result['data']['status'],
                     );
                     $session_id = md5($data['id'] . "_" . $data['email']);
