@@ -58,8 +58,6 @@ class Employees extends CI_Controller {
             );
             if (!empty($staff_id)) {
                 $q = $this->employees_model->update($staff_id, $employee);
-                echo '<pre>', print_r($q), '</pre>';
-                die;
                 if ($q == 'true') {
                     $this->db->update('staffservices', array('allowed' => '0'), array('staff_id' => $staff_id));
                     foreach ($post['service_ids'] as $service_id) {
