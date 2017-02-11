@@ -20,7 +20,7 @@
                                             <form class="simple_form new_permissions" id="new_permissions" action="/user/updatePermissions" method="post">
                                                 <div class="row m-b-20">
                                                     <div class="col-sm-12">
-                                                        <h3 class="m-t-none">User Permssions</h3>
+                                                        <h3 class="m-t-none">Staff Permssions</h3>
                                                         <p>Setup which sections are accessible to each user permission level. All logged in staff has full system access.</p>
                                                     </div>
                                                 </div>

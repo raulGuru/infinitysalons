@@ -10,6 +10,8 @@ class User extends CI_Controller {
         $loggedUser = $this->session->userdata('salon_user');
         $email = $loggedUser['email'];
         $data['user'] = $this->user_model->getUser($email);
+        $data['user']['password'] = Common::pwdDecrypt($data['user']['password']);
+
         $this->load->layout('user/account', $data);
     }
     public function saveAccount() {
@@ -19,7 +21,7 @@ class User extends CI_Controller {
         $updateArr['last_name'] = $this->input->post('last_name');
         $updateArr['mobile'] = $this->input->post('mobile');
         if (!empty($this->input->post('password')) && ($this->input->post('password') == $this->input->post('password_confirmation'))) {
-            $updateArr['current_password'] = $this->input->post('password');
+            $updateArr['password'] = base64_encode($this->config->item('encryption_key') . "_" . $this->input->post('password'));
         }
         if (isset($updateArr) && !empty($updateArr)) {
             $returnArr = $this->user_model->update($id, $updateArr);

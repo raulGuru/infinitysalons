@@ -21,7 +21,7 @@ class Login extends CI_Controller {
             $userarr = $this->input->post();
             if (isset($userarr) && !empty($userarr)) {
                 $result = $this->login_model->loginAuthentication($userarr);
-
+                
                 if (!empty($result) && $result['status'] == 1) {
                     $data = array(
                         'id' => $result['data']['id'],

@@ -7,7 +7,6 @@ class Customers extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('customers_model');
-//        $this->user_id = $this->config->item('user_id');
         $this->user_id = $this->session->userdata['salon_user']['id'];
     }
 
@@ -33,6 +32,7 @@ class Customers extends CI_Controller {
         $customer = $_POST['customer'];
         if (!empty($customer['first_name'])) {
             $values = array(
+                'userid' => $this->user_id,
                 'firstname' => trim($customer['first_name']),
                 'lastname' => trim($customer['last_name']),
                 'mobile' => (!empty($customer['mobile']) ? $customer['mobile'] : NULL),

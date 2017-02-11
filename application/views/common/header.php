@@ -7,7 +7,7 @@
         <title>Infinity Salon</title>
         <link href="<?php echo base_url('assets/css/fullcalendar.min.css') ?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/updated-bootstrap.css') ?>" rel="stylesheet">
-        <!--<link href="<?php //echo base_url('assets/css/bootstrap.css')   ?>" rel="stylesheet">-->
+        <!--<link href="<?php //echo base_url('assets/css/bootstrap.css')      ?>" rel="stylesheet">-->
         <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css') ?>" rel="stylesheet">
 
         <script src="<?php echo base_url('assets/js/jquery.min.js') ?>"></script>
@@ -45,51 +45,49 @@
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <?php
-                                if($useraccess['home']) {
-                                    echo "<li class='js-dashboard'><a href='/dashboard'>Home</a></li>";
-                                }
-                                if($useraccess['calender']) {
-                                    echo "<li class='js-calendar'><a href='/calendar'>Calendar</a></li>";
-                                }
-                                if($useraccess['clients']) {
-                                    echo "<li class='js-customers'><a href='/customers'>Clients</a></li>";
-                                }
-                                if($useraccess['services']) {
-                                    echo "<li class='js-services'><a href='/services'>Services</a></li>";
-                                }
-                                if($useraccess['products']) {
-                                    echo "<li class='js-products'><a href='/products'>Products</a></li>";
-                                }
-                                if($useraccess['staff']) {
-                                    $li = "";
-                                    $li .= "<li class='js-employees dropdown'>";
-                                    $li .= "<a class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='javascript:void(0);'>Staff</a>";
-                                    $li .= "<ul class='dropdown-menu'><li><a href='/employees'>Staff</a></li><li><a href='/roster'>Roster</a></li></ul>";
-                                    $li .= "</li>";
-                                    echo $li;
-                                }
-                                if($useraccess['setup']) {
-                                    echo "<li class='js-setup'><a href='/provider'>Setup</a></li>";
-                                }
+                            if ($useraccess['home']) {
+                                echo "<li class='js-dashboard'><a href='/dashboard'>Home</a></li>";
+                            }
+                            if ($useraccess['calender']) {
+                                echo "<li class='js-calendar'><a href='/calendar'>Calendar</a></li>";
+                            }
+                            if ($useraccess['clients']) {
+                                echo "<li class='js-customers'><a href='/customers'>Clients</a></li>";
+                            }
+                            if ($useraccess['services']) {
+                                echo "<li class='js-services'><a href='/services'>Services</a></li>";
+                            }
+                            if ($useraccess['products']) {
+                                echo "<li class='js-products'><a href='/products'>Products</a></li>";
+                            }
+                            if ($useraccess['staff']) {
+                                $li = "";
+                                $li .= "<li class='js-employees dropdown'>";
+                                $li .= "<a class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='javascript:void(0);'>Staff</a>";
+                                $li .= "<ul class='dropdown-menu'><li><a href='/employees'>Staff</a></li><li><a href='/roster'>Roster</a></li></ul>";
+                                $li .= "</li>";
+                                echo $li;
+                            }
+                            if ($useraccess['setup']) {
+                                echo "<li class='js-setup'><a href='/provider'>Setup</a></li>";
+                            }
                             ?>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="active dropdown">
-                                <a title="Profile" href="#" data-toggle="dropdown" class="dropdown-toggle hidden-sm" aria-expanded="false">		
+                                <a title="Profile" href="#" data-toggle="dropdown" class="dropdown-toggle hidden-sm" aria-expanded="false">
                                     <i class="s-icon-user icon-large bold"></i>		
-                                    <i class="s-icon-down-arrow"></i>		
+                                    <i class="s-icon-down-arrow"></i>
                                 </a>		
                                 <ul class="dropdown-menu navbar-dropdown">
                                     <li>		
                                         <a href="/user/account">My Settings</a>		
                                     </li>
-<!--                                    <li>		
-                                        <a href="/provider/settings">Business Settings</a>		
-                                    </li>-->
                                     <li>		
                                         <a href="/logout">Logout</a>		
                                     </li>
                                 </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -102,7 +100,7 @@
             if (c_class == 'discounts' || c_class == 'user' || c_class == 'provider') {
                 c_class = 'setup';
             }
-            if(c_class == 'roster') {
+            if (c_class == 'roster') {
                 c_class = 'employees';
             }
             $('.navbar-nav .js-' + c_class).addClass('active');

@@ -6,19 +6,18 @@ class Login_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
-//        $this->user_id = $this->config->item('user_id');
         $this->user_id = $this->session->userdata['salon_user']['id'];
     }
 
     function loginAuthentication($data) {
-        $this->db->select('*');
-        $this->db->from('user');
-        $where = "email='" . addslashes($data['email']) . "' AND password='" . addslashes($data['password']) . "' AND	status='active'";
-        $this->db->where($where);
-        $query = $this->db->get();
-
-        if ($query->num_rows() == 1) {
-            $resultdata = array('status' => 1, 'data' => $query->row_array(), 'message' => 'active user found');
+        
+        $email = addslashes($data['email']);
+        
+        $password = addslashes(base64_encode($this->config->item('encryption_key') . "_" . $data['password']));
+        //$ql = ("SELECT * FROM user WHERE email = '$email' AND password = '$password'");
+        $ql = $this->db->query("SELECT * FROM user WHERE email = '$email' AND password = '$password'");
+        if ($ql->num_rows() == 1) {
+            $resultdata = array('status' => 1, 'data' => $ql->row_array(), 'message' => 'active user found');
         } else {
             $this->db->select('*');
             $this->db->from('user');

@@ -4,25 +4,11 @@ class Products_model extends CI_Model {
     protected $user_id;
     function __construct() {
         parent::__construct();
-//        $this->user_id = $this->config->item('user_id');
         $this->user_id = $this->session->userdata['salon_user']['id'];
     }
     
-    public function get($search, $sort, $direction) {
-        
-        /*if(!empty($search)) {
-            $like = "AND `product_name` LIKE '%$search%'";
-        }
-        if($sort == 'updated_at') {
-            $sort = 'timestamp';
-        }
-        if(!empty($sort)) {
-            $order_by = "ORDER BY `$sort` $direction";
-        }
-        $query = $this->db->query( "SELECT * FROM `products` WHERE `user_id` = $this->user_id $like $order_by" );*/
-        if(!empty($search))
-            $like = "AND `product_name` LIKE '%$search%' OR `sku` LIKE '%$search%'";
-        $query = $this->db->query( "SELECT * FROM `products` WHERE `user_id` = $this->user_id $like" );
+    public function get() {
+        $query = $this->db->query( "SELECT * FROM `products`" );
         return $query->result_array();
     }
     

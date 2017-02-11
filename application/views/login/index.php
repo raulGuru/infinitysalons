@@ -7,10 +7,8 @@
         <title>Infinity Salon</title>
         <meta content="" name="description">
         <meta content="" name="author">
-        <link href="/favicon.ico?v=rMMnxJlqdL" rel="shortcut icon">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo base_url('assets/favicon-32x32.png') ?>">
         <meta content="Infinity Salon" name="application-name">
-        <meta content="#36434a" name="msapplication-TileColor">
-        <meta content="/mstile-144x144.png?v=rMMnxJlqdL" name="msapplication-TileImage">
         <meta content="#ffffff" name="theme-color">
         <link rel="stylesheet" media="all" href="<?php echo base_url('assets/css/updated-bootstrap.css') ?>">
 
@@ -31,7 +29,7 @@
                         <!--Welcome to the world's first free system for Wellness and Beauty-->
                     </h2>
                     <p class="small">
-                        <!--                        © <?php // echo date('Y');            ?> -->
+                        <!--                        © <?php // echo date('Y');             ?> -->
                         <!--Surge Ventures Inc.-->
                     </p>
                 </div>

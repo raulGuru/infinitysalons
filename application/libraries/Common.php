@@ -112,7 +112,19 @@ class Common {
         }else {
             redirect('errors/denied');
         }
-    }    
+    }
+    
+    public function pwdDecrypt($password) {
+        $password = explode("_", (base64_decode($password)));
+        
+        if (count($password) > 2) {
+            $returnPassword = implode("_", array_slice($password, 1, (count($password) - 1)));
+        } else {
+            $returnPassword = $password[1];
+        }
+        
+        return $returnPassword;
+    }
 }
 
 

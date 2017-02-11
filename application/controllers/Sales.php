@@ -5,7 +5,6 @@ class Sales extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('sales_model');
-//        $this->user_id = $this->config->item('user_id');
         $this->user_id = $this->session->userdata['salon_user']['id'];
     }
     
@@ -89,12 +88,13 @@ class Sales extends CI_Controller {
         $checkoutins = array(
             'appointmentid' => $appointmentid,
             'clientid' => (!empty($sale['customer_id'])) ? $sale['customer_id'] : 0,
+            'userid' => $this->user_id,
             'invoicedate' => $invoicedate
         );
         $this->db->insert("checkout", $checkoutins);
         $checkoutid = $this->db->insert_id();
         
-        $this->db->update('appointmentstatus', array('status' => 'paid'), array('appointmentid' => $appointmentid));
+        $this->db->update('appointmentstatus', array('status' => 'paid', 'userid' => $this->user_id), array('appointmentid' => $appointmentid));
         
         $checkoutinvoice = array(
             'checkoutid' => $checkoutid,

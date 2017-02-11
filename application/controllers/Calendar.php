@@ -5,15 +5,10 @@ class Calendar extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('calendar_model');
-//        $this->user_id = $this->config->item('user_id');
         $this->user_id = $this->session->userdata['salon_user']['id'];
     }
     
     function index() {
-        
-//        echo '<pre>', print_r($_POST), '</pre>';
-//        exit();
-
         Common::checkUserHasAccess('calender');
         
         $events = array();
@@ -126,7 +121,8 @@ class Calendar extends CI_Controller {
                 'clientid' => (!empty($booking['customer_id']) ? $booking['customer_id'] : 1),
                 'notes' => $booking['notes'],
                 'date'  =>  $app_d,
-                'isrepeat' => '0'
+                'isrepeat' => '0',
+                'userid' => $this->user_id,
             );
             if(!empty($appointment_id)) {
                  $this->db->update('appointment', $appointment, array('id' => $appointment_id));
@@ -148,6 +144,7 @@ class Calendar extends CI_Controller {
                     'appointmentid' => $appointmentid,
                     'serviceid' => $service['serviceid'],
                     'staffid' => $service['employee_id'],
+                    'userid' => $this->user_id,
                     'time' => $combinedDT,
                     'duration' => $service['duration_value']
                 );
@@ -156,6 +153,7 @@ class Calendar extends CI_Controller {
             
             $appointmentstatus = array(
                 'appointmentid' => $appointmentid,
+                'userid' => $this->user_id,
                 'status' => 'cnf',
                 'cancelid' => 0
             );

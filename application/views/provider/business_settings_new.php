@@ -62,7 +62,7 @@
                         <a class="link-list__link" href="/provider/cancellations">Cancellation Reasons</a>
                     </li>
                     <li>
-                        <a class="link-list__link" href="/user/permissions">User Permissions</a>
+                        <a class="link-list__link" href="/user/permissions">Staff Permissions</a>
                     </li>
                 </ul>
             </div>

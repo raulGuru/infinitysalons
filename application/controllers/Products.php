@@ -7,7 +7,6 @@ class Products extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('products_model');
-//        $this->user_id = $this->config->item('user_id');
         $this->user_id = $this->session->userdata['salon_user']['id'];
     }
 
@@ -15,11 +14,8 @@ class Products extends CI_Controller {
         
         Common::checkUserHasAccess('products');
 
-        $products = $this->products_model->get($_GET['search'], $_GET['sort'], $_GET['direction']);
+        $products = $this->products_model->get();
         $data['products'] = $products;
-        $data['search'] = $_GET['search'];
-        //$data['sort'] = $_GET['sort'];
-        //$data['direction'] = $_GET['direction'];
         $this->load->layout('products/index', $data);
     }
 
