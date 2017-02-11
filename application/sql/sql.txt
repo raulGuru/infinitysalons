@@ -1,5 +1,16 @@
 11-02-2017
 ------------------------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE `user`
+DROP `can_add`,
+DROP `can_update`,
+DROP `can_delete`;
+  
+ALTER TABLE `user` ADD COLUMN staffid int(11) NOT NULL AFTER id;
+ALTER TABLE `user` CHANGE `password` `password` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+
+ALTER TABLE  `user` CHANGE  `last_login_on`  `last_login_on` TIMESTAMP NOT NULL DEFAULT  '2017-01-01 11:59:59';
+
 INSERT INTO `user` (`id`, `staffid`, `first_name`, `last_name`, `email`, `password`, `last_login_on`, `mobile`, `session_id`, `status`, `created_on`, `updated_on`) VALUES (NULL, '0', 'superadmin', '', 'superadmin@infinity.com', 'cmFodWxnX3N1cGVyYWRtaW4=', '2017-02-11 04:31:56', '0', NULL, 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO `user` (`id`, `staffid`, `first_name`, `last_name`, `email`, `password`, `last_login_on`, `mobile`, `session_id`, `status`, `created_on`, `updated_on`) VALUES (NULL, '0', 'admin', '', 'admin@admin.com', 'cmFodWxnX2FkbWlu', '2017-02-11 04:33:15', '0', NULL, 'active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -23,3 +34,5 @@ ALTER TABLE `staff` ADD UNIQUE( `email`);
 ALTER TABLE `staffroster` ADD `userid` INT(11) NOT NULL AFTER `staffid`;
 
 ALTER TABLE `staffroster` ADD `timestamp` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `saturday`;
+
+
