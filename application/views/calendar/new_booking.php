@@ -272,7 +272,7 @@
                                                             <option value="08:40">8:40am</option>
                                                             <option value="08:45">8:45am</option>
                                                             <option value="08:50">8:50am</option>
-                                                            <option value="08:55">8:55am</option>-->
+                                                            <option value="08:55">8:55am</option>
                                                             <option value="09:00">9:00am</option>
                                                             <option value="09:05">9:05am</option>
                                                             <option value="09:10">9:10am</option>
@@ -284,7 +284,7 @@
                                                             <option value="09:40">9:40am</option>
                                                             <option value="09:45">9:45am</option>
                                                             <option value="09:50">9:50am</option>
-                                                            <option value="09:55">9:55am</option>
+                                                            <option value="09:55">9:55am</option>-->
                                                             <option value="10:00">10:00am</option>
                                                             <option value="10:05">10:05am</option>
                                                             <option value="10:10">10:10am</option>
@@ -644,17 +644,17 @@
     
     function bindEvents($c, c) {
         var $selectservice = $c.find('.js-select-service');
-        $($selectservice).attr('name', "booking[services]["+c+"][serviceid]").attr('id', 'serviceid-'+c);
+        $($selectservice).attr('name', "booking[services]["+c+"][serviceid]").attr('id', 'serviceid-'+c).val('');
         
         var $selectemployee = $c.find('.js-select-employee');
-        $($selectemployee).attr('name', "booking[services]["+c+"][employee_id]").attr('id', 'booking_employee_id-'+c);
+        $($selectemployee).attr('name', "booking[services]["+c+"][employee_id]").attr('id', 'booking_employee_id-'+c).val('');
         
         var $selecttime = $c.find('.js-select-time');
         $($selecttime).attr('name', "booking[services]["+c+"][time_start_field]").attr('id', 'booking_time_start_field-'+c);
         $('#booking_time_start_field-'+c).val(now_time);
         
         var $selectduration = $c.find('.js-select-duration');
-        $($selectduration).attr('name', "booking[services]["+c+"][duration_value]").attr('id', 'booking_duration_value-'+c);        
+        $($selectduration).attr('name', "booking[services]["+c+"][duration_value]").attr('id', 'booking_duration_value-'+c).val('');
         
         $($c).on('change', '#serviceid-'+c, function(){
             var duration = $('#serviceid-'+c+' option:selected').data('duration');
