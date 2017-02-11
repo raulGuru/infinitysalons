@@ -21,19 +21,14 @@
                     <td>
                         <br/>
                         <br/>
-                        <span class="company_name header">INFINITY SALONS</span>
+                        <span class="company_name">INFINITY SALONS</span>
                         <hr>
                         <div class="clearfix"></div>
                         <div class=" header">
                             Invoice number: <?php echo $checkout['invoicenumber'] ?><br>
                             Date: <?php echo date('F j, Y', strtotime($checkout['invoicedate'])) ?>
                         </div>
-                        <br>
-                        <!-- Due: February 1, 2015-->
                     </td>
-                    <!--                            </tr>
-                                            </table>
-                                        </td>-->
                 </tr>
             </table>
 
@@ -195,11 +190,12 @@
                     <tfoot>
                         <tr style="font-size: 12px">
                             <td colspan="2">
-                                Shop No. 19 & 20, Bhumiraj Manor Co-op Housing Society,<br>
-                                Plot No. 3, Sector 14, Sanpada, Navi Mumbai-400705
+                                Shop No. 19 & 20, Bhumiraj Co-op Housing Society,<br>
+                                Sector 14, Sanpada, Navi Mumbai-400705
                             </td>
                             <td style="width: 300px">
-                                Service tax code(Registration Number): AATPC9486BSD001
+                                Service tax No: AATPC9486BSD001<br>
+                                PAN No: AATPC9486B
                             </td>
                         </tr>
                     </tfoot>

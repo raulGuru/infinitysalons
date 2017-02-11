@@ -4,7 +4,7 @@
     padding:30px;
     border:1px solid #eee;
     box-shadow:0 0 10px rgba(0, 0, 0, .15);
-    font-size:16px;
+    font-size:13px;
     line-height:24px;
     font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
     color:#555;
@@ -26,7 +26,7 @@
 }
 
 .invoice-box table tr.top table td{
-    padding-bottom:20px;
+    padding-bottom:10px;
 }
 
 .invoice-box table tr.top table td.title{
@@ -37,15 +37,16 @@
 
 .invoice-box table tr.top td.title .logo{
     /*width:100%;*/ 
-    max-width:130px;
+    max-width:100px;
 }
 
 .invoice-box table tr.top td .company_name{
-    font-size:45px;
+    font-size:35px;
+    margin-right: 150px;
 }
 
 .invoice-box table tr.top td .header {
-    margin-right: 120px;
+    margin-right: 80px;
     text-align: center;
 
 }
@@ -80,7 +81,7 @@
 
 .clearfix {
     display: block;
-    height: 30px;
+    height: 15px;
 
 }
 
@@ -89,13 +90,13 @@
     /*background: #2db34a;*/
     bottom: 0;
     left: 0;
-    position: fixed;
+/*    position: fixed;*/
     right: 0;
 }
 @media print {
     div.divFooter {
         display: block;
-        position: fixed;
+        /*position: fixed;*/
         bottom: 0;
     }
 }
