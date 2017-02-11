@@ -56,3 +56,4 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['login'] = 'login/index';
 $route['logout'] = 'login/logout';
+$route['dashboard'] = 'calendar';
