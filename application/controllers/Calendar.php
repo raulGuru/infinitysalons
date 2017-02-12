@@ -107,7 +107,7 @@ class Calendar extends CI_Controller {
         if(!empty($_GET['selstaffid'])) {
             $data['selstaffid'] = $_GET['selstaffid'];
         }
-        $data['services'] = $this->db->get("services")->result_array();
+        $data['services'] = $this->db->order_by("name","asc")->get("services")->result_array();
         
         $staffq = $this->db->query("SELECT a.id, a.first_name, a.last_name, b.*
                                     FROM staff a
@@ -244,7 +244,7 @@ class Calendar extends CI_Controller {
         $appointmentdetails = Common::getAppointmentDetails($appointment_id);
         $data['appointment'] = $appointmentdetails[0];        
         
-        $data['services'] = $this->db->get("services")->result_array();
+        $data['services'] = $this->db->order_by("name","asc")->get("services")->result_array();
         
         $staffq = $this->db->query("SELECT a.id, a.first_name, a.last_name, b.*
                                     FROM staff a

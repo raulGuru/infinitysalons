@@ -45,14 +45,6 @@ class Group_model extends CI_Model {
                 return 'true';
             }
         }
-
-        //$sql = "INSERT INTO `services` (name, group_id, subcategory_id, extra_time_type, extra_time_in_seconds, gender, pricing_type, room_required, tax_rate_id, voucher_enabled, voucher_expiration_period, service_pricing_price, service_pricing_special_price, price)
-        //SELECT * FROM (SELECT '".$service['name']."', '".$service['group_id']."', '".$service['subcategory_id']."', '".$service['extra_time_type']."', '".$service['extra_time_in_seconds']."', '".$service['gender']."', '".$service['pricing_type']."', '".$service['room_required']."', '".$service['tax_rate_id']."', '".$service['voucher_enabled']."', '".$service['voucher_expiration_period']."', '".$service['service_pricing_price']."', '".$service['service_pricing_special_price']."', '".$service['price']."') AS tmp
-        //WHERE NOT EXISTS (
-        //SELECT name FROM `services` WHERE name = '".$service['name']."'
-        //) LIMIT 1;";
-        //print_r($sql); exit();
-        //$query = $this->db->query($sql);
     }
 
     public function udpate_service($service_id, $values) {

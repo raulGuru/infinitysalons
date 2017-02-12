@@ -13,11 +13,11 @@ class Services extends CI_Controller {
             Common::checkUserHasAccess('services');
             
             $data = array();
-            $query = $this->db->get_where("service_group");
+            $query = $this->db->order_by("group_name","asc")->get_where("service_group");
             $data['groups'] = $query->result_array();
             foreach ($query->result_array() as $row => $r) {
                     $service_group_id = $r['id'];
-                    $squery = $this->db->get_where('services', array('group_id' => $service_group_id));
+                    $squery = $this->db->order_by("name","asc")->get_where('services', array('group_id' => $service_group_id));
                     $data['groups'][$row]['services'] = $squery->result_array();
             }
 

@@ -21,7 +21,7 @@ class Employees extends CI_Controller {
 
     public function newEmp() {
 
-        $query = $this->db->get_where('services');
+        $query = $this->db->order_by("name","asc")->get_where('services');
         $services = $query->result_array();
         foreach ($services as $service => $s) {
             $services[$service]['service_id'] = $s['id'];
