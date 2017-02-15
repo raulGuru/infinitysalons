@@ -19,14 +19,24 @@ class Sales extends CI_Controller {
         $this->load->view('sales/new_sale', $data);
     }
     
+    function newServiceSale() {
+        
+        $data['services'] = $this->db->order_by("name","asc")->get("services")->result_array();
+        $querydiscounts = $this->db->get_where('discounts', array('enabled_for_products' => '1'));
+        $data['discounts'] = $querydiscounts->result_array();
+        $querystaff = $this->db->get_where('staff', array('active' => '1'));
+        $data['staffs'] = $querystaff->result_array();
+        $this->load->view('sales/new_service_sale', $data);
+    }
+    
     function addSale() {
 
         $sale = $_POST['sale'];
         
         if(!empty($sale['items_attributes'])) {
-            $prds = $sale['items_attributes'];
-            foreach($prds as $prd) {
-                if(empty($prd['staff-id'])) {
+            $items = $sale['items_attributes'];
+            foreach($items as $item) {
+                if(empty($item['staff-id'])) {
                     return ;
                 }
             }
@@ -69,18 +79,39 @@ class Sales extends CI_Controller {
         $querystaff = $this->db->get_where('staff', array('active' => '1'));
         $data['staffs'] = $querystaff->result_array();
 
-        $this->load->view('sales/new_sale', $data);        
+        $this->load->view('sales/new_sale', $data);
+    }
+    
+    public function appointmentServiceSale() {
+        
+        $appointment_id = $_POST['appid'];
+        if(empty($appointment_id))
+            return;
+        
+        $appointmentdetails = Common::getAppointmentDetails($appointment_id);
+        $appointment = $appointmentdetails[0];
+        $data['appointment'] = $appointment;
+        //$data['appservices'] = $appointment['services'];
+        
+        $data['services'] = $this->db->order_by("name","asc")->get("services")->result_array();
+        
+        $querydiscounts = $this->db->get_where('discounts', array('enabled_for_products' => '1'));
+        $data['discounts'] = $querydiscounts->result_array();
+        
+        $querysdiscounts = $this->db->get_where('discounts', array('enabled_for_services' => '1'));
+        $data['servicediscounts'] = $querysdiscounts->result_array();
+        
+        $querystaff = $this->db->get_where('staff', array('active' => '1'));
+        $data['staffs'] = $querystaff->result_array();
+        
+        $this->load->view('sales/new_service_sale', $data);
+        
     }
     
     function addPayment() {
         
-        //$this->load->view('sales/invoice_raised');
-        
-        $sale = $this->session->userdata('sale');
-        
+        $sale = $this->session->userdata('sale');        
         $payment = $_POST;
-//        $ses['payment'] = $payment;
-//        $this->session->set_userdata($ses);
         
         $invoicedate = date('Y-m-d H:i:s', strtotime($sale['invoice_date']));
         
@@ -110,6 +141,7 @@ class Sales extends CI_Controller {
         $checkoutinvoiceid = $this->db->insert_id();
         
         if(!empty($sale['items_attributes'])) {
+            /*
             $products = $sale['items_attributes'];
             foreach($products as $product) {
                 $qnt = (!empty($product['quantity'])) ? $product['quantity'] : 0;
@@ -127,6 +159,9 @@ class Sales extends CI_Controller {
                 
                 $this->db->query("UPDATE `products` SET quantity = quantity-$qnt WHERE id=$productid");
             }
+             * now sale items are services, so adding them after app services
+             */
+            
         }
         
         if(!empty($sale['service'])) {
@@ -135,6 +170,22 @@ class Sales extends CI_Controller {
                 $checkoutservices = array(
                     'checkoutid' => $checkoutid,
                     'serviceid' => $service['item-id'],
+                    'staffid' => $service['staff-id'],
+                    'quantity' => $service['quantity'],
+                    'price' => Common::parseMoney($service['special_price']),
+                    'fullprice' => Common::parseMoney($service['full_price']),
+                    'discountid' => (!empty($service['discount_id'])) ? $service['discount_id'] : NULL
+                );
+                $this->db->insert("checkoutservices", $checkoutservices);
+            }            
+        }
+        
+        if(!empty($sale['items_attributes'])) {
+            $services = $sale['items_attributes'];
+            foreach($services as $service) {
+                $checkoutservices = array(
+                    'checkoutid' => $checkoutid,
+                    'serviceid' => $service['item_id'],
                     'staffid' => $service['staff-id'],
                     'quantity' => $service['quantity'],
                     'price' => Common::parseMoney($service['special_price']),

@@ -19,6 +19,7 @@ $(document).ready(function() {
                 $('#' + modalid).modal({backdrop: 'static', keyboard: false});
                 $('#' + modalid).on('hidden.bs.modal', function(){
                     $('.modal-backdrop').remove();
+                    //$(this).find('form')[0].reset();
                 });
             }).success(function() { $('input:text:visible:first').focus(); });          
     	}
@@ -30,10 +31,10 @@ $(document).ready(function() {
 });
 
 function loadingOverlay(){
-    $('<div class="modal-backdrop loading"></div>').appendTo(document.body),$("#loading_image").show()
+    $('<div class="modal-backdrop loading"></div>').appendTo(document.body),$("#loading_image").show();
 }
 function removeLoadingOverlay(){
-    $(".modal-backdrop.loading").remove(),$("#loading_image").hide(),$(".blockUI").remove()
+    $(".modal-backdrop.loading").remove(),$("#loading_image").hide(),$(".blockUI").remove();
 }
 
 function formatAMPM(date, add5 = false) {

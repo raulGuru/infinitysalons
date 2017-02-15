@@ -2,6 +2,10 @@
    <!-- START PAGE CONTENT -->
    <div class="content full-height">
       <div class="container-fluid full-height">
+          <div id="loading_image" style="display: none">
+            <i class="icon-refresh icon-spin"></i>
+            Loading...
+         </div>
          <div id="calendar">
             <div class="toolbar">
                   <div class="left-controls">
@@ -9,9 +13,13 @@
                         <i class="icon-plus"></i>
                         <span>Create appointment</span>
                      </div>
-                     <div data-href="/sales/newSale" data-model="modal" data-modalid="new-sale" class="btn btn-success navigate hidden-xs js-create-sale-action" data-placement="bottom" data-toggle="tooltip" title="Create product sale" data-original-title="Create sale">
+<!--                     <div data-href="/sales/newSale" data-model="modal" data-modalid="new-sale" class="btn btn-success navigate hidden-xs js-create-sale-action" data-placement="bottom" data-toggle="tooltip" title="Create product sale" data-original-title="Create sale">
                         <i class="icon-tag"></i>
                         <span>Create product sale</span>
+                     </div>-->
+                      <div data-href="/sales/newServiceSale" data-model="modal" data-modalid="new-service-sale" class="btn btn-success navigate hidden-xs js-create-servicesale-action" data-placement="bottom" data-toggle="tooltip" title="Create service sale" data-original-title="Create sale">
+                        <i class="icon-tag"></i>
+                        <span>Create service sale</span>
                      </div>
                      <div class="select-location dropdown">
                          <form id="form-staff" method="POST" action="">

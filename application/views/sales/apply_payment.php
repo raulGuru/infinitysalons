@@ -1,10 +1,15 @@
 <div aria-hidden="false" aria-labelledby="modalSlideUpLabel" class="modal large-modal in" id="new-payments" role="dialog" tabindex="-1" style="display: block;">
+    <div id="loading_image" style="display: none">
+        <i class="icon-refresh icon-spin"></i>
+        Loading...
+    </div>
    <div class="modal-dialog">
       <div class="modal-content no-border">
          <div class="modal-header clearfix text-left">
-             <button aria-hidden="true" class="close" data-dismiss="modal" type="button" id="close-payment">
+<!--             <button aria-hidden="true" class="close" data-dismiss="modal" type="button" id="close-payment">
                 <i class="pg-close"></i><span>X</span>
-            </button>
+            </button>-->
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-payment"><span aria-hidden="true">&times;</span></button>
             <h3 class="text-center large-modal__title">
                Apply Payment
             </h3>
@@ -26,7 +31,7 @@
                                  <div class="payment-type-form pos-box__item pos-box__item--thin">
                                     <div class="payment-forms__scrollable m-t-10">
                                        <div class="payment-methods payment-box__btns">
-                                          <button class="btn btn-lg btn-success  js-payment-method paymentmethod-btn" data-payment-method-id="1" data-payment-method-name="Cash">Cash</button>
+                                          <button class="btn btn-lg btn-success js-payment-method paymentmethod-btn" data-payment-method-id="1" data-payment-method-name="Cash">Cash</button>
                                           <button class="btn btn-lg btn-success js-payment-method paymentmethod-btn" data-payment-method-id="3" data-payment-method-name="Card">Card</button>
                                           <button class="btn btn-lg btn-success js-payment-method paymentmethod-btn" data-payment-method-id="2" data-payment-method-name="Other">Other</button>                                          
                                        </div>
@@ -106,7 +111,8 @@
                         </div>
                          <h4 class="text-center hidden-xs m-b-none pos-box-table__item">Invoice</h4>
                         <div class="invoices pos-box-table__item">
-                            <?php 
+                            <?php
+                                $fmt = Common::formatMoney();
                                 $services = $sale['service'];
                                 if(!empty($services)) { 
                                     foreach($services as $service) { ?>
@@ -116,7 +122,7 @@
                                       <span class="invoice-row__name js-full-text"><?php echo $service['item-name'] ?></span>
                                   </div>
                                   <div class="col-sm-4 invoice-row__item invoice-row__item--right">
-                                      <s>₹<?php echo $service['full_price'] ?></s><span class="text-danger m-l-10">₹<?php echo $service['special_price'] ?></span>
+                                      <s>₹ <?php echo $service['full_price'] ?></s><span class="text-danger m-l-10">₹ <?php echo $service['special_price'] ?></span>
                                   </div>
                                </div>
                             <?php   } 
@@ -131,7 +137,7 @@
                                       <span class="invoice-row__name js-full-text"><?php echo $item['item-name'] ?></span>
                                   </div>
                                   <div class="col-sm-4 invoice-row__item invoice-row__item--right">
-                                      <s>₹<?php echo $item['full_price'] ?></s><span class="text-danger m-l-10">₹<?php echo $item['special_price'] ?></span>
+                                      <s>₹ <?php echo $item['full_price'] ?></s><span class="text-danger m-l-10">₹ <?php echo $item['special_price'] ?></span>
                                   </div>
                                </div>
                                     
@@ -144,7 +150,7 @@
                                      <div class="invoice-row__item invoice-row__item--big invoice-row__item--left text-uppercase"><span class="translation_missing" title="">Sale Total</span></div>
                                      <div class="invoice-row__item invoice-row__item--big invoice-row__item--right text-danger">
                                          <input name="sale-total" id="sale-total-hd" type="hidden" value="<?php echo $sale['sale-total']; ?>" class="hidden">
-                                         <span id="sale-total" class="m-l-5">₹<?php echo $sale['sale-total']; ?></span>
+                                         <span id="sale-total" class="m-l-5"><?php echo $fmt->format(Common::parseMoney($sale['sale-total'])); ?></span>
                                      </div>
                                   </div>
                                </div>
@@ -178,7 +184,7 @@
                                             $salet = Common::parseMoney($sale['sale-total']);
                                             $taxcost = round((( $salet/ 100) * $tax['rate']), 2);
                                             $totaltax = ($totaltax + $taxcost);
-                                            echo '₹'.$taxcost;
+                                            echo '₹ '.$taxcost;
                                          ?>
                                      </div>
                                     <?php } 
@@ -198,7 +204,7 @@
                                         <input type="hidden" class="hidden paymentMethodName" name="payment-method-name" value="">
                                         <span id="paymentMethodName"></span>
                                         <input name="grand-total" id="grand-total-hd" type="hidden" value="<?php echo $grand_total; ?>" class="hidden">
-                                        <span id="grand-total" class="m-l-5">₹<?php echo $grand_total; ?></span>
+                                        <span id="grand-total" class="m-l-5"><?php echo $fmt->format($grand_total); ?></span>
                                     </div>
                                  </div>
                               </div>
@@ -232,6 +238,9 @@
         $('.paymentMethodName').val(paymentMethodName);
         $('#paymentMethodName').html(paymentMethodName);
         $('.js-submit').removeAttr('disabled');
+        
+        $('.js-payment-method').removeClass('btn-warning');
+        $(this).addClass('btn-warning');
     });
     
     $('.add-tip-btn').click(function(){        
@@ -250,13 +259,13 @@
             payment_tipped_employee_id = $('#payment_tipped_employee_id').val();
 
         $('.js-tip').removeClass('hidden');
-        $('.js-tip-amount').html('₹' + payment_tip);
+        $('.js-tip-amount').html('₹ ' + payment_tip);
         $('#tip-amount').val(payment_tip);
         $('#tip-staff-id-hd').val(payment_tipped_employee_id);
         
         var totalamount = parseFloat(parseFloat($('#grand-total-hd').val()) + parseFloat(payment_tip)).toFixed(2);
         $('#grand-total-hd').val(totalamount);
-        $('#grand-total').html('₹' + totalamount);
+        $('#grand-total').html('₹ ' + totalamount);
         
         $('#payment_tip, #payment_tipped_employee_id').val('');
         $('.add-tip-container').addClass('hidden');
@@ -268,7 +277,7 @@
         
         var totalamount = parseFloat(parseFloat($('#grand-total-hd').val()) - parseFloat($('#tip-amount').val())).toFixed(2);
         $('#grand-total-hd').val(totalamount);
-        $('#grand-total').html('₹' + totalamount);
+        $('#grand-total').html('₹ ' + totalamount);
         
         $('.js-tip-amount').html('');
         $('#tip-amount').val(0);
@@ -284,14 +293,14 @@
             $('.js-sale-tax').removeClass('hidden');
             var gt = parseFloat(grandtotal + totaltax).toFixed(2);
             $('#grand-total-hd').val(gt);
-            $('#grand-total').html('₹'+gt);
+            $('#grand-total').html('₹ '+gt);
             
         }else {
             
             $('.js-sale-tax').addClass('hidden');
             var gt = parseFloat(grandtotal - totaltax).toFixed(2);
             $('#grand-total-hd').val(gt);
-            $('#grand-total').html('₹'+gt);
+            $('#grand-total').html('₹ '+gt);
         }
     });
     

@@ -133,7 +133,7 @@
     $('.checkout-button').click(function(){
        loadingOverlay();
        $.ajax({
-            url: g.base_url + 'sales/appointmentSale',
+            url: g.base_url + 'sales/appointmentServiceSale',
             type: 'post',   
             dataType: 'html',
             data: $(this).data(),
@@ -141,10 +141,10 @@
 
                 removeLoadingOverlay();
                 $('#bookingModal').remove();
-                $('#new-sale').remove();
+                $('#new-service-sale').remove();
                 $('body').append(data);
-                $('#new-sale').modal({backdrop: 'static', keyboard: false});
-                $('#new-sale').on('hidden.bs.modal', function(){
+                $('#new-service-sale').modal({backdrop: 'static', keyboard: false});
+                $('#new-service-sale').on('hidden.bs.modal', function(){
                     $('.modal-backdrop').remove();
                 });
 

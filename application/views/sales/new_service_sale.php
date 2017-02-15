@@ -1,17 +1,22 @@
-<div aria-hidden="false" aria-labelledby="modalSlideUpLabel" class="modal large-modal in" id="new-sale" role="dialog" tabindex="-1" style="display: block;">
+<div aria-hidden="false" aria-labelledby="modalSlideUpLabel" class="modal large-modal in" id="new-service-sale" role="dialog" tabindex="-1" style="display: block;">
+    <div id="loading_image" style="display: none">
+        <i class="icon-refresh icon-spin"></i>
+        Loading...
+    </div>
    <div class="modal-dialog">
       <div class="modal-content no-border">
          <div class="modal-header clearfix text-left">
-            <button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+<!--            <button aria-hidden="true" class="close" data-dismiss="modal" type="button">
                 <i class="pg-close"></i><span>X</span>
-            </button>
+            </button>-->
+             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h3 class="text-center large-modal__title">
                Checkout
             </h3>
          </div>
          <div class="modal-body sm-padding-10 modal-body--column">
             <div class="pos-box__alerts"></div>
-            <div class="alert alert-danger hide">Select staff for all products.</div>
+            <div class="alert alert-danger hide">Select staff for all services.</div>
             <form class="simple_form row pos-box" id="new_sale">
                 <input type="hidden" name="sale[appointmentid]" id="appointment_id" value="0">
                <div class="col-sm-5 pos-box__item">
@@ -92,7 +97,7 @@
                      <div class="search-bar-navigation">
                         <div class="sale-navigation__item sale-navigation__item--back">
                            <div class="tip-alert"></div>
-                           <div class="sale-navigation__title text-center">Products</div>
+                           <div class="sale-navigation__title text-center">Services</div>
 <!--                           <a href="javascript:void(0);" class="sale-navigation__link  sale-navigation__link">
                               <div class="sale-navigation__title text-center">Products</div>
                            </a>-->
@@ -123,16 +128,16 @@
                            <div class="navigation">
                               <ul class="sale-navigation">
 <!--                                 <li class="sale-navigation__item hidden"><a href="" class="sale-navigation__link--back sale-navigation__link">Products</a></li>-->
-                            <?php if(!empty($products)) {
-                                foreach($products as $product) { ?>
+                            <?php if(!empty($services)) {
+                                foreach($services as $service) { ?>
                                 <li class="sale-navigation__item">
-                                    <a href="javascript:void(0);" class="sellable sale-navigation__link js-add-products" data-productid="<?php echo $product['id'] ?>">
+                                    <a href="javascript:void(0);" class="sellable sale-navigation__link js-add-services" data-serviceid="<?php echo $service['id'] ?>">
                                        <span class="price sale-navigation__price sale-navigation__price--special">
-                                           <div class="text-danger">₹<?php echo $product['special_price'] ?></div>
-                                          <s>₹<?php echo $product['full_price'] ?></s>
+                                           <div class="text-danger">₹ <?php echo $service['special_price'] ?></div>
+                                          <s>₹ <?php echo $service['price'] ?></s>
                                        </span>
-                                       <div class="name sale-navigation__name js-full-text"><?php echo $product['product_name'] ?></div>
-                                       <div class="sale-navigation__label"><?php echo $product['quantity'] ?> in stock</div>
+                                       <div class="name sale-navigation__name js-full-text"><?php echo $service['name'] ?></div>
+                                       <div class="sale-navigation__label">&nbsp;</div>
                                     </a>
                                  </li>        
                                     <?php  }    
@@ -156,14 +161,14 @@
                                  </div>
                               </div>
                            </div>
-                           <div class="col-md-6 col-xs-6 no-padding">
+<!--                           <div class="col-md-6 col-xs-6 no-padding">
                               <div class="form-group">
                                  <label class="date optional" for="sale_due_date">Due date</label>
                                  <div class="select-wrapper">
                                     <input class="string optional readonly date-input form-control"  type="text" name="sale[due_date]" id="sale_due_date">
                                  </div>
                               </div>
-                           </div>
+                           </div>-->
                         </div>
                         <a class="btn btn-default btn-lg bold js-sale-box__trigger visible-xs m-t-10 m-b-20">Add item</a>
                         <h4 class="text-center hidden-xs m-b-none pos-box-table__item">
@@ -183,12 +188,13 @@
                                       
                                       <div class="row sm-no-margin">
                                             <div class="col-lg-12 sale-items">
-                                                <div class="sale-service-container">
-                                                    <?php if(!empty($services)) { 
-                                                            foreach($services as $service) { 
-                                                                $k = $service['service_id']; ?>
+                                                
+                                                <div class="sale-app-service-container">
+                                                    <?php if(!empty($appointment)) { 
+                                                            foreach($appointment['services'] as $k => $service) { ?>
                                                     
-                                                    <div class="full-height row sale-item sale-item-row-nil-class sale-item-row-nil-class-new sale-item-row-service" tabindex="-1" id="sale-service-item-<?php echo $k; ?>">
+                                                    <div class="full-height row sale-item sale-item-row-nil-class sale-item-row-nil-class-new sale-item-row-appservice" tabindex="-1" id="sale-service-item-<?php echo $k; ?>">
+                                                            <input class="hidden" type="hidden" name="sale[service][<?php echo $k; ?>][item-id]" value="<?php echo $service['service_id'] ?>">
                                                             <input value="<?php echo $service['service'] ?>" class="hidden" type="hidden" name="sale[service][<?php echo $k; ?>][item-name]">
                                                             <div class="invoice-row row">
                                                                <div class="col-sm-12 col-md-8 invoice-row__item invoice-row__item--left">
@@ -200,7 +206,7 @@
                                                                       <input type="hidden" value="<?php echo $service['special_price'] ?>" name="sale[service][<?php echo $k; ?>][og_special_price]" id="js-og-sp-service-hd-<?php echo $k; ?>">
                                                                       <input type="hidden" value="<?php echo $service['special_price'] ?>" name="sale[service][<?php echo $k; ?>][special_price]" id="js-sp-service-hd-<?php echo $k; ?>">
                                                                       <input type="hidden" value="<?php echo $service['price'] ?>" name="sale[service][<?php echo $k; ?>][full_price]">
-                                                                      <span class="price-presenter"><span><span><s class="js-fp">₹<?php echo $service['price'] ?></s></span><span class="text-danger m-l-10 js-sp" id="js-sp-service-<?php echo $k; ?>">₹<?php echo $service['special_price'] ?></span></span></span>
+                                                                      <span class="price-presenter"><span><span><s class="js-fp">₹ <?php echo $service['price'] ?></s></span><span class="text-danger m-l-10 js-sp" id="js-sp-service-<?php echo $k; ?>">₹ <?php echo $service['special_price'] ?></span></span></span>
                                                                   </div>
                                                                </div>
                                                             </div>
@@ -221,11 +227,11 @@
                                                                   <div class="form-group special-discount-group">
                                                                      <label class="hidden-xs hidden-sm" for="">Discount</label>
                                                                      <div class="select-wrapper">
-                                                                         <input class="hidden service-id" type="hidden" name="sale[service][<?php echo $k; ?>][item-id]" value="<?php echo $service['service_id'] ?>">
+                                                                         <input class="hidden service-row-id" type="hidden" value="<?php echo $k ?>">
                                                                          <select class="select required form-control text-left service-discount" include_blank="Select discount" name="sale[service][<?php echo $k; ?>][discount_id]" id="js-service-discount-<?php echo $k; ?>">
                                                                            <option value="">Select discount</option>
                                                                            <?php foreach($servicediscounts as $discount) {
-                                                                               $t = ($discount['discount_type'] == 'fixed') ? ' (₹'.$discount['value'].') ' : ' ( '.$discount['value'].'%) ';
+                                                                               $t = ($discount['discount_type'] == 'fixed') ? ' (₹ '.$discount['value'].') ' : ' ( '.$discount['value'].'%) ';
                                                                                $lbl = $discount['name'] . $t;
                                                                                echo "<option value='".$discount['id']."' data-distype='".$discount['discount_type']."' data-value='".$discount['value']."'>".$lbl."</option>";
                                                                            }?>
@@ -250,17 +256,13 @@
                                             </div>
                                          </div>
                                       
-                                                                    
-                           <div class="hidden totals">
-                              <div class="tax-totals"></div>
-                           </div>
                         </div>
                         <div class="pos-box__btns bg-white pos-box-table__item">
                             <button name="apply_payment" type="submit" value="apply_payment" class="btn btn-success btn-lg payment-button full-width" disabled="" id="apply_payment">
                               <span class="pull-left h3 no-margin bold">Checkout</span>
                               <div class="sale-total clearfix pull-right">
                                   <input type="hidden" value="0" class="hidden sale-total-hd" name="sale[sale-total]">
-                                 <span class="sale-total-price h3 no-margin bold">₹0.00</span>
+                                 <span class="sale-total-price h3 no-margin bold">₹ 0.00</span>
                               </div>
                            </button>
                         </div>
@@ -272,10 +274,10 @@
       </div>
    </div>
     
-    <div class="hidden" id="product-checkout">
-     <div class="full-height row sale-item sale-item-row-nil-class sale-item-row-nil-class-new  sale-item--editable sale-item-row-product" tabindex="-1" id="sale-item-row-product-tocopy">
+<div class="hidden" id="service-checkout">
+    <div class="full-height row sale-item sale-item-row-nil-class sale-item-row-nil-class-new  sale-item--editable sale-item-row-service" tabindex="-1" id="sale-item-row-service-tocopy">
             <input class="hidden item-id" type="hidden" value="">
-            <input value="Product" class="hidden item-type" type="hidden">
+            <input value="Service" class="hidden item-type" type="hidden">
             <input value="" class="hidden item-name" type="hidden">
             <div class="invoice-row row">
                <div class="col-sm-12 col-md-8 invoice-row__item invoice-row__item--left">
@@ -312,7 +314,7 @@
                         <select class="select required form-control text-left js-select-discount special-discount" include_blank="Select discount">
                            <option value="">Select discount</option>
                            <?php foreach($discounts as $discount) {
-                               $t = ($discount['discount_type'] == 'fixed') ? ' (₹'.$discount['value'].') ' : ' ( '.$discount['value'].'%) ';
+                               $t = ($discount['discount_type'] == 'fixed') ? ' (₹ '.$discount['value'].') ' : ' ( '.$discount['value'].'%) ';
                                $lbl = $discount['name'] . $t;
                                echo "<option value='".$discount['id']."' data-value='".$discount['value']."' data-distype='".$discount['discount_type']."'>".$lbl."</option>";
                            }?>
@@ -320,158 +322,159 @@
                      </div>
                   </div>
                </div>
-               <div class="col-md-4 col-sm-12 col-xs-12 sale-item-employee">
-                  <div class="form-group no-padding">
-                     <label class="hidden-xs hidden-sm" for="">Staff</label>
-                     <div class="select-wrapper">
-                         <select include_blank="Select staff" class="select optional block form-control employee_id" required="required">
-                           <option value="">Select staff</option>
-                           <?php foreach($staffs as $staff) {
-                               echo "<option value='".$staff['id']."'>".$staff['first_name'] .' '.$staff['last_name']."</option>";
-                           } ?>
+            <div class="col-md-4 col-sm-12 col-xs-12 sale-item-employee">
+                <div class="form-group no-padding">
+                    <label class="hidden-xs hidden-sm" for="">Staff</label>
+                    <div class="select-wrapper">
+                        <select include_blank="Select staff" class="select optional block form-control employee_id" required="required">
+                        <option value="">Select staff</option>
+                        <?php foreach($staffs as $staff) {
+                            echo "<option value='".$staff['id']."'>".$staff['first_name'] .' '.$staff['last_name']."</option>";
+                        } ?>
                         </select>
-                     </div>
-                  </div>
-               </div>
+                    </div>
+                </div>
             </div>
-         </div>    
-    </div>
+        </div>
+    </div>    
+</div>
     
 </div>
 
-
-
-<script>    
+<script>
+    var services = <?php echo json_encode($services); ?>;
     
-    var products = <?php echo json_encode($products); ?>;
-    
-    $('.js-add-products').click(function(){
-        //debugger;
+    $('.js-add-services').click(function(){
+        
         $('.invoice-placeholder').addClass('hidden');
-        var p_id = $(this).data('productid'),
+        var s_id = $(this).data('serviceid'),
             exists = false;
             
-        var $pcheckout = $('#sale-item-row-product-tocopy').clone().attr('id', 'sale-item-row-product-' + p_id );
+        var $scheckout = $('#sale-item-row-service-tocopy').clone().attr('id', 'sale-item-row-service-' + s_id );
         
-        $pcheckout.find('.item-id').attr('name', 'sale[items_attributes]['+ p_id +'][item_id]').val(p_id);
-        $pcheckout.find('.item-type').attr('name', 'sale[items_attributes]['+ p_id +'][item-type]').val('Product');
+        $scheckout.find('.item-id').attr('name', 'sale[items_attributes]['+ s_id +'][item_id]').val(s_id);
+        $scheckout.find('.item-type').attr('name', 'sale[items_attributes]['+ s_id +'][item-type]').val('Service');
         
         if(!$.trim( $(".sale-item-container").html() )) {
-            $('.sale-item-container').html($pcheckout);
-            $('#sale-item-row-product-' + p_id).data('saleitemproductid', p_id).addClass('sale-item-row-product-' + p_id );
+            $('.sale-item-container').html($scheckout);
+            $('#sale-item-row-service-' + s_id).data('saleitemserviceid', s_id).addClass('sale-item-row-service-' + s_id );
         }else {
             
-            if($('#sale-item-row-product-' + p_id).length == 0) {
-                $(".sale-item-container").append($pcheckout);
+            if($('#sale-item-row-service-' + s_id).length == 0) {
+                $(".sale-item-container").append($scheckout);
             }else {
-                $p_id = $('#sale-item-row-product-' + p_id );
                 
-                var quantity = parseInt($('#quantity-' + p_id ).val());
+                $s_id = $('#sale-item-row-service-' + s_id );
+                
+                var quantity = parseInt($('#quantity-' + s_id ).val());
                 quantity = quantity+1;
-                $('#quantity-presenter-' + p_id).html(quantity);
-                $('#quantity-' + p_id ).val(quantity);
+                $('#quantity-presenter-' + s_id).html(quantity);
+                $('#quantity-' + s_id ).val(quantity);
                 
-                var fp = parseFloat($('#js-fp-hd-' + p_id ).val()),
+                var fp = parseFloat($('#js-fp-hd-' + s_id ).val()),
                     qfp = accounting.formatMoney(quantity*fp);
-                $('#js-fp-' + p_id).html('₹'+ qfp );
-                $('#full-price-' + p_id).val(qfp);
+                $('#js-fp-' + s_id).html('₹ '+ qfp );
+                $('#full-price-' + s_id).val(qfp);
                 
-                var sp = parseFloat($('#js-sp-hd-' + p_id ).val()),
+                var sp = parseFloat($('#js-sp-hd-' + s_id ).val()),
                     qsp = accounting.formatMoney(quantity*sp);
-                $('#js-sp-' + p_id).html('₹'+ qsp );
-                $('#special-price-' + p_id).val(qsp);
+                $('#js-sp-' + s_id).html('₹ '+ qsp );
+                $('#special-price-' + s_id).val(qsp);
                 
-                $('#select-discount-' + p_id).trigger("change");
+                $('#select-discount-' + s_id).trigger("change");
                 
                 exists = true;
-            }
+            }            
         }
         if(!exists) {
-            $p_id = $('#sale-item-row-product-' + p_id );
-            for(var x=0; x < products.length; x++){
-                if( products[x].id == p_id) {
-                    $p_id.find('.quantity-presenter').attr('id', 'quantity-presenter-' + p_id ).html('1');
+            $s_id = $('#sale-item-row-service-' + s_id );
+            for(var x=0; x < services.length; x++){
+                if( services[x].id == s_id) {
+                    $s_id.find('.quantity-presenter').attr('id', 'quantity-presenter-' + s_id ).html('1');
                     
-                    $p_id.find('.item-label').attr('id', 'item-label-' + p_id ).html(products[x]['product_name']);
-                    $pcheckout.find('.item-name').attr('name', 'sale[items_attributes]['+ p_id +'][item-name]').val(products[x]['product_name']);
-                    $p_id.find('.js-fp').attr('id', 'js-fp-' + p_id ).html('₹'+products[x]['full_price']);
-                    $p_id.find('.js-fp-hd').attr('id', 'js-fp-hd-' + p_id ).val(products[x]['full_price']);
-                    $p_id.find('.full-price').attr('id', 'full-price-' + p_id ).attr('name', 'sale[items_attributes]['+ p_id +'][full_price]').val(products[x]['full_price'])
+                    $s_id.find('.item-label').attr('id', 'item-label-' + s_id ).html(services[x]['name']);
+                    $scheckout.find('.item-name').attr('name', 'sale[items_attributes]['+ s_id +'][item-name]').val(services[x]['name']);
+                    $s_id.find('.js-fp').attr('id', 'js-fp-' + s_id ).html('₹ '+services[x]['price']);
+                    $s_id.find('.js-fp-hd').attr('id', 'js-fp-hd-' + s_id ).val(services[x]['price']);
+                    $s_id.find('.full-price').attr('id', 'full-price-' + s_id ).attr('name', 'sale[items_attributes]['+ s_id +'][full_price]').val(services[x]['price']);
                     
-                    $p_id.find('.js-sp').attr('id', 'js-sp-' + p_id ).html('₹'+products[x]['special_price']);
-                    $p_id.find('.js-sp-hd').attr('id', 'js-sp-hd-' + p_id ).attr('name', 'sale[items_attributes]['+ p_id +'][special_price]').val(products[x]['special_price']);
-                    $p_id.find('.special-price').attr('id', 'special-price-' + p_id ).attr('name', 'sale[items_attributes]['+ p_id +'][special_price]').val(products[x]['special_price']);
+                    $s_id.find('.js-sp').attr('id', 'js-sp-' + s_id ).html('₹ '+services[x]['special_price']);
+                    $s_id.find('.js-sp-hd').attr('id', 'js-sp-hd-' + s_id ).attr('name', 'sale[items_attributes]['+ s_id +'][special_price]').val(services[x]['special_price']);
+                    $s_id.find('.special-price').attr('id', 'special-price-' + s_id ).attr('name', 'sale[items_attributes]['+ s_id +'][special_price]').val(services[x]['special_price']);
                     
-                    $p_id.find('.quantity').attr('id', 'quantity-' + p_id ).attr('name', 'sale[items_attributes]['+ p_id +'][quantity]').val('1').attr('max', products[x]['quantity']);
+                    $s_id.find('.quantity').attr('id', 'quantity-' + s_id ).attr('name', 'sale[items_attributes]['+ s_id +'][quantity]').val('1').attr('max', services[x]['quantity']);
                     
-                    $p_id.find('.unit-price').attr('id', 'unit-price-' + p_id ).attr('name', 'sale[items_attributes]['+ p_id +'][unit-price]').val(products[x]['special_price']);
+                    $s_id.find('.unit-price').attr('id', 'unit-price-' + s_id ).attr('name', 'sale[items_attributes]['+ s_id +'][unit-price]').val(services[x]['special_price']);
                     
-                    $p_id.find('.js-select-discount').attr('id', 'select-discount-' + p_id ).attr('name', 'sale[items_attributes]['+ p_id +'][discount_id]');
+                    $s_id.find('.js-select-discount').attr('id', 'select-discount-' + s_id ).attr('name', 'sale[items_attributes]['+ s_id +'][discount_id]');
                     
-                    $p_id.find('.employee_id').attr('id', 'select-employee_id-' + p_id ).attr('name', 'sale[items_attributes]['+ p_id +'][staff-id]');
+                    $s_id.find('.employee_id').attr('id', 'select-employee_id-' + s_id ).attr('name', 'sale[items_attributes]['+ s_id +'][staff-id]');
                     
-                    $p_id.find('.remove-item-field').attr('id', 'remove-item-field-' + p_id );
+                    $s_id.find('.remove-item-field').attr('id', 'remove-item-field-' + s_id );
                 }
             }
         }
-                
-        $(".sale-item-container").find('.sale-item-row-product').removeClass('sale-item--editable');
-        $('#sale-item-row-product-' + p_id ).addClass('sale-item--editable');
         
-        $('.sale-service-container').find('.sale-item-row-service').removeClass('sale-item--editable');
+        
+        $(".sale-item-container").find('.sale-item-row-service').removeClass('sale-item--editable');
+        $('#sale-item-row-service-' + s_id ).addClass('sale-item--editable');
+        
+        $('.sale-app-service-container').find('.sale-item-row-appservice').removeClass('sale-item--editable');
+        
+        $('#apply_payment').removeAttr('disabled');
         
         show_saletotal();
-        $('#apply_payment').removeAttr('disabled');
-                
-        $(document).on( 'change', '#select-discount-' + p_id, function(){
+        
+        $(document).on( 'change', '#select-discount-' + s_id, function(){
             //debugger;
-            var quantity = parseInt($('#quantity-' + p_id ).val());
+            var quantity = parseInt($('#quantity-' + s_id ).val());
                 
             var val = parseFloat($('option:selected', this).data('value')),
                 type = $('option:selected', this).data('distype'),
-                unitprice = parseFloat($('#unit-price-' + p_id).val());
+                unitprice = parseFloat($('#unit-price-' + s_id).val());
                 
             if($(this).val() == '') {
 
                 unitprice = accounting.formatMoney(unitprice*quantity);
-                $('#js-sp-' + p_id).html('₹'+ unitprice);
-                $('#js-sp-hd-' + p_id).val(unitprice);
-                $('#special-price-' + p_id).val(unitprice);
+                $('#js-sp-' + s_id).html('₹ '+ unitprice);
+                $('#js-sp-hd-' + s_id).val(unitprice);
+                $('#special-price-' + s_id).val(unitprice);
 
             }else {                    
                 if(type == 'percentage') {
                     unitprice = accounting.formatMoney((unitprice*quantity) - (((unitprice) / 100) * (val*quantity)));
-                    $('#js-sp-' + p_id).html('₹'+ unitprice);
-                    $('#js-sp-hd-' + p_id).val(unitprice);
-                    $('#special-price-' + p_id).val(unitprice);
+                    $('#js-sp-' + s_id).html('₹ '+ unitprice);
+                    $('#js-sp-hd-' + s_id).val(unitprice);
+                    $('#special-price-' + s_id).val(unitprice);
 
                 }else{
                     var vl = accounting.formatMoney((unitprice*quantity) - (val*quantity));
-                    $('#js-sp-' + p_id).html('₹'+ vl);
-                    $('#js-sp-hd' + p_id).val(vl);
-                    $('#special-price-' + p_id).val(vl);          
-                }                    
-            }                
+                    $('#js-sp-' + s_id).html('₹ '+ vl);
+                    $('#js-sp-hd' + s_id).val(vl);
+                    $('#special-price-' + s_id).val(vl);          
+                }
+            }
             
             show_saletotal();
         });
         
-        $(document).on('click', '#remove-item-field-' + p_id, function(){
-            $('#sale-item-row-product-' + p_id ).remove()
+        $(document).on('click', '#remove-item-field-' + s_id, function(){
+            $('#sale-item-row-service-' + s_id ).remove();
             
             show_saletotal();
             
-            if(!$.trim( $(".sale-item-container").html() ) && !$.trim($('.sale-service-container').html())) {
+            if(!$.trim( $(".sale-item-container").html() ) && !$.trim($('.sale-app-service-container').html())) {
                 $('#apply_payment').attr('disabled', 'disabled');
             }
         });
         
-        $(document).on('click', '#sale-item-row-product-' + p_id, function(){
-            $(".sale-item-container").find('.sale-item-row-product').removeClass('sale-item--editable');
-            $('#sale-item-row-product-' + p_id ).addClass('sale-item--editable');
+        $(document).on('click', '#sale-item-row-service-' + s_id, function(){
+            $(".sale-item-container").find('.sale-item-row-service').removeClass('sale-item--editable');
+            $('#sale-item-row-service-' + s_id ).addClass('sale-item--editable');
             
-            $('.sale-service-container').find('.sale-item-row-service').removeClass('sale-item--editable');
-        });        
+            $('.sale-app-service-container').find('.sale-item-row-appservice').removeClass('sale-item--editable');
+        });
+        
     });
     
     function show_saletotal() {
@@ -488,7 +491,7 @@
             });
         }        
         saletotal = accounting.formatMoney(saletotal);
-        $('.sale-total-price').html('₹' + saletotal);
+        $('.sale-total-price').html('₹ ' + saletotal);
         $('.sale-total-hd').val(saletotal);
     }
     
@@ -507,7 +510,7 @@
                         $('.alert-danger').removeClass('hide');
                         setTimeout(function() { $('.alert-danger').addClass('hide'); }, 3000);
                     }else {
-                        $('#new-sale').remove();
+                        $('#new-service-sale').remove();
                         $('#new-payments').remove();
                         $('body').append(data);
                         $('#new-payments').modal({backdrop: 'static', keyboard: false});
@@ -522,35 +525,35 @@
 
     $('#sale_customer_id').autocomplete({
         source: function (request, response) {
-             $.ajax({
-              url: g.base_url + "customers/getClients",
-              dataType: "json",
-              data: { term : request.term },
-              success: function( data ) {
+            $.ajax({
+                url: g.base_url + "customers/getClients",
+                dataType: "json",
+                data: { term : request.term },
+                success: function( data ) {
                 response( $.map( data.clients, function( item ) {
-                    var mobile = (item.mobile != null) ? ' (' + item.mobile+' )' : '';
-                  return {
-                    label: (item.firstname) + ' ' + (item.lastname) + mobile,
-                    value: item.id,
-                    client: item
-                  }
-                }));
-              }         
+                        var mobile = (item.mobile != null) ? ' (' + item.mobile+' )' : '';
+                        return {
+                          label: (item.firstname) + ' ' + (item.lastname) + mobile,
+                          value: item.id,
+                          client: item
+                        }
+                    }));
+                }         
             });
         },
-        select: function(event, ui){
-                  var client = ui.item.client;
-                  $("#sale_customer_id").val(ui.item.value);
-                  $('.search-container, .buttons-container, .walkin').hide();
-                  $('.details-container').show();
-                  $('.client_label').html(client.firstname + ' ' + client.lastname);
-                  $('.contact').html(client.mobile);
-                  if(client.notes) {
-                      $('.note-container').show();
-                      $('.customer-note').html(client.notes);
-                  }
-                  $('#walkin').val('0');
-              },
+        select: function(event, ui) {
+                    var client = ui.item.client;
+                    $("#sale_customer_id").val(ui.item.value);
+                    $('.search-container, .buttons-container, .walkin').hide();
+                    $('.details-container').show();
+                    $('.client_label').html(client.firstname + ' ' + client.lastname);
+                    $('.contact').html(client.mobile);
+                    if(client.notes) {
+                        $('.note-container').show();
+                        $('.customer-note').html(client.notes);
+                    }
+                    $('#walkin').val('0');
+                },
         minLength: 2,
         delay: 100
     });
@@ -568,57 +571,54 @@
         $('.search-container, .walkin_a').hide();
         $('#walkin').val('1');
         $("#sale_customer_id").val('0');
-     });
-     
-     var dateToday = new Date();
-     $('#sale_invoice_date').datepicker( {maxDate : 0 } ).datepicker("setDate", dateToday);
-     $('#sale_due_date').datepicker( {minDate : 0 } ).datepicker("setDate", dateToday);
-     
+    });
+    
     var appointment = <?php echo json_encode($appointment); ?>;
     if(!$.isEmptyObject(appointment)) {
+        
         $('#appointment_id').val(appointment.appointment_id);
         $('.invoice-placeholder').addClass('hidden');
         show_client(appointment);
         show_saletotal();
         $('#apply_payment').removeAttr('disabled');
         
-        $('.sale-item-row-service').click(function(){
-            $(".sale-item-container").find('.sale-item-row-product').removeClass('sale-item--editable');
-            $(".sale-service-container").find('.sale-item-row-service').removeClass('sale-item--editable');
-            $(".sale-service-container").find('#'+$(this).attr('id')).addClass('sale-item--editable');
+        $('.sale-item-row-appservice').click(function(){
+            $(".sale-item-container").find('.sale-item-row-service').removeClass('sale-item--editable');
+            $(".sale-app-service-container").find('.sale-item-row-appservice').removeClass('sale-item--editable');
+            $(".sale-app-service-container").find('#'+$(this).attr('id')).addClass('sale-item--editable');
         });
     
         $('.service-discount').change(function(){
             var $this = $(this);
-            var serviceid = $this.parent('div').find('.service-id').val(),
+            var serviceid = $this.parent('div').find('.service-row-id').val(),
                 val = parseFloat($('option:selected', this).data('value')),
                 type = $('option:selected', this).data('distype'),
                 ogsp = accounting.unformat($('#js-og-sp-service-hd-'+serviceid).val()),
                 price = 0;
 
-            if($(this).val() == '') {
-                $('#js-sp-service-'+serviceid).html('₹'+ ogsp);
+            if($this.val() == '') {
+                $('#js-sp-service-'+serviceid).html('₹ '+ ogsp);
                 $('#js-sp-service-hd-'+serviceid).val(ogsp);
 
             }else {
                 if(type == 'percentage') {
                     price = accounting.formatMoney(ogsp - ((ogsp / 100) * val));
-                    $('#js-sp-service-'+serviceid).html('₹'+ price);
+                    $('#js-sp-service-'+serviceid).html('₹ '+ price);
                     $('#js-sp-service-hd-'+serviceid).val(price);
 
                 }else{
                     price = accounting.formatMoney(ogsp - val);
-                    $('#js-sp-service-'+serviceid).html('₹'+ price);
+                    $('#js-sp-service-'+serviceid).html('₹ '+ price);
                     $('#js-sp-service-hd-'+serviceid).val(price);
                 }                    
             }
             show_saletotal();
         });
     }
-     
+    
     function show_client(appointment) {
         $('.js-change_client-div').addClass('hidden');
-        if(appointment.clientid != '0') {            
+        if(appointment.clientid != '0') {
             $("#sale_customer_id").val(appointment.clientid);
             $('.search-container, .buttons-container, .walkin').hide();
             $('.details-container').show();
@@ -635,5 +635,11 @@
             $('.walkin_a').trigger( "click" );            
         }   
     }
+    
+    var dateToday = new Date();
+    $('#sale_invoice_date').datepicker( {maxDate : 0 } ).datepicker("setDate", dateToday);
 
 </script>
+
+
+

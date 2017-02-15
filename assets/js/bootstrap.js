@@ -1090,8 +1090,8 @@ if (typeof jQuery === 'undefined') {
       that.resetAdjustments()
       that.resetScrollbar()
       that.$element.trigger('hidden.bs.modal')
-      that.$body.find('.alert').addClass('hide')
-      that.$body.find("input,textarea,select").val('').end()
+      that.$dialog.find('.alert').addClass('hide')
+      that.$dialog.find("input,textarea,select").val('').end()
       //that.$body.find('form')[0].reset()
     })
   }
