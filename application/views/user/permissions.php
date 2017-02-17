@@ -81,8 +81,8 @@
                                                         <div class="col-xs-2 text-center no-padding">
                                                             <div class="form-group">
                                                                 <div class="attached-field-last check-success checkbox form-control no-margin">
-                                                                    <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[calender]" id="calender" onclick="$(this).val(this.checked ? 1 : 0)">
-                                                                    <label for="calender">&nbsp;</label>
+                                                                    <input class="boolean optional " type="checkbox" value="1" checked="checked" name="permissions[calendar]" id="calendar" onclick="$(this).val(this.checked ? 1 : 0)">
+                                                                    <label for="calendar">&nbsp;</label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -241,7 +241,7 @@
                 removeLoadingOverlay();
                 var res = $.parseJSON(data);
                 var homeVal = res.home;
-                var calenderVal = res.calender;
+                var calendarVal = res.calendar;
                 var clientsVal = res.clients;
                 var servicesVal = res.services;
                 var productsVal = res.products;
@@ -251,7 +251,7 @@
                 //var rosterVal = res.roster;
                 var setupVal = res.setup;
                 $('#home').val(homeVal);
-                $('#calender').val(calenderVal);
+                $('#calendar').val(calendarVal);
                 $('#clients').val(clientsVal);
                 $('#services').val(servicesVal);
                 $('#products').val(productsVal);
@@ -265,10 +265,10 @@
                 } else if (homeVal == '1') {
                     $('#home').prop('checked', true);
                 }
-                if (calenderVal == '0') {
-                    $('#calender').removeAttr("checked");
-                } else if (calenderVal == '1') {
-                    $('#calender').prop('checked', true);
+                if (calendarVal == '0') {
+                    $('#calendar').removeAttr("checked");
+                } else if (calendarVal == '1') {
+                    $('#calendar').prop('checked', true);
                 }
                 if (clientsVal == '0') {
                     $('#clients').removeAttr("checked");

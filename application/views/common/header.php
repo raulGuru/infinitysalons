@@ -48,7 +48,7 @@
                             if ($useraccess['home']) {
                                 echo "<li class='js-dashboard'><a href='/dashboard'>Home</a></li>";
                             }
-                            if ($useraccess['calender']) {
+                            if ($useraccess['calendar']) {
                                 echo "<li class='js-calendar'><a href='/calendar'>Calendar</a></li>";
                             }
                             if ($useraccess['clients']) {

@@ -50,7 +50,7 @@ class User_model extends CI_Model {
         if (!empty($id)) {
             $columnArr = array(
                 'home' => '0',
-                'calender' => '0',
+                'calendar' => '0',
                 'clients' => '0',
                 'services' => '0',
                 'products' => '0',

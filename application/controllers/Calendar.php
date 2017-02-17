@@ -10,7 +10,7 @@ class Calendar extends CI_Controller {
     
     function index() {
         
-        Common::checkUserHasAccess('calender');
+        Common::checkUserHasAccess('calendar');
         
         $sesStaffid = $this->session->userdata['salon_user']['staffid'];
         
