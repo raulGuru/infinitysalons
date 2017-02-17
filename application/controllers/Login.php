@@ -21,7 +21,7 @@ class Login extends CI_Controller {
             $userarr = $this->input->post();
             if (isset($userarr) && !empty($userarr)) {
                 $result = $this->login_model->loginAuthentication($userarr);
-                
+
                 if (!empty($result) && $result['status'] == 1) {
                     $data = array(
                         'id' => $result['data']['id'],
@@ -44,7 +44,35 @@ class Login extends CI_Controller {
 
                         $this->session->set_userdata('salon_user', $data);
 
-                        redirect('/dashboard');
+                        if (!empty($this->session->userdata['salon_user']['useraccess'])) {
+                            $userAccessArr = $this->session->userdata['salon_user']['useraccess'];
+
+                            switch ($userAccessArr) {
+                                case ($userAccessArr['home'] == 1):
+                                    redirect('/dashboard');
+                                    break;
+                                case ($userAccessArr['calendar'] == 1):
+                                    redirect('/calendar');
+                                    break;
+                                case ($userAccessArr['clients'] == 1):
+                                    redirect('/customers');
+                                    break;
+                                case ($userAccessArr['services'] == 1):
+                                    redirect('/services');
+                                    break;
+                                case ($userAccessArr['products'] == 1):
+                                    redirect('/products');
+                                    break;
+                                case ($userAccessArr['staff'] == 1):
+                                    redirect('/employees');
+                                    break;
+                                case ($userAccessArr['setup'] == 1):
+                                    redirect('/provider');
+                                    break;
+                                default:
+                                    redirect('/errors/denied');
+                            }
+                        }
                     } else {
                         $this->session->set_flashdata('flash_data', 'Something went wrong!');
                         redirect('login');

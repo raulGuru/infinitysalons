@@ -10,9 +10,9 @@ class Login_model extends CI_Model {
     }
 
     function loginAuthentication($data) {
-        
+
         $email = addslashes($data['email']);
-        
+
         $password = addslashes(base64_encode($this->config->item('encryption_key') . "_" . $data['password']));
         //$ql = ("SELECT * FROM user WHERE email = '$email' AND password = '$password'");
         $ql = $this->db->query("SELECT * FROM user WHERE email = '$email' AND password = '$password'");
@@ -34,39 +34,50 @@ class Login_model extends CI_Model {
         return $resultdata;
     }
 
-    function userDetails($email, $password) {
+    function userLastLogin($email) {
+        $resultdata = array();
         if (!empty($email)) {
-            
-        }
-        $this->db->select('id,email,last_login_on,updated_on');
-        $this->db->from('user');
-        $where = "email='" . $this->email . "' AND password='" . $this->password . "' AND	status='active'";
-        $this->db->where($where);
-        $query = $this->db->get();
+            $this->db->select('id,email,last_login_on,updated_on');
+            $this->db->from('user');
+            $where = "email='" . $email . "' AND status='active'";
+            $this->db->where($where);
 
-        if ($query->num_rows() > 0) {
-            foreach ($query->result() as $value) {
-                $resultdata[] = $value;
-                $updateTime = $value->updated_on;
-                $id = $value->id;
+            $query = $this->db->get();
+
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $value) {
+                    $resultdata[] = $value;
+                    $updateTime = $value->updated_on;
+                    $id = $value->id;
+                }
+                $afilds = array('last_login_on' => $updateTime,
+//                'updated_on' => date('Y-m-d H:i:s')
+                );
+
+                $this->db->where('id', $id);
+                if ($this->db->update('user', $afilds)) {
+                    return 'true';
+                } else {
+                    return 'false';
+                }
             }
-            $afilds = array('last_login_on' => $updateTime,
-                'updated_on' => date('Y-m-d H:i:s'));
-
-            $this->db->where('id', $id);
-            $this->db->update('user', $afilds);
+        } else {
+            return 'false';
         }
-        return $resultdata;
     }
 
     public function update_userSession($session_id, $user) {
         if (!empty($session_id) && !empty($user)) {
             //for login
-            $session = array('session_id' => $session_id);
-            if ($this->db->update('user', $session, array('id' => $user['id']))) {
-                return 'true';
-            } else {
-                return 'false';
+            $updLastLogin = $this->userLastLogin($user['email']);
+
+            if ($updLastLogin == 'true') {
+                $session = array('session_id' => $session_id);
+                if ($this->db->update('user', $session, array('id' => $user['id']))) {
+                    return 'true';
+                } else {
+                    return 'false';
+                }
             }
         } elseif ($session_id == '' && !empty($user)) {
             //for logout
