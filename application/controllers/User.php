@@ -46,7 +46,7 @@ class User extends CI_Controller {
                     
                 }
                 
-                $this->session->set_flashdata('user_perms_update_mesg', 'User permission information has been successfully updated.');
+                $this->session->set_flashdata('user_perms_update_mesg', 'Staff permission information has been successfully updated.');
             } else {
                 $this->session->set_flashdata('user_perms_update_mesg', 'Something went wrong!');
             }
