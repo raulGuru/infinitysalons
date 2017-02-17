@@ -85,24 +85,24 @@
                         </button>
                         <h4 class="text-center large-modal__tile">Select items</h4>
                      </div>-->
-<!--                     <div class="search-bar">
-                        <input class="search form-control search-bar__input" placeholder="Scan barcode or search any item" type="text">
+                     <div class="search-bar">
+                        <input class="search form-control search-bar__input search_service" placeholder="Search service by name" type="text">
                         <span class="bg-white search-bar__addon">
                         <i class="s-icon-search"></i>
                         </span>
-                        <a class="cancel-search search-bar__remove" href="" style="display: none;">
+                        <a class="cancel-search search-bar__remove" href="javascript:void(0);" style="display: none;">
                         <i class="s-icon-close"></i>
                         </a>
-                     </div>-->
-                     <div class="search-bar-navigation">
+                     </div>
+<!--                     <div class="search-bar-navigation">
                         <div class="sale-navigation__item sale-navigation__item--back">
                            <div class="tip-alert"></div>
                            <div class="sale-navigation__title text-center">Services</div>
-<!--                           <a href="javascript:void(0);" class="sale-navigation__link  sale-navigation__link">
+                           <a href="javascript:void(0);" class="sale-navigation__link  sale-navigation__link">
                               <div class="sale-navigation__title text-center">Products</div>
-                           </a>-->
+                           </a>
                         </div>
-                     </div>
+                     </div>-->
                      <div class="sale-box__item">
 <!--                        <div class="search-results" style="display: none;"></div>
                         <div class="loading-screen sale-box__loading" style="display: none;">
@@ -154,7 +154,7 @@
                      <div class="pos-box__invoice">
                         <div class="row attached-fields pos-box-table__item">
                            <div class="col-md-6 col-xs-6 no-padding">
-                              <div class="form-group middle-item">
+                              <div class="form-group">
                                  <label class="date optional" for="sale_invoice_date">Invoice date</label>
                                  <div class="select-wrapper">
                                     <input class="string optional readonly date-input form-control" type="text" name="sale[invoice_date]" id="sale_invoice_date">
@@ -342,7 +342,58 @@
 </div>
 
 <script>
+    /*
+     * services search
+     */
+    
+    $('.search_service').keyup(function() {
+        if($(this).val() == '') {
+            $('.cancel-search').hide();
+        }else {
+            $('.cancel-search').show();
+        }
+        filterService(this);        
+    });
+    
+    function filterService(element) {
+        
+        var term = $(element).val().toLowerCase();
+        
+        $(".sale-navigation > li").each(function () {
+            var stext = $(this).find('.js-full-text').text().toLowerCase();
+            if (stext.indexOf(term) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+        
+        /*
+         * Same functionality a little better using filter
+         */
+//        var $li = $(".sale-navigation > li");
+//        $li.hide();
+//        $li.filter(function() {
+//            var stext = $(this).find('.js-full-text').text().toLowerCase();
+//            return stext.indexOf(term) > -1;
+//        }).show();
+    }
+    
+    $('.cancel-search').bind('click', function(){
+       $(this).hide();
+       $('.search_service').val('');
+       $(".sale-navigation > li").show();
+    });
+    
+</script>
+
+<script>
+    
     var services = <?php echo json_encode($services); ?>;
+    
+    /*
+     * onclick of services
+     */
     
     $('.js-add-services').click(function(){
         
@@ -495,6 +546,10 @@
         $('.sale-total-hd').val(saletotal);
     }
     
+    /*
+     * validate service sale
+     */
+    
     $("#new_sale").validator().on("submit", function (event) {
     if (!event.isDefaultPrevented()) {
             event.preventDefault();
@@ -522,6 +577,10 @@
             });
         }
     });
+    
+    /*
+     * clients ajax search, autocomplete
+     */
 
     $('#sale_customer_id').autocomplete({
         source: function (request, response) {
@@ -572,6 +631,10 @@
         $('#walkin').val('1');
         $("#sale_customer_id").val('0');
     });
+    
+    /*
+     * if, checkout an appointment
+     */
     
     var appointment = <?php echo json_encode($appointment); ?>;
     if(!$.isEmptyObject(appointment)) {
@@ -635,6 +698,10 @@
             $('.walkin_a').trigger( "click" );            
         }   
     }
+    
+    /*
+     * invoice date
+     */
     
     var dateToday = new Date();
     $('#sale_invoice_date').datepicker( {maxDate : 0 } ).datepicker("setDate", dateToday);
