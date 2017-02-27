@@ -222,7 +222,6 @@ class Provider extends CI_Controller {
     }
     
     public function paymentmethods() {
-//        echo 'paymentmethods';
         $returnArr['paymentMethods'] = $this->provider_model->getPosPaymentTypes();
         $this->load->layout('paymentmethods/index', $returnArr);
     }

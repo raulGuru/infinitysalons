@@ -50,7 +50,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <a class="btn-plus reset-payments"><span class="hidden-xs">Reset payments</span></a>
+                                    <a class="btn btn-default reset-payments"><span class="hidden-xs">Reset payments</span></a>
                                 </div>
                             </div>                          
 
@@ -264,7 +264,7 @@ $grand_total = round($salet + $totaltax, 2);
 
         } else {
             $('.js-submit').attr('disabled', true);
-            if ($('.add-payment-method > .attached-form-group').length < 4) {
+            if ($('.add-payment-method > .attached-form-group').length < 5) {
                 if (parseFloat(paymentamt) < parseFloat($('#grand-total-hd').val())) {
 
                     var $paymntgrp = $('#payment-group').clone().attr('id', '');
@@ -273,7 +273,8 @@ $grand_total = round($salet + $totaltax, 2);
                     $paymntgrp.find('.js-payment-method-select').val('');
                     $('.js-payment-method-select').each(function () {
                         if ($(this).val() !== '') {
-                            $paymntgrp.find('.js-payment-method-select option:contains(' + $(this).val() + ')').prop('disabled', true).addClass('disableOption');
+                            //$paymntgrp.find('.js-payment-method-select option:contains(' + $(this).val() + ')').prop('disabled', true).addClass('disableOption');
+                            $paymntgrp.find('.js-payment-method-select option[value="' + $(this).val() + '"]').not(this).prop('disabled', true).addClass('disableOption');
                         }
                     });
                     $('.add-payment-method').append($paymntgrp);

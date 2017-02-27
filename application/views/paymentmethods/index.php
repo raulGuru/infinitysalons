@@ -1,7 +1,3 @@
-<?php
-//echo '<pre>', print_r($paymentMethods), '</pre>';
-//exit();
-?>
 <div class="full-height business-settings-container" id="settings-container">
     <div class="alert alert-settings alert-success" style="display: none">
         Payment method has been successfully updated.
@@ -12,13 +8,17 @@
                 <div class="col-sm-8">
                     <h3 class="no-margin hidden-xs">Payment Methods</h3>
                 </div>
-                <div class="col-sm-4">
-                    <div class="pull-right">
-                        <a class="btn btn-success m-t-10 btn-plus" data-href="/provider/newPayment" data-params='' data-model="modal" data-modalid="newPaymentMethodModal"><span class="hidden-xs">New Payment Method</span>
-                            <span class="visible-xs">+</span>
-                        </a>
+                <?php 
+                if(count($paymentMethods) < 5) { ?>
+                    <div class="col-sm-4">
+                        <div class="pull-right">
+                            <a class="btn btn-success m-t-10 btn-plus" data-href="/provider/newPayment" data-params='' data-model="modal" data-modalid="newPaymentMethodModal"><span class="hidden-xs">New Payment Method</span>
+                                <span class="visible-xs">+</span>
+                            </a>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
+                
             </div>
             <div class="row m-t-20">
                 <div class="col-sm-12">
@@ -28,7 +28,6 @@
                                 <tr>
                                     <th></th>
                                     <th class="p-l-none">Name</th>
-<!--                                    <th>Date Added</th>-->
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -42,9 +41,6 @@
                                             <td class="p-l-none">
                                                 <?php echo $paymentMethod['type']; ?>
                                             </td>
-<!--                                            <td>
-                                                <?php // echo date("F j, Y, g:i a", strtotime($referral['date'])); ?>
-                                            </td> -->
                                             <td>
                                                 <?php if ($paymentMethod['active']) { ?>
                                                     <span class="label label-success">Active</span>
