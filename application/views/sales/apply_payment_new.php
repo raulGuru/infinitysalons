@@ -238,6 +238,8 @@ $grand_total = round($salet + $totaltax, 2);
 </div>
 
 <script>
+    
+    var paymentsCount = <?php echo count($businesspayments); ?>;
 
     $('.payment-amount-text').val($('#grand-total-hd').val());
     $('.payment-amount-text').focusout(function () {
@@ -264,7 +266,7 @@ $grand_total = round($salet + $totaltax, 2);
 
         } else {
             $('.js-submit').attr('disabled', true);
-            if ($('.add-payment-method > .attached-form-group').length < 5) {
+            if ($('.add-payment-method > .attached-form-group').length < paymentsCount) {
                 if (parseFloat(paymentamt) < parseFloat($('#grand-total-hd').val())) {
 
                     var $paymntgrp = $('#payment-group').clone().attr('id', '');
