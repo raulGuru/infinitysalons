@@ -90,7 +90,7 @@
                   <div class="pos-box-table">
                       <form class="simple_form pos-box__invoice" id="new_payment">
                         <div class="row sm-m-t-20 attached-fields pos-box-table__item">
-                           <div class="col-md-6 col-xs-6 no-padding">
+<!--                           <div class="col-md-6 col-xs-6 no-padding">
                               <div class="form-group middle-item">
                                  <label for="payments_employee_id">Received by</label>
                                  <div class="select-wrapper">
@@ -99,7 +99,7 @@
                                     </select>
                                  </div>
                               </div>
-                           </div>
+                           </div>-->
                            <div class="col-md-6 col-xs-6 no-padding">
                               <div class="form-group">
                                  <label for="payments_date">Payment date</label>
