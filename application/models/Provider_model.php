@@ -33,7 +33,6 @@ class Provider_model extends CI_Model {
     }
 
     public function getReferralSources($id = "") {
-        //        $id = 1;
         if (isset($id) && !empty($id)) {
             $this->db->where('id', $id);
         }
@@ -73,7 +72,6 @@ class Provider_model extends CI_Model {
     }
 
     public function getCancellationReasons($id = "") {
-        //        $id = 1;
         if (isset($id) && !empty($id)) {
             $this->db->where('id', $id);
         }
@@ -122,6 +120,36 @@ class Provider_model extends CI_Model {
         $businesspayments = $query->result_array();
 
         return $businesspayments;
+    }
+
+    public function updatePaymentMethod($payment_id, $method) {
+        $method['user_id'] = $this->user_id;
+
+        $ql = $this->db->get_where("businesspayments", array('type' => $method['type']));
+        if ($ql->num_rows() > 1) {
+            return 'Name is not unique';
+        } else {
+            $this->db->update('businesspayments', $method, array('id' => $payment_id));
+            return 'true';
+        }
+    }
+
+    public function insertPaymentMethod($method) {
+        $method['user_id'] = $this->user_id;
+        $ql = $this->db->select('id')->from('businesspayments')->where('type', $method['type'])->get();
+       
+        if ($ql->num_rows() > 0) {
+            return 'Name is not unique';
+        } else {
+            $cntRows = $this->db->get('businesspayments');
+            if ($cntRows->num_rows() >= 5) {
+                return 'Cannot add more than 5 payment types.';
+            } else {
+                if ($this->db->insert("businesspayments", $method)) {
+                    return 'true';
+                }
+            }
+        }
     }
 
     public function getPosTaxes($id = "") {

@@ -33,9 +33,9 @@
                     Point of Sale
                 </div>
                 <ul class="link-list">
-                    <!--                    <li>
-                                            <a class="link-list__link" href="/payment_methods">Payment Types</a>
-                                        </li>-->
+                    <li>
+                        <a class="link-list__link" href="/provider/paymentmethods">Payment Types</a>
+                    </li>
                     <li>
                         <a class="link-list__link" href="/provider/taxes">Taxes</a>
                     </li>
