@@ -12383,6 +12383,10 @@ textarea {
     font-weight: normal;
     line-height: 20px
 }
+.disableOption{
+    background: #a9a9a9;
+    color: rgba(98, 98, 98, 0.23)
+}
 input[type="radio"],
 input[type="checkbox"] {
     margin-top: 1px 0 0;
@@ -18950,7 +18954,7 @@ body.overflow-hidden {
         right: 0
     }
     .header {
-        padding: 0 10px;
+        padding: 0 0px;
         width: 100%;
         border-bottom: 1px solid rgba(0, 0, 0, 0.07);
         background: #fff !important
@@ -19078,6 +19082,7 @@ body.overflow-hidden {
         right: 50px;
         top: -9px
     }
+    
 }
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
     .page-sidebar .sidebar-menu .menu-items ul {
@@ -21805,7 +21810,7 @@ th.fc-col0 {
     color: white;
     text-transform: uppercase;
     font-weight: lighter;
-    padding: 15px 20px 15px 0
+    padding: 15px 20px 15px 15px
 }
 .navbar-inverse .navbar-brand strong {
     font-weight: normal
@@ -21914,7 +21919,8 @@ th.fc-col0 {
     opacity: 1
 }
 .navbar-inverse .nav.navbar-right i {
-    vertical-align: text-bottom
+    vertical-align: text-bottom;
+    /*float: right !important;*/
 }
 .section-title {
     width: 50%;
