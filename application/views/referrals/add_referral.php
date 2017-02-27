@@ -49,15 +49,6 @@
     </div>
 </div>
 <script>
-    $('#referral_source_active').click(function (e) {
-        var referralSourceActive = $(this).val();
-        if (referral_source_active == '0') {
-            $('#referral_source_active').removeProp("checked");
-        } else if (referral_source_active == '1') {
-            $('#referral_source_active').prop("checked", "true");
-        }
-    });
-
     $("#new_referral").validator().on("submit", function (event) {
         if (!event.isDefaultPrevented()) {
             event.preventDefault();
