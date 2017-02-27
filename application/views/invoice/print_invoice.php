@@ -174,7 +174,7 @@
                         <?php
                     }
                 }
-                ?>
+                ?>                
                 <tr class="heading">
                     <td></td>
                     <td></td>
@@ -183,6 +183,39 @@
                     <td></td>
                     <td><?php echo $fmt->format($checkoutinvoice['totalprice']); ?></td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <?php if (!empty($checkoutpayments)) { ?>
+                    <tr class="heading">
+                        <td>Payment Method</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td> 
+                        <td></td>
+                    </tr>
+                    <?php
+                    foreach ($checkoutpayments as $payments) {
+                        ?>
+                        <tr class="item">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><?php echo $payments['type']; ?></td>
+                            <td><?php echo $fmt->format($payments['amount']); ?>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                }
+                ?>
             </table>
             <div class="divFooter">
                 <hr>

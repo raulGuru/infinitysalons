@@ -52,8 +52,11 @@ class Sales extends CI_Controller {
         $data['staffs'] = $querystaff->result_array();
         $querytax = $this->db->get("businesstax");
         $data['taxes'] = $querytax->result_array();
+        $querybusinesspayments = $this->db->get_where('businesspayments', array('active' => '1'));
+        $data['businesspayments'] = $querybusinesspayments->result_array();
         
-        $this->load->view('sales/apply_payment', $data);
+        //$this->load->view('sales/apply_payment', $data);
+        $this->load->view('sales/apply_payment_new', $data);
     }
     
     function appointmentSale() {
@@ -132,13 +135,25 @@ class Sales extends CI_Controller {
             'invoicedate' => $invoicedate,
             'totalprice' => Common::parseMoney($payment['grand-total']),
             'sale' => Common::parseMoney($payment['sale-total']),
-            'businesspaytype' => $payment['payment-method-name'],
+            'businesspaytype' => '',
             'notes' => NULL,
             'tax' => ($payment['include_tax']) ? '1' : '0',
             'status' => '1'
         );
         $this->db->insert("checkoutinvoice", $checkoutinvoice);
         $checkoutinvoiceid = $this->db->insert_id();
+        
+        $payments = $payment['payments'];
+        $paymentamounts = $payments['amounts'];
+        $paymenttypes = $payments['types'];
+        for($i=0; $i < count($paymentamounts); $i++) {
+            $pay = array(
+                'checkoutid' => $checkoutid,
+                'amount' => $paymentamounts[$i],
+                'paymenttypeid' => $paymenttypes[$i]
+            );
+            $this->db->insert("checkoutpayments", $pay);
+        }
         
         if(!empty($sale['items_attributes'])) {
             /*

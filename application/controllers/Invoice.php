@@ -23,6 +23,13 @@ class Invoice extends CI_Controller {
         $checkoutcheckoutinvoice = $querycheckoutinvoice->row_array();
         $data['checkoutinvoice'] = $checkoutcheckoutinvoice;
         
+        $querypayments = $this->db->query("SELECT a.*, b.type
+                                            FROM checkoutpayments a
+                                            INNER JOIN businesspayments b ON a.paymenttypeid = b.id
+                                            AND a.checkoutid='$checkoutid'");
+        $payments = $querypayments->result_array();
+        $data['checkoutpayments'] = $payments;        
+        
         if($checkoutcheckoutinvoice['tax']) {
             $querybusinesstax = $this->db->get_where('businesstax');
             $checkoutbusinesstax = $querybusinesstax->result_array();
