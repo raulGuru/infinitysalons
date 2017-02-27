@@ -7,7 +7,7 @@
         <title>Infinity Salon</title>
         <link href="<?php echo base_url('assets/css/fullcalendar.min.css') ?>" rel="stylesheet">
         <link href="<?php echo base_url('assets/css/updated-bootstrap.css') ?>" rel="stylesheet">
-        <!--<link href="<?php //echo base_url('assets/css/bootstrap.css')      ?>" rel="stylesheet">-->
+        <!--<link href="<?php //echo base_url('assets/css/bootstrap.css') ?>" rel="stylesheet">-->
         <link href="<?php echo base_url('assets/css/jquery.dataTables.min.css') ?>" rel="stylesheet">
 
         <script src="<?php echo base_url('assets/js/jquery.min.js') ?>"></script>
@@ -72,11 +72,12 @@
                                 echo "<li class='js-setup'><a href='/provider'>Setup</a></li>";
                             }
                             ?>
+
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="active dropdown">
-                                <a title="Profile" href="#" data-toggle="dropdown" class="dropdown-toggle hidden-sm" aria-expanded="false">
-                                    <i class="s-icon-user icon-large bold"></i>		
+                                <a title="Profile" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false">
+                                    <?php echo $this->session->userdata['salon_user']['first_name']; ?> <i class="s-icon-user icon-large bold"></i>		
                                     <i class="s-icon-down-arrow"></i>
                                 </a>		
                                 <ul class="dropdown-menu navbar-dropdown">
