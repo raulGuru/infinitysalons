@@ -71,7 +71,7 @@
    </div>
     <?php } else { ?>
     
-    <div class="row full-height sm-padding-10">
+    <div class="full-height sm-padding-10">
     <div class="col-sm-8 col-sm-offset-2 full-height">
        <div class="text-center v-align-center placeholder-text center-margin top-alignement">
           <p>

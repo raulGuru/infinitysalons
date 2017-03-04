@@ -19082,7 +19082,7 @@ body.overflow-hidden {
         right: 50px;
         top: -9px
     }
-    
+
 }
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
     .page-sidebar .sidebar-menu .menu-items ul {
@@ -30177,4 +30177,46 @@ table.fc-border-separate {
 }
 .selectizer-container-parent::after {
     display: none !important
+}
+
+.js-loading-image {
+    position: fixed;
+    left: 30px;
+    right: 0;
+    top: 50%;
+    width: 125px;
+    z-index: 1500;
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 5px 20px;
+    margin: 0 auto;
+}
+
+
+.reports-custom {
+    /*position: absolute;*/
+}
+.reports-custom .form-control {
+    max-width: 110px;
+}
+.date-input {
+    font-size: 13px;
+}
+.input-group-addon {
+    border-left: 0;
+    border-right: 0;
+    width: 10px;
+    /*white-space: nowrap;*/
+    vertical-align: middle;
+    /*display: table-cell;*/
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    color: #555555;
+    text-align: center;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #f0f0f0;
 }

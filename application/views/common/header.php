@@ -68,6 +68,19 @@
                                 $li .= "</li>";
                                 echo $li;
                             }
+//                            if ($useraccess['products']) {
+//                                echo "<li class='js-reports'><a href='/reports'>Reports</a></li>";
+                                $li = "";
+                                $li .= "<li class='js-reports dropdown'>";
+                                $li .= "<a class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' href='javascript:void(0);'>Reports</a>";
+                                $li .= "<ul class='dropdown-menu'>"
+                                        . "<li><a href='/reports/invoices'>Invoices</a></li>"
+                                        . "<li><a href='/reports/serviceSales'>Sales by services</a></li>"
+                                        . "<li><a href='/reports/staffSales'>Sales by staff</a></li>"
+                                        . "</ul>";
+                                $li .= "</li>";
+                                echo $li;
+//                            }
                             if ($useraccess['setup']) {
                                 echo "<li class='js-setup'><a href='/provider'>Setup</a></li>";
                             }
