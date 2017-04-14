@@ -60,4 +60,17 @@ class Reports extends CI_Controller {
         $data['clientsales'] = $this->reports_model->getClientSales($fromDate, $toDate);
         $this->load->layout('reports/clients_sales', $data);
     }
+    
+    function dailySales() {
+        $fromDate = $toDate = '';
+
+        if (!empty($_POST)) {
+            $fromDate = strtotime($_POST['date_from']);
+            $toDate = strtotime($_POST['date_to']);
+        }
+
+        $data['title'] = "Daily Sales";
+        $data['dailysales'] = $this->reports_model->getDailySales($fromDate, $toDate);
+        $this->load->layout('reports/daily_sales', $data);
+    }
 }

@@ -3,12 +3,12 @@
         <div class="panel-body sm-padding-15">
             <div class="row">
                 <div class="col-sm-8">
-                    <h3 class="no-margin hidden-xs">Sales by Staff</h3>
+                    <h3 class="no-margin hidden-xs">Sales by Clients</h3>
                 </div>
             </div>            
             <div class="row m-t-20 clearfix">
                 <div class="col-sm-12 col-md-12 col-lg-12" id="">
-                    <form class="filters form-inline clearfix" method="post" accept-charset="UTF-8" action="/reports/staffSales">
+                    <form class="filters form-inline clearfix" method="post" accept-charset="UTF-8" action="/reports/clientSales">
                         <div class="m-b-20 reports-filters reports-filters--short row">
                             <div class="col-lg-12 sm-no-padding">
                                 <div class="row">
@@ -17,9 +17,9 @@
                                             <label class="sr-only" for="date_range">date_range</label>
                                             <span class="custom reports-filters__custom">
                                                 <div class="input-group">
-                                                    <input type="text" name="date_from" id="date_from" value="<?php echo (isset($fromDate)) ? $fromDate : ""; ?>" class="date-input form-control text-center" readonly="readonly">
+                                                    <input type="text" name="date_from" id="date_from" value="<?php echo (isset($clientsales['fromDate'])) ? $clientsales['fromDate'] : ""; ?>" class="date-input form-control text-center" readonly="readonly">
                                                     <span class="input-group-addon">to</span>
-                                                    <input type="text" name="date_to" id="date_to" value="<?php echo (isset($toDate)) ? $toDate : ""; ?>" class="date-input form-control text-center" readonly="readonly">
+                                                    <input type="text" name="date_to" id="date_to" value="<?php echo (isset($clientsales['toDate'])) ? $clientsales['toDate'] : ""; ?>" class="date-input form-control text-center" readonly="readonly">
 
                                                 </div>
                                             </span>
@@ -40,39 +40,45 @@
                         <div class="col-lg-12">
                             <div class="filters-description sm-m-b-15">
                                 <p class="report-options no-margin">
-                                    Displaying from <span class="font-bold"><?php echo (!empty($staffsales['fromDate'])) ? date('l, j M Y', strtotime($staffsales['fromDate'])) : date('l, j M Y'); ?></span> to <span class="font-bold"><?php echo (!empty($staffsales['toDate'])) ? date('l, j M Y', strtotime($staffsales['toDate'])) : date('l, j M Y'); ?></span>
+                                    Displaying from <span class="font-bold"><?php echo (!empty($clientsales['fromDate'])) ? date('l, j M Y', strtotime($clientsales['fromDate'])) : date('l, j M Y'); ?></span> to <span class="font-bold"><?php echo (!empty($clientsales['toDate'])) ? date('l, j M Y', strtotime($clientsales['toDate'])) : date('l, j M Y'); ?></span>
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <?php if (!empty($staffsales)) { ?>
-                        <table class="table table-hover table-sortable"  id="staffsale_list">
+                    <?php if (!empty($clientsales)) { ?>
+                        <table class="table table-hover table-sortable"  id="clientsale_list">
                             <thead class="bg-grey">
                                 <tr>
-                                    <th>Staff Name</th>
-                                    <th>Services Provided #</th>
-                                    <!--<th>Invoice Date</th>-->
-                                    <th>Gross Total</th>
+                                    <th>Client Name</th>
+                                    <th>Gender</th>
+                                    <th>Added</th>
+                                    <th>Appointments</th>
+                                    <th>Last Appointment</th>
+                                    <th>Services</th>
+                                    <th>Total Sales</th>
                                     <!--<th>iNDate</th>-->
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th colspan="3" style="text-align:right"></th>
+                                    <th colspan="7" style="text-align:right"></th>
                                     <!--<th></th>-->
                                 </tr>
                             </tfoot>
                             <tbody>
                                 <?php
                                 $fmt = Common::formatMoney();
-                                foreach ($staffsales['result'] as $staffsale) {
+                                foreach ($clientsales['client'] as $clientsale) {
                                     ?> 
-                                    <tr class="clickable-row" data-params='{"id":"<?php echo $staffsale['staffid']; ?>"}' >
-                                        <td><?php echo $staffsale['staffname'] ?></td>
-                                        <td><?php echo ($staffsale['quantity'] != '') ? $staffsale['quantity'] : '-'; ?></td>
-                                        <!--<td><?php echo date('l, j M Y', strtotime($staffsale['invoicedate'])) ?></td>-->
-                                        <td><?php echo $fmt->format($staffsale['salevalue']); ?></td>
-                                        <!--<td><?php // echo $invoice['invoicedate']         ?></td>-->
+                                    <tr class="clickable-row" data-params='{"id":"<?php echo $clientsale['id']; ?>"}' >
+                                        <td><?php echo $clientsale['clientname'] ?></td>
+                                        <td><?php echo $clientsale['gender'] != '' ? ($clientsale['gender'] == 'f' ? 'Female' : ( $clientsale['gender'] == 'm' ? 'Male' : '-')) : '-' ?></td>
+                                        <td><?php echo date('l, j M Y', strtotime($clientsale['timestamp'])) ?></td>
+                                        <td><?php echo $clientsale['appointments']; ?></td>
+                                        <td><?php echo (!empty($clientsale['checkout']['invoicedate']) ? date('l, j M Y', strtotime($clientsale['checkout']['invoicedate'])) : '-') ?></td>
+                                        <td><?php echo $clientsale['services'] ?></td>
+                                        <td><?php echo $fmt->format($clientsale['totalsales']) ?></td>
+                                        <!--<td><?php // echo $invoice['invoicedate']           ?></td>-->
                                     </tr>
                                 <?php } ?>                                            
                             </tbody>
@@ -104,19 +110,22 @@
 
 <script>
     $(document).ready(function () {
-        var oTable = $('#staffsale_list').dataTable({
+        var oTable = $('#clientsale_list').dataTable({
             "bLengthChange": false,
             "pageLength": 20,
             "columns": [
                 null,
                 null,
                 null,
-//                null,
+                null,
+                null,
+                null,
+                null,
 //                {"visible": false}
             ],
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api(), data;
-                var colNumber = [2];
+                var colNumber = [6];
 
                 var intVal = function (i) {
                     return typeof i === 'string' ?
@@ -169,7 +178,7 @@
     $.fn.dataTableExt.afnFiltering.push(
             function (oSettings, aData, iDataIndex) {
                 if (typeof aData._date == 'undefined') {
-                    aData._date = new Date(aData[4]).getTime();
+                    aData._date = new Date(aData[8]).getTime();
                 }
                 if (minDateFilter && !isNaN(minDateFilter)) {
                     if (aData._date < minDateFilter) {

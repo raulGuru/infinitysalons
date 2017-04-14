@@ -3,12 +3,12 @@
         <div class="panel-body sm-padding-15">
             <div class="row">
                 <div class="col-sm-8">
-                    <h3 class="no-margin hidden-xs">Sales by Staff</h3>
+                    <h3 class="no-margin hidden-xs">Daily Sales</h3>
                 </div>
             </div>            
             <div class="row m-t-20 clearfix">
                 <div class="col-sm-12 col-md-12 col-lg-12" id="">
-                    <form class="filters form-inline clearfix" method="post" accept-charset="UTF-8" action="/reports/staffSales">
+                    <form class="filters form-inline clearfix" method="post" accept-charset="UTF-8" action="/reports/dailySales">
                         <div class="m-b-20 reports-filters reports-filters--short row">
                             <div class="col-lg-12 sm-no-padding">
                                 <div class="row">
@@ -17,9 +17,9 @@
                                             <label class="sr-only" for="date_range">date_range</label>
                                             <span class="custom reports-filters__custom">
                                                 <div class="input-group">
-                                                    <input type="text" name="date_from" id="date_from" value="<?php echo (isset($fromDate)) ? $fromDate : ""; ?>" class="date-input form-control text-center" readonly="readonly">
+                                                    <input type="text" name="date_from" id="date_from" value="<?php echo (!empty($dailysales['fromDate'])) ? $dailysales['fromDate'] : ""; ?>" class="date-input form-control text-center" readonly="readonly">
                                                     <span class="input-group-addon">to</span>
-                                                    <input type="text" name="date_to" id="date_to" value="<?php echo (isset($toDate)) ? $toDate : ""; ?>" class="date-input form-control text-center" readonly="readonly">
+                                                    <input type="text" name="date_to" id="date_to" value="<?php echo (!empty($dailysales['toDate'])) ? $dailysales['toDate'] : ""; ?>" class="date-input form-control text-center" readonly="readonly">
 
                                                 </div>
                                             </span>
@@ -40,17 +40,19 @@
                         <div class="col-lg-12">
                             <div class="filters-description sm-m-b-15">
                                 <p class="report-options no-margin">
-                                    Displaying from <span class="font-bold"><?php echo (!empty($staffsales['fromDate'])) ? date('l, j M Y', strtotime($staffsales['fromDate'])) : date('l, j M Y'); ?></span> to <span class="font-bold"><?php echo (!empty($staffsales['toDate'])) ? date('l, j M Y', strtotime($staffsales['toDate'])) : date('l, j M Y'); ?></span>
+                                    Displaying from <span class="font-bold"><?php echo (!empty($dailysales['fromDate'])) ? date('l, j M Y', strtotime($dailysales['fromDate'])) : date('l, j M Y'); ?></span> to <span class="font-bold"><?php echo (!empty($dailysales['toDate'])) ? date('l, j M Y', strtotime($dailysales['toDate'])) : date('l, j M Y'); ?></span>
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <?php if (!empty($staffsales)) { ?>
+                    <?php
+                    if (!empty($dailysales)) {
+                        ?>
                         <table class="table table-hover table-sortable"  id="staffsale_list">
                             <thead class="bg-grey">
                                 <tr>
-                                    <th>Staff Name</th>
-                                    <th>Services Provided #</th>
+                                    <th>Sale Date</th>
+                                    <th>No. Of Services</th>
                                     <!--<th>Invoice Date</th>-->
                                     <th>Gross Total</th>
                                     <!--<th>iNDate</th>-->
@@ -65,37 +67,18 @@
                             <tbody>
                                 <?php
                                 $fmt = Common::formatMoney();
-                                foreach ($staffsales['result'] as $staffsale) {
+                                foreach ($dailysales['result'] as $dailysale) {
                                     ?> 
-                                    <tr class="clickable-row" data-params='{"id":"<?php echo $staffsale['staffid']; ?>"}' >
-                                        <td><?php echo $staffsale['staffname'] ?></td>
-                                        <td><?php echo ($staffsale['quantity'] != '') ? $staffsale['quantity'] : '-'; ?></td>
-                                        <!--<td><?php echo date('l, j M Y', strtotime($staffsale['invoicedate'])) ?></td>-->
-                                        <td><?php echo $fmt->format($staffsale['salevalue']); ?></td>
-                                        <!--<td><?php // echo $invoice['invoicedate']         ?></td>-->
+                                    <tr class="clickable-row" data-params='{"id":"<?php echo $dailysale['serviceid']; ?>"}' >
+                                        <td><?php echo date('l, j M Y', strtotime($dailysale['invoicedate'])) ?></td>
+                                        <td><?php echo $dailysale['services'] ?></td>
+                                        <td><?php echo $dailysale['totalprice'];//$fmt->format($dailysale['totalprice']); ?></td>
+                                        <!--<td><?php // echo $dailysale['invoicedate']          ?></td>-->
                                     </tr>
-                                <?php } ?>                                            
+    <?php } ?>                                            
                             </tbody>
                         </table>
-                    <?php } else { ?>
-                        <div class="row m-t-20 clearfix">
-                            <div class="text-center no-overflow">
-                                <div class="row full-height sm-padding-10">
-                                    <div class="col-sm-8 col-sm-offset-2 full-height">
-                                        <div class="text-center placeholder-text center-margin reports-no-results">
-                                            <p class="hint-text">
-                                                <i class="s-icon-search placeholder-icon hint-text"></i>
-                                            </p>
-                                            <h3 class="m-b-10">No Results Found</h3>
-                                            <p class="m-b-20">
-                                                Try using different filter options to find what you're looking for
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
+<?php } ?>
                 </div>
             </div>
         </div>
@@ -110,8 +93,7 @@
             "columns": [
                 null,
                 null,
-                null,
-//                null,
+                null
 //                {"visible": false}
             ],
             "footerCallback": function (row, data, start, end, display) {
@@ -120,7 +102,8 @@
 
                 var intVal = function (i) {
                     return typeof i === 'string' ?
-                            i.replace(/[, ₹&nbsp;]|(\.\d{2})/g, "") * 1 :
+//                            i.replace(/[, ₹&nbsp;]|(\.\d{2})/g, "") * 1 :
+                            i.replace(/(\.\d{2})/g, "") * 1 :
                             typeof i === 'number' ?
                             i : 0;
                 };

@@ -77,6 +77,8 @@
                                         . "<li><a href='/reports/invoices'>Invoices</a></li>"
                                         . "<li><a href='/reports/serviceSales'>Sales by services</a></li>"
                                         . "<li><a href='/reports/staffSales'>Sales by staff</a></li>"
+                                        . "<li><a href='/reports/clientSales'>Sales by clients</a></li>"
+                                        . "<li><a href='/reports/dailySales'>Sales by day</a></li>"
                                         . "</ul>";
                                 $li .= "</li>";
                                 echo $li;
