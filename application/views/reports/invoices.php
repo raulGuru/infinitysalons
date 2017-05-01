@@ -49,15 +49,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                $fmt = Common::formatMoney();
-                                foreach ($invoices as $invoice) {
+                                <?php foreach ($invoices as $invoice) {
                                     ?> 
                                     <tr  >
                                         <td><a href="javascript:void(0);" class="view_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>"><?php echo $invoice['invoicenumber'] ?></a></td>
                                         <td><?php echo ($invoice['clientid'] != 0) ? $invoice['client']['firstname'] . ' ' . $invoice['client']['lastname'] : '-'; ?></td>
                                         <td><?php echo date('l, j M Y', strtotime($invoice['invoicedate'])) ?></td>
-                                        <td><?php echo $fmt->format($invoice['totalprice']); ?></td>
+                                        <td><?php echo Common::formatMoneyToPrint($invoice['totalprice']); ?></td>
                                         <td><?php echo $invoice['invoicedate'] ?></td>
                                         <td><a href="javascript:void(0);" class="edit_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">edit</a></td>
                                         <!--/sales/editInvoice-->

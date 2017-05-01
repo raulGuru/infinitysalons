@@ -51,28 +51,24 @@
                                 <tr>
                                     <th>Service Name</th>
                                     <th>Quantity Sold</th>
-                                    <!--<th>Last Sold On</th>-->
+                                    <!--<th>Invoice Date</th>-->
                                     <th>Gross Total (in <span>&#8377;</span>)</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th colspan="4" style="text-align:right; padding-right: 80px"></th>
+                                    <th colspan="3" style="text-align:right;padding-right: 265px;"></th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                <?php
-                                $fmt = Common::formatMoney();
-                                foreach ($servicesales['result'] as $servicesale) {
+                                <?php foreach ($servicesales['result'] as $servicesale) {
                                     ?> 
                                     <tr class="clickable-row" data-params='{"id":"<?php echo $servicesale['serviceid']; ?>"}' >
                                         <td><?php echo $servicesale['name'] ?></td>
-                                        <td style="text-align: center"><?php echo $servicesale['quantity']; ?></td>
-                                        <!--<td><?php echo date('l, j M Y', strtotime($servicesale['invoicedate'])) ?></td>-->
-                                        <td style="text-align: center"><?php
-                                            //echo $fmt->format($servicesale['salevalue']); 
-                                            echo $servicesale['salevalue']
-                                            ?></td>
+                                        <td><?php echo $servicesale['quantity']; ?></td>
+                                        <!--<td><?php //echo date('l, j M Y', strtotime($servicesale['invoicedate'])) ?></td>-->
+                                        <td><?php echo Common::formatMoneyToPrint($servicesale['salevalue']); ?></td>
+                                        <!--<td><?php // echo $servicesale['invoicedate']       ?></td>-->
                                     </tr>
                                 <?php } ?>                                            
                             </tbody>
@@ -93,11 +89,12 @@
                 null,
                 null,
                 null,
-//                null,
+                //null,
+//                {"visible": false}
             ],
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api(), data;
-                var colNumber = [3];
+                var colNumber = [2];
 
                 var intVal = function (i) {
                     return typeof i === 'string' ?
@@ -113,8 +110,7 @@
                             .reduce(function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0);
-//                    $(api.column(colNo).footer()).html('TOTAL ₹&nbsp;' + formatMoney(total2, 2));
-                    $(api.column(colNo).footer()).html('TOTAL &nbsp;&nbsp;<span>&#8377; </span>' + (total2));
+                    $(api.column(colNo).footer()).html('TOTAL &nbsp;&nbsp;₹&nbsp;' + (accounting.formatMoney(total2)));
                 }
             }
         });

@@ -58,20 +58,18 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th colspan="3" style="text-align:right"></th>
+                                    <th colspan="3" style="text-align:right;padding-right: 265px;"></th>
                                     <!--<th></th>-->
                                 </tr>
                             </tfoot>
                             <tbody>
-                                <?php
-                                $fmt = Common::formatMoney();
-                                foreach ($staffsales['result'] as $staffsale) {
+                                <?php foreach ($staffsales['result'] as $staffsale) {
                                     ?> 
                                     <tr class="clickable-row" data-params='{"id":"<?php echo $staffsale['staffid']; ?>"}' >
                                         <td><?php echo $staffsale['staffname'] ?></td>
                                         <td><?php echo ($staffsale['quantity'] != '') ? $staffsale['quantity'] : '-'; ?></td>
                                         <!--<td><?php echo date('l, j M Y', strtotime($staffsale['invoicedate'])) ?></td>-->
-                                        <td><?php echo $fmt->format($staffsale['salevalue']); ?></td>
+                                        <td><?php echo Common::formatMoneyToPrint($staffsale['salevalue']); ?></td>
                                         <!--<td><?php // echo $invoice['invoicedate']         ?></td>-->
                                     </tr>
                                 <?php } ?>                                            
@@ -132,8 +130,7 @@
                             .reduce(function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0);
-//                    $(api.column(colNo).footer()).html('TOTAL ₹&nbsp;' + formatMoney(total2, 2));
-                    $(api.column(colNo).footer()).html('TOTAL ₹&nbsp;' + (total2));
+                    $(api.column(colNo).footer()).html('TOTAL &nbsp;&nbsp;₹&nbsp;' + (accounting.formatMoney(total2)));
                 }
             }
         });

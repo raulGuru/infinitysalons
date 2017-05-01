@@ -60,7 +60,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th colspan="3" style="text-align:right; padding-right: 80px"></th>
+                                    <th colspan="3" style="text-align:right;padding-right: 265px;"></th>
                                     <!--<th></th>-->
                                 </tr>
                             </tfoot>
@@ -71,8 +71,8 @@
                                     ?> 
                                     <tr class="clickable-row" data-params='{"id":"<?php echo $dailysale['serviceid']; ?>"}' >
                                         <td><?php echo date('l, j M Y', strtotime($dailysale['invoicedate'])) ?></td>
-                                        <td style="text-align:center;"><?php echo $dailysale['services'] ?></td>
-                                        <td style="text-align:center;"><?php echo $dailysale['totalprice'];//$fmt->format($dailysale['totalprice']); ?></td>
+                                        <td><?php echo $dailysale['services'] ?></td>
+                                        <td><?php echo Common::formatMoneyToPrint($dailysale['totalprice']);?></td>
                                         <!--<td><?php // echo $dailysale['invoicedate']          ?></td>-->
                                     </tr>
     <?php } ?>                                            
@@ -115,8 +115,7 @@
                             .reduce(function (a, b) {
                                 return intVal(a) + intVal(b);
                             }, 0);
-//                    $(api.column(colNo).footer()).html('TOTAL ₹&nbsp;' + formatMoney(total2, 2));
-                    $(api.column(colNo).footer()).html('TOTAL ₹&nbsp;' + (total2));
+                            $(api.column(colNo).footer()).html('TOTAL &nbsp;&nbsp;₹&nbsp;' + (accounting.formatMoney(total2)));
                 }
             }
         });

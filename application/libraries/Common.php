@@ -105,8 +105,9 @@ class Common {
     }
     
     public function formatMoneyToPrint($m) {
-        $fmt = Common::formatMoney();
-        return preg_replace('/[^0-9.]/s', '', $fmt->format($m));
+        return number_format((float)$m, 2, '.', '');
+        //$fmt = Common::formatMoney();
+        //return preg_replace('/[^0-9.]/s', '', $fmt->format($m));
     }
     
     public function checkUserHasAccess($module) {
@@ -220,6 +221,3 @@ class Common {
         return $data;        
     }
 }
-
-
-
