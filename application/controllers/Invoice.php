@@ -96,6 +96,15 @@ class Invoice extends CI_Controller {
 //        echo '<pre>', print_r($data), '</pre>';
 //        exit();
         
-        $this->load->view('invoice/print_invoice',$data);
+        $this->load->view('invoice/print_new_invoice',$data);        
+        //$this->load->view('invoice/print_invoice',$data);
+    }
+    
+    function viewInvoiceById($checkoutid) {
+        
+        $checkoutid = '50';
+        $checkoutid = $_GET['id'];        
+        $invoicedetails = Common::getInvoiceDetailsById($checkoutid);
+        //Receiptprint::printInvoice($invoicedetails);
     }
 }

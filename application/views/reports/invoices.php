@@ -59,7 +59,8 @@
                                         <td><?php echo date('l, j M Y', strtotime($invoice['invoicedate'])) ?></td>
                                         <td><?php echo $fmt->format($invoice['totalprice']); ?></td>
                                         <td><?php echo $invoice['invoicedate'] ?></td>
-                                        <td>edit</td>
+                                        <td><a href="javascript:void(0);" class="edit_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">edit</a></td>
+                                        <!--/sales/editInvoice-->
                                     </tr>
                                 <?php } ?>                                            
                             </tbody>
@@ -155,4 +156,23 @@
         var invoiceid = $(this).data('invoiceid');
         window.open(g.base_url + 'invoice/printinvoice?id=' + invoiceid, '_blank');
     });
+    
+    $('.edit_invoice').bind('click', function () {
+       loadingOverlay();
+       $.ajax({
+            url: g.base_url + 'sales/editInvoice',
+            type: 'post',   
+            dataType: 'html',
+            data: $(this).data(),
+            success: function(data) {
+                removeLoadingOverlay();
+                $('body').append(data);
+                $('#new-service-sale').modal({backdrop: 'static', keyboard: false});
+                $('#new-service-sale').on('hidden.bs.modal', function(){
+                    $('.modal-backdrop').remove();
+                });
+            }
+        });            
+    });
+    
 </script>

@@ -238,6 +238,35 @@ class Sales extends CI_Controller {
         
     }
     
-    
+    function editInvoice() {
+        
+      $invoiceid = $_POST['invoiceid'];
+      $querycheckoutinvoice = $this->db->get_where('checkout', array('id' => $invoiceid));
+      $checkoutinvoice = $querycheckoutinvoice->row_array();
+      $appointment_id = $checkoutinvoice['appointmentid'];
+      if(!empty($appointment_id) && $appointment_id != 0) {
+            $appointmentdetails = Common::getAppointmentDetails($appointment_id);
+            $appointment = $appointmentdetails[0];
+
+            $data['appointment'] = $appointment;
+        
+            $data['services'] = $this->db->order_by("name","asc")->get("services")->result_array();
+
+            $querydiscounts = $this->db->get_where('discounts', array('enabled_for_products' => '1'));
+            $data['discounts'] = $querydiscounts->result_array();
+
+            $querysdiscounts = $this->db->get_where('discounts', array('enabled_for_services' => '1'));
+            $data['servicediscounts'] = $querysdiscounts->result_array();
+
+            $querystaff = $this->db->get_where('staff', array('active' => '1'));
+            $data['staffs'] = $querystaff->result_array();
+
+            $this->load->view('sales/new_service_sale', $data);
+      }else {
+          
+      }     
+      
+      
+    }    
 }
 

@@ -164,7 +164,7 @@
                                                 <div class="col-xs-6 no-padding col-sm-4">
                                                    <div class="form-group no-padding select">
                                                       <div class="select-wrapper">
-                                                         <select label="false" class="select optional form-control js-select-time" selected="selected" name="booking[services][0][time_start_field]" id="booking_time_start_field">
+                                                         <select label="false" class="select optional form-control js-select-time" selected="selected" name="booking[services][0][time_start_field]" id="booking_time_start_field" required="required">
 <!--                                                            <option value="00:00">12:00am</option>
                                                             <option value="00:05">12:05am</option>
                                                             <option value="00:10">12:10am</option>
