@@ -178,6 +178,8 @@ ON checkoutinvoice.checkoutid = checkoutservices.checkoutid
 $where
 GROUP by checkoutinvoice.invoicedate");
 
+//        echo '<pre>', print_r($this->db), '</pre>';
+//        die;
         $data['result'] = $query->result_array();
         $data['fromDate'] = (!empty($from) ? date("m/d/Y", strtotime($from)) : '');
         $data['toDate'] = (!empty($to) ? date("m/d/Y", strtotime($to)) : '');

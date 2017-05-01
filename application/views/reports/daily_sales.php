@@ -54,13 +54,13 @@
                                     <th>Sale Date</th>
                                     <th>No. Of Services</th>
                                     <!--<th>Invoice Date</th>-->
-                                    <th>Gross Total</th>
+                                    <th>Gross Total (in <span>&#8377;</span>)</th>
                                     <!--<th>iNDate</th>-->
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th colspan="3" style="text-align:right"></th>
+                                    <th colspan="3" style="text-align:right; padding-right: 80px"></th>
                                     <!--<th></th>-->
                                 </tr>
                             </tfoot>
@@ -71,8 +71,8 @@
                                     ?> 
                                     <tr class="clickable-row" data-params='{"id":"<?php echo $dailysale['serviceid']; ?>"}' >
                                         <td><?php echo date('l, j M Y', strtotime($dailysale['invoicedate'])) ?></td>
-                                        <td><?php echo $dailysale['services'] ?></td>
-                                        <td><?php echo $dailysale['totalprice'];//$fmt->format($dailysale['totalprice']); ?></td>
+                                        <td style="text-align:center;"><?php echo $dailysale['services'] ?></td>
+                                        <td style="text-align:center;"><?php echo $dailysale['totalprice'];//$fmt->format($dailysale['totalprice']); ?></td>
                                         <!--<td><?php // echo $dailysale['invoicedate']          ?></td>-->
                                     </tr>
     <?php } ?>                                            

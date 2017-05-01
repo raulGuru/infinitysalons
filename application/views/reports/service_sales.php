@@ -51,15 +51,13 @@
                                 <tr>
                                     <th>Service Name</th>
                                     <th>Quantity Sold</th>
-                                    <th>Invoice Date</th>
-                                    <th>Gross Total</th>
-                                    <!--<th>iNDate</th>-->
+                                    <!--<th>Last Sold On</th>-->
+                                    <th>Gross Total (in <span>&#8377;</span>)</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th colspan="4" style="text-align:right"></th>
-                                    <!--<th></th>-->
+                                    <th colspan="4" style="text-align:right; padding-right: 80px"></th>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -69,10 +67,12 @@
                                     ?> 
                                     <tr class="clickable-row" data-params='{"id":"<?php echo $servicesale['serviceid']; ?>"}' >
                                         <td><?php echo $servicesale['name'] ?></td>
-                                        <td><?php echo $servicesale['quantity']; ?></td>
-                                        <td><?php echo date('l, j M Y', strtotime($servicesale['invoicedate'])) ?></td>
-                                        <td><?php echo $fmt->format($servicesale['salevalue']); ?></td>
-                                        <!--<td><?php // echo $servicesale['invoicedate']       ?></td>-->
+                                        <td style="text-align: center"><?php echo $servicesale['quantity']; ?></td>
+                                        <!--<td><?php echo date('l, j M Y', strtotime($servicesale['invoicedate'])) ?></td>-->
+                                        <td style="text-align: center"><?php
+                                            //echo $fmt->format($servicesale['salevalue']); 
+                                            echo $servicesale['salevalue']
+                                            ?></td>
                                     </tr>
                                 <?php } ?>                                            
                             </tbody>
@@ -93,8 +93,7 @@
                 null,
                 null,
                 null,
-                null,
-//                {"visible": false}
+//                null,
             ],
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api(), data;
@@ -115,7 +114,7 @@
                                 return intVal(a) + intVal(b);
                             }, 0);
 //                    $(api.column(colNo).footer()).html('TOTAL ₹&nbsp;' + formatMoney(total2, 2));
-                    $(api.column(colNo).footer()).html('TOTAL ₹&nbsp;' + (total2));
+                    $(api.column(colNo).footer()).html('TOTAL &nbsp;&nbsp;<span>&#8377; </span>' + (total2));
                 }
             }
         });
