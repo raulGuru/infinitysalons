@@ -1,4 +1,8 @@
 <div class="discounts-list full-height">
+    <div id="loading_image" style="display: none">
+        <i class="icon-refresh icon-spin"></i>
+        Loading...
+    </div>
     <div class="panel panel-transparent">
         <div class="panel-body sm-padding-15">
             <div class="row">
@@ -49,16 +53,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($invoices as $invoice) {
-                                    ?> 
-                                    <tr  >
-                                        <td><a href="javascript:void(0);" class="view_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>"><?php echo $invoice['invoicenumber'] ?></a></td>
+                                <?php foreach ($invoices as $invoice) { ?> 
+                                    <tr>
+                                        <td><a href="javascript:void(0);" class="print_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>"><?php echo $invoice['invoicenumber'] ?></a></td>
                                         <td><?php echo ($invoice['clientid'] != 0) ? $invoice['client']['firstname'] . ' ' . $invoice['client']['lastname'] : '-'; ?></td>
                                         <td><?php echo date('l, j M Y', strtotime($invoice['invoicedate'])) ?></td>
                                         <td><?php echo Common::formatMoneyToPrint($invoice['totalprice']); ?></td>
                                         <td><?php echo $invoice['invoicedate'] ?></td>
-                                        <td><a href="javascript:void(0);" class="edit_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">edit</a></td>
-                                        <!--/sales/editInvoice-->
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn-xs dropdown-toggle btn" data-toggle="dropdown">Actions<span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                  <li><a href="javascript:void(0);" class="view_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">View</a></li>
+                                                  <li><a href="javascript:void(0);" class="print_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">Print</a></li>
+                                                  <!--<li><a href="javascript:void(0);" class="edit_invoice" data-invoiceid="<?php //echo $invoice['invoiceid'] ?>">Edit</a></li>-->
+                                                  <li><a href="javascript:void(0);" class="" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
                                     </tr>
                                 <?php } ?>                                            
                             </tbody>
@@ -85,7 +97,21 @@
                 </div>
             <?php } ?>
         </div>
+    </div>    
+</div>
+
+<div class="modal fade" id="sale-deleted" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header"><h4 class="modal-title">Sale Deleted</h4></div>
+      <div class="modal-body">
+          <b>The sale has been successfully deleted from the system !!</b>
+      </div>
+      <div class="modal-footer">
+          <a class="btn btn-success" id="close-sale-deleted"><span class="hidden-xs">OK</span></a>
+      </div>
     </div>
+  </div>
 </div>
 
 <script>
@@ -150,7 +176,7 @@
             }
     );
 
-    $('.view_invoice').bind('click', function () {
+    $('.print_invoice').bind('click', function () {
         var invoiceid = $(this).data('invoiceid');
         window.open(g.base_url + 'invoice/printinvoice?id=' + invoiceid, '_blank');
     });
@@ -173,4 +199,28 @@
         });            
     });
     
+    $('.view_invoice').click(function () {
+        var invoiceid = $(this).data('invoiceid');
+        window.open(g.base_url + 'invoice/viewInvoiceById?id=' + invoiceid, '_blank');
+    });
+    
+    $('.delete_invoice').bind('click', function () {
+       loadingOverlay();
+       $.ajax({
+            url: g.base_url + 'invoice/deleteInvoiceById',
+            type: 'post',   
+            //dataType: 'html',
+            data: $(this).data(),
+            success: function(data) {
+                removeLoadingOverlay();
+                $('#sale-deleted').modal({backdrop: 'static', keyboard: false});
+            }
+        });            
+    });
+    
+    $('#close-sale-deleted').click(function () {
+        window.location = g.base_url + 'reports/invoices';
+    });
+    
 </script>
+

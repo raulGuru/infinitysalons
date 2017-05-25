@@ -9,8 +9,10 @@ class Invoice extends CI_Controller {
     
     function printinvoice() {
         
-        $checkoutid = $_GET['id'];
-        $querycheckout = $this->db->get_where('checkout', array('id' => $checkoutid));
+        $checkoutid = $_GET['id'];        
+        $data = Common::getInvoiceDetailsById($checkoutid);
+        
+        /*$querycheckout = $this->db->get_where('checkout', array('id' => $checkoutid));
         $checkout= $querycheckout->row_array();
         $checkout['invoicenumber'] = strtotime($checkout['timestamp']) .'-I'.$checkoutid.'-A'.$checkout['appointmentid'].'-C'.$checkout['clientid'];
         $data['checkout'] = $checkout;
@@ -91,20 +93,43 @@ class Invoice extends CI_Controller {
         
         $querycheckoutstafftip = $this->db->query("SELECT a.first_name AS fname, a.last_name AS lname, b.price FROM staff a JOIN checkoutstafftip b ON a.id = b.staffid AND b.checkoutid='$checkoutid'");
         $tipdetails = $querycheckoutstafftip->row_array(); 
-        $data['tipdetails'] = $tipdetails;
+        $data['tipdetails'] = $tipdetails;*/
         
 //        echo '<pre>', print_r($data), '</pre>';
 //        exit();
         
-        $this->load->view('invoice/print_new_invoice',$data);        
-        //$this->load->view('invoice/print_invoice',$data);
+        $this->load->view('invoice/print_new_invoice',$data);
+        //Receiptprint::printInvoice($data);        // Escpos receipt printer
     }
     
-    function viewInvoiceById($checkoutid) {
+    function viewInvoiceById() {
         
-        $checkoutid = '50';
-        $checkoutid = $_GET['id'];        
-        $invoicedetails = Common::getInvoiceDetailsById($checkoutid);
-        //Receiptprint::printInvoice($invoicedetails);
+        $invoiceid = $_GET['id'];
+        $data = Common::getInvoiceDetailsById($invoiceid);
+        $this->load->view('invoice/print_invoice', $data);
+    }
+    
+    function deleteInvoiceById() {
+        
+        $checkoutid = $_POST['invoiceid'];
+        
+        $querycheckout = $this->db->get_where('checkout', array('id' => $checkoutid));
+        $checkout= $querycheckout->row_array();
+        $appointmentid = $checkout['appointmentid'];
+        if($appointmentid != 0) {
+            
+            $this->db->delete('appointment', array('id' => $appointmentid));
+            
+            $appointmenttables = array('appointmentstatus', 'appointmentservices');
+            $this->db->where('appointmentid', $appointmentid);
+            $this->db->delete($appointmenttables);
+        }
+        
+        $this->db->delete('checkout', array('id' => $checkoutid));
+        
+        $checkouttables = array('checkoutinvoice', 'checkoutpayments', 'checkoutservices', 'checkoutstafftip');
+        $this->db->where('checkoutid', $checkoutid);
+        $this->db->delete($checkouttables);
+        echo 'true';
     }
 }
