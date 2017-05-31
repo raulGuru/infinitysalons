@@ -8,7 +8,7 @@ class Common {
      * where - false, to get irrespective of status
      */
     
-    function getAppointmentDetails($appointment_id, $where = TRUE){
+    public function getAppointmentDetails($appointment_id, $where = TRUE){
         $CI = & get_instance();
         
         if($where) {
