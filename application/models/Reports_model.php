@@ -71,15 +71,14 @@ group by staffid order by staffname");
             $to = date("Y-m-d", $toDate);
             $where = "WHERE checkout.invoicedate > '" . $from . "' and checkout.invoicedate <= '" . $to . "'";
         }
-
-        $query = $this->db->query("SELECT checkoutservices.serviceid, services.name, services.price, services.special_price, sum(checkoutservices.quantity) as quantity, sum(checkoutservices.price) as salevalue, checkout.invoicedate
-FROM `checkoutservices` 
-JOIN services 
-JOIN checkout 
-ON checkoutservices.serviceid = services.id AND checkoutservices.checkoutid = checkout.id
-$where
-GROUP BY checkoutservices.serviceid
-order by checkout.invoicedate,services.name");
+            $query = $this->db->query("SELECT checkoutservices.serviceid, services.name, services.price, services.special_price, sum(checkoutservices.quantity) as quantity, sum(checkoutservices.price) as salevalue, checkout.invoicedate
+                        FROM `checkoutservices` 
+                        JOIN services 
+                        JOIN checkout 
+                        ON checkoutservices.serviceid = services.id AND checkoutservices.checkoutid = checkout.id
+                        $where
+                        GROUP BY checkoutservices.serviceid
+                        order by checkout.invoicedate,services.name");
 
         $data['result'] = $query->result_array();
         $data['fromDate'] = (!empty($from) ? date("m/d/Y", strtotime($from)) : '');
