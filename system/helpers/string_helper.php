@@ -221,7 +221,7 @@ if ( ! function_exists('random_string'))
 					case 'alnum':
 						$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 						break;
-					case 'numeric':
+                        case 'numeric':
 						$pool = '0123456789';
 						break;
 					case 'nozero':

@@ -98,17 +98,17 @@
                     <div class="col-sm-7 pos-box__item">
                         <div class="pos-box-table pos-box__invoice">
                             <!--<div class="pos-box__invoice">-->
-                                <div class="row sm-m-t-20 attached-fields pos-box-table__item">
-                                    <!--                           <div class="col-md-6 col-xs-6 no-padding">
-                                                                  <div class="form-group middle-item">
-                                                                     <label for="payments_employee_id">Received by</label>
-                                                                     <div class="select-wrapper">
-                                                                        <select class="full-width form-control" name="received_by" id="payments_employee_id">
-                                                                           <option selected="selected" value="0">Admin</option>
-                                                                        </select>
-                                                                     </div>
-                                                                  </div>
-                                                               </div>-->
+                                <!--div class="row sm-m-t-20 attached-fields pos-box-table__item">
+                                    <div class="col-md-6 col-xs-6 no-padding">
+                                      <div class="form-group middle-item">
+                                         <label for="payments_employee_id">Received by</label>
+                                         <div class="select-wrapper">
+                                            <select class="full-width form-control" name="received_by" id="payments_employee_id">
+                                               <option selected="selected" value="0">Admin</option>
+                                            </select>
+                                         </div>
+                                      </div>
+                                   </div>
                                     <div class="col-md-6 col-xs-6 no-padding">
                                         <div class="form-group">
                                             <label for="payments_date">Payment date</label>
@@ -117,7 +117,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div-->
                                 <h4 class="text-center hidden-xs m-b-none pos-box-table__item">Invoice</h4>
                                 <div class="invoices pos-box-table__item">
                                     <?php
@@ -140,20 +140,21 @@
                                     }
 
                                     $items = $sale['items_attributes'];
-                                    foreach ($items as $item) {
-                                        ?>
+                                    if(!empty($items)) {
+                                        foreach ($items as $item) { ?>
 
-                                        <div class="invoice-row invoice-row-product row">
-                                            <div class="col-sm-8 invoice-row__item invoice-row__item--left">
-                                                <span class="m-r-15"><?php echo $item['quantity'] ?></span>
-                                                <span class="invoice-row__name js-full-text"><?php echo $item['item-name'] ?></span>
+                                            <div class="invoice-row invoice-row-product row">
+                                                <div class="col-sm-8 invoice-row__item invoice-row__item--left">
+                                                    <span class="m-r-15"><?php echo $item['quantity'] ?></span>
+                                                    <span class="invoice-row__name js-full-text"><?php echo $item['item-name'] ?></span>
+                                                </div>
+                                                <div class="col-sm-4 invoice-row__item invoice-row__item--right">
+                                                    <s>₹ <?php echo $item['full_price'] ?></s><span class="text-danger m-l-10">₹ <?php echo $item['special_price'] ?></span>
+                                                </div>
                                             </div>
-                                            <div class="col-sm-4 invoice-row__item invoice-row__item--right">
-                                                <s>₹ <?php echo $item['full_price'] ?></s><span class="text-danger m-l-10">₹ <?php echo $item['special_price'] ?></span>
-                                            </div>
-                                        </div>
 
-<?php } ?>
+                                        <?php }
+                                    } ?>
 
                                     <hr class="m-t-5 m-b-5 invoice-sum">
                                     <div class="row js-sale-total" >
@@ -226,6 +227,7 @@ $grand_total = round($salet + $totaltax, 2);
                                 <div class="pos-box__btns bg-white pos-box-table__item">
                                     <div class=""><input type="checkbox" value="1" checked="checked" name="include_tax" id="include_tax"><label class="no-margin">Include Tax</label></div>
                                     <input type="submit" name="pay" value="Paid" class="btn btn-lg full-width payment-button btn-success js-submit" disabled="disabled">
+                                    <input type="hidden" name="sale_type" value="<?php echo $sale_type;  ?>">
                                     <a class="btn btn-lg btn-default view-receipt payment-box-btn bold hidden" data-checkoutid="" href="javascript:void(0);">View Invoice</a>
                                 </div>
                             <!--</div>-->
@@ -325,7 +327,7 @@ $grand_total = round($salet + $totaltax, 2);
         resetPayMethod();
     });
 
-    $('#payments_date').datepicker().datepicker("setDate", new Date());
+    //$('#payments_date').datepicker().datepicker("setDate", new Date());
 
     $('.add-tip-btn').click(function () {
         
@@ -394,9 +396,14 @@ $grand_total = round($salet + $totaltax, 2);
         if (!event.isDefaultPrevented()) {
             event.preventDefault();
 
+            var submitUrl = g.base_url + 'sales/addPayment';
+            if($('input[name=sale_type]').val() == 'EDIT')
+            {
+                submitUrl = g.base_url + 'sales/addEditedPayment';
+            }
             loadingOverlay();
             $.ajax({
-                url: g.base_url + 'sales/addPayment',
+                url: submitUrl,//g.base_url + 'sales/addPayment',
                 type: 'post',
                 dataType: 'html',
                 data: $('form#new_payment').serialize(),
@@ -428,7 +435,12 @@ $grand_total = round($salet + $totaltax, 2);
     });
 
     $('#close-payment').click(function () {
-        window.location = g.base_url + 'calendar';
+        var loc = g.base_url + 'calendar';
+        if($('input[name=sale_type]').val() == 'EDIT')
+        {
+            loc = g.base_url + 'reports/invoices';
+        }
+        window.location = loc;
     });
     
 </script>

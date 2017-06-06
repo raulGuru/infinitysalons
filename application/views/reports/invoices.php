@@ -66,8 +66,8 @@
                                                 <ul class="dropdown-menu">
                                                   <li><a href="javascript:void(0);" class="view_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">View</a></li>
                                                   <li><a href="javascript:void(0);" class="print_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">Print</a></li>
-                                                  <!--<li><a href="javascript:void(0);" class="edit_invoice" data-invoiceid="<?php //echo $invoice['invoiceid'] ?>">Edit</a></li>-->
-                                                  <li><a href="javascript:void(0);" class="" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">Delete</a></li>
+                                                  <li><a href="javascript:void(0);" class="edit_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">Edit</a></li>
+                                                  <li><a href="javascript:void(0);" class="delete_invoice" data-invoiceid="<?php echo $invoice['invoiceid'] ?>">Delete</a></li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -133,7 +133,7 @@
         $("#date_from").datepicker({
             maxDate: '+0d',
             onSelect: function (date) {
-                minDateFilter = new Date(date).getTime();
+                minDateFilter = moment(date).format('YYYY-MM-DD');      //new Date(date).getTime();
                 oTable.fnDraw();
             }
         })/*.keyup(function() {
@@ -144,7 +144,7 @@
         $("#date_to").datepicker({
             maxDate: '+0d',
             onSelect: function (date) {
-                maxDateFilter = new Date(date).getTime();
+                maxDateFilter = moment(date).format('YYYY-MM-DD');      //new Date(date).getTime();
                 oTable.fnDraw();
             }
         })/*.keyup(function() {
@@ -154,26 +154,22 @@
     });
 
     // Date range filter
-    minDateFilter = new Date().getTime();
-    maxDateFilter = new Date().getTime();
+    minDateFilter = moment(new Date()).format('YYYY-MM-DD'); //new Date().getTime();
+    maxDateFilter = moment(new Date()).format('YYYY-MM-DD'); //new Date().getTime();
 
     $.fn.dataTableExt.afnFiltering.push(
-            function (oSettings, aData, iDataIndex) {
-                if (typeof aData._date == 'undefined') {
-                    aData._date = new Date(aData[4]).getTime();
-                }
-                if (minDateFilter && !isNaN(minDateFilter)) {
-                    if (aData._date < minDateFilter) {
-                        return false;
-                    }
-                }
-                if (maxDateFilter && !isNaN(maxDateFilter)) {
-                    if (aData._date > maxDateFilter) {
-                        return false;
-                    }
-                }
-                return true;
+        function (oSettings, aData, iDataIndex) {
+            if (typeof aData._date == 'undefined') {
+                aData._date = moment(aData[4]).format('YYYY-MM-DD'); //new Date(aData[4]).getTime();
             }
+            if (minDateFilter && aData._date < minDateFilter) {
+                return false;
+            }
+            if (maxDateFilter && aData._date > maxDateFilter) {
+                return false;
+            }
+            return true;
+        }
     );
 
     $('.print_invoice').bind('click', function () {
@@ -182,6 +178,7 @@
     });
     
     $('.edit_invoice').bind('click', function () {
+       var invoiceid = $(this).data('invoiceid');
        loadingOverlay();
        $.ajax({
             url: g.base_url + 'sales/editInvoice',
@@ -191,8 +188,8 @@
             success: function(data) {
                 removeLoadingOverlay();
                 $('body').append(data);
-                $('#new-service-sale').modal({backdrop: 'static', keyboard: false});
-                $('#new-service-sale').on('hidden.bs.modal', function(){
+                $('#edit-service-sale-' + invoiceid).modal({backdrop: 'static', keyboard: false});
+                $('#edit-service-sale-' + invoiceid).on('hidden.bs.modal', function(){
                     $('.modal-backdrop').remove();
                 });
             }

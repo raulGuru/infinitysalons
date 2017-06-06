@@ -10,32 +10,24 @@ class Reports_model extends CI_Model {
     }
 
     function getInvoices() {
-//        if (isset($id) && !empty($id)) {
-//            $this->db->where('id', $id);
-//        }
+
         $query = $this->db->get('checkout');
         $checkout = $query->result_array();
-
         $invoices = array();
         for ($i = 0; $i < count($checkout); $i++) {
 
             $invoiceid = $checkout[$i]['id'];
-
             $invoices[$i]['invoiceid'] = $invoiceid;
-
-            $invoices[$i]['invoicenumber'] = strtotime($checkout[$i]['timestamp']) . '-I' . $invoiceid . '-A' . $checkout[$i]['appointmentid'] . '-C' . $checkout[$i]['clientid'];
-
+            //$invoices[$i]['invoicenumber'] = strtotime($checkout[$i]['timestamp']) . '-I' . $invoiceid . '-A' . $checkout[$i]['appointmentid'] . '-C' . $checkout[$i]['clientid'];
+            $invoices[$i]['invoicenumber'] = $checkout[$i]['invoicenumber'];
             $invoices[$i]['invoicedate'] = $checkout[$i]['invoicedate'];
-
             $invoices[$i]['appointmentid'] = $checkout[$i]['appointmentid'];
-
             $invoices[$i]['clientid'] = $checkout[$i]['clientid'];
             if ($checkout[$i]['clientid'] != 0) {
                 $queryClients = $this->db->select('id, firstname, lastname')->get_where('clients', array('id' => $checkout[$i]['clientid']));
                 $client = $queryClients->result_array();
                 $invoices[$i]['client'] = $client[0];
             }
-
             $querycheckoutinvoice = $this->db->get_where('checkoutinvoice', array('checkoutid' => $invoiceid));
             $checkoutinvoice = $querycheckoutinvoice->row_array();
             $invoices[$i]['totalprice'] = $checkoutinvoice['totalprice'];

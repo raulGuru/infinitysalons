@@ -19,6 +19,7 @@
             <div class="alert alert-danger hide">Select staff for all services.</div>
             <form class="simple_form row pos-box" id="new_sale">
                 <input type="hidden" name="sale[appointmentid]" id="appointment_id" value="0">
+                <input type="hidden" name="sale[type]" value="ADD">
                <div class="col-sm-5 pos-box__item">
                   <div class="m-b-20" id="customer-search">
                      <div class="row search-container">
