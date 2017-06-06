@@ -14,7 +14,7 @@ class Login_model extends CI_Model {
         $email = addslashes($data['email']);
 
         $password = addslashes(base64_encode($this->config->item('encryption_key') . "_" . $data['password']));
-        //$ql = ("SELECT * FROM user WHERE email = '$email' AND password = '$password'");
+        //$ql = ("SELECT * FROM user WHERE email = '$email' AND password = '$password'"); echo $ql; exit();
         $ql = $this->db->query("SELECT * FROM user WHERE email = '$email' AND password = '$password'");
         if ($ql->num_rows() == 1) {
             $resultdata = array('status' => 1, 'data' => $ql->row_array(), 'message' => 'active user found');

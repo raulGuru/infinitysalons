@@ -25,7 +25,7 @@ class Calendar extends CI_Controller {
             $selstaffid = $_POST['staffid'];
             $appointmentdetails = Common::appointmentsByStaff($selstaffid);
         }else {
-            $appointmentdetails = Common::getAppointmentDetails();
+            $appointmentdetails = Common::getAppointmentDetails('');
         }
         
         foreach($appointmentdetails as $appointment) {

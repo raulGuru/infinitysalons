@@ -8,7 +8,7 @@ class Common {
      * where - false, to get irrespective of status
      */
     
-    public function getAppointmentDetails($appointment_id, $where = TRUE){
+    public static function getAppointmentDetails($appointment_id, $where = TRUE){
         $CI = & get_instance();
         
         if($where) {
@@ -52,7 +52,7 @@ class Common {
         return $appointments;
     }
     
-    public function appointmentsByStaff($staffid) {
+    public static function appointmentsByStaff($staffid) {
         
         $CI = & get_instance();
         
@@ -95,22 +95,22 @@ class Common {
         
     }
     
-    public function formatMoney() {
+    public static function formatMoney() {
         return new NumberFormatter($locale = 'en_IN', NumberFormatter::CURRENCY);
     }
     
-    public function parseMoney($m) {
+    public static function parseMoney($m) {
         //return floatval(preg_replace('/[^\d\.]/', '', $m));           commenting this as it is removing 0 from decimal second place
         return (preg_replace('/[^0-9.]/s', '', $m)); 
     }
     
-    public function formatMoneyToPrint($m) {
+    public static function formatMoneyToPrint($m) {
         return number_format((float)$m, 2, '.', '');
         //$fmt = Common::formatMoney();
         //return preg_replace('/[^0-9.]/s', '', $fmt->format($m));
     }
     
-    public function checkUserHasAccess($module) {
+    public static function checkUserHasAccess($module) {
         return true;
         $CI = & get_instance();
         $useraccess = $CI->session->userdata['salon_user']['useraccess'];
@@ -121,7 +121,7 @@ class Common {
         }
     }
     
-    public function pwdDecrypt($password) {
+    public static function pwdDecrypt($password) {
         $password = explode("_", (base64_decode($password)));
         
         if (count($password) > 2) {
@@ -133,22 +133,24 @@ class Common {
         return $returnPassword;
     }
     
-    public function getInvoiceDetailsById($checkoutid) {
-               
-        $querycheckout = $this->db->get_where('checkout', array('id' => $checkoutid));
+    public static function getInvoiceDetailsById($checkoutid) {
+        $CI = & get_instance();
+
+        $querycheckout = $CI->db->get_where('checkout', array('id' => $checkoutid));
         $checkout= $querycheckout->row_array();
-        $checkout['invoicenumber'] = strtotime($checkout['timestamp']) .'-I'.$checkoutid.'-A'.$checkout['appointmentid'].'-C'.$checkout['clientid'];
+        //$checkout['invoicenumber'] = strtotime($checkout['timestamp']) .'-I'.$checkoutid.'-A'.$checkout['appointmentid'].'-C'.$checkout['clientid'];
+        $checkout['invoicenumber'] = $checkout['invoicenumber'];   //number_format($checkoutid,0,"","-");
         $data['checkout'] = $checkout;
         
-        $queryclients = $this->db->get_where('clients', array('id' => $checkout['clientid']));
+        $queryclients = $CI->db->get_where('clients', array('id' => $checkout['clientid']));
         $clients = $queryclients->row_array();
         $data['client'] = $clients;
         
-        $querycheckoutinvoice = $this->db->get_where('checkoutinvoice', array('checkoutid' => $checkoutid));
+        $querycheckoutinvoice = $CI->db->get_where('checkoutinvoice', array('checkoutid' => $checkoutid));
         $checkoutcheckoutinvoice = $querycheckoutinvoice->row_array();
         $data['checkoutinvoice'] = $checkoutcheckoutinvoice;
         
-        $querypayments = $this->db->query("SELECT a.*, b.type
+        $querypayments = $CI->db->query("SELECT a.*, b.type
                                             FROM checkoutpayments a
                                             INNER JOIN businesspayments b ON a.paymenttypeid = b.id
                                             AND a.checkoutid='$checkoutid'");
@@ -156,12 +158,12 @@ class Common {
         $data['checkoutpayments'] = $payments;        
         
         if($checkoutcheckoutinvoice['tax']) {
-            $querybusinesstax = $this->db->get_where('businesstax');
+            $querybusinesstax = $CI->db->get_where('businesstax');
             $checkoutbusinesstax = $querybusinesstax->result_array();
             $data['taxes'] = $checkoutbusinesstax;
         }
         
-//        $queryservices = $this->db->query("SELECT a.quantity AS quantity, a.price AS price, b.special_price AS specialprice,
+//        $queryservices = $CI->db->query("SELECT a.quantity AS quantity, a.price AS price, b.special_price AS specialprice,
 //                                    b.name AS servicename,
 //                                    c.first_name AS stafffname, c.last_name AS stafflname,
 //                                    d.name AS discountname, d.value AS discountvalue, d.discount_type AS discounttype
@@ -172,7 +174,7 @@ class Common {
 //        $servicedetails = $queryservices->result_array(); 
 //        $data['services'] = $servicedetails;
         
-        $queryservices = $this->db->query("SELECT a.quantity AS quantity, a.price AS price, a.discountid, b.special_price AS specialprice,
+        $queryservices = $CI->db->query("SELECT a.quantity AS quantity, a.price AS price, a.discountid, b.special_price AS specialprice,
                                     b.name AS servicename,
                                     c.first_name AS stafffname, c.last_name AS stafflname
                                     FROM checkoutservices a
@@ -182,7 +184,7 @@ class Common {
         $servicedetails = $queryservices->result_array();
         if(!empty($servicedetails)) {
             foreach($servicedetails as $k => $servicedetail) {
-                $querydiscounts = $this->db->get_where('discounts', array('id' => $servicedetail['discountid']));
+                $querydiscounts = $CI->db->get_where('discounts', array('id' => $servicedetail['discountid']));
                 $discount = $querydiscounts->row_array();
                 $servicedetails[$k]['discountname'] = $discount['name'];
                 $value = ($discount['discount_type'] == 'percentage') ? ($discount['value'].'% off') : ('₹'.$discount['value'].' off');
@@ -191,21 +193,21 @@ class Common {
         }
         $data['services'] = $servicedetails;
         
-        $querycheckoutproducts = $this->db->get_where('checkoutproducts', array('checkoutid' => $checkoutid));
+        $querycheckoutproducts = $CI->db->get_where('checkoutproducts', array('checkoutid' => $checkoutid));
         $checkoutcheckoutproducts = $querycheckoutproducts->result_array();
         if(!empty($checkoutcheckoutproducts)) {
             foreach($checkoutcheckoutproducts as $key => $val) {
-                $queryproducts = $this->db->get_where('products', array('id' => $val['productid']));
+                $queryproducts = $CI->db->get_where('products', array('id' => $val['productid']));
                 $product = $queryproducts->row_array();
                 $checkoutcheckoutproducts[$key]['productname'] = $product['product_name'];
                 $checkoutcheckoutproducts[$key]['specialprice'] = $product['special_price'];
                 
-                $querystaff = $this->db->get_where('staff', array('id' => $val['staffid']));
+                $querystaff = $CI->db->get_where('staff', array('id' => $val['staffid']));
                 $staff = $querystaff->row_array();
                 $checkoutcheckoutproducts[$key]['stafffname'] = $staff['first_name'];
                 $checkoutcheckoutproducts[$key]['stafflname'] = $staff['last_name'];
                 
-                $querydiscounts = $this->db->get_where('discounts', array('id' => $val['discountid']));
+                $querydiscounts = $CI->db->get_where('discounts', array('id' => $val['discountid']));
                 $discount = $querydiscounts->row_array();
                 $checkoutcheckoutproducts[$key]['discountname'] = $discount['name'];
                 $value = ($discount['discount_type'] == 'percentage') ? ($discount['value'].'% off') : ('₹'.$discount['value'].' off');
@@ -214,7 +216,7 @@ class Common {
         }
         $data['products'] = $checkoutcheckoutproducts;
         
-        $querycheckoutstafftip = $this->db->query("SELECT a.first_name AS fname, a.last_name AS lname, b.price FROM staff a JOIN checkoutstafftip b ON a.id = b.staffid AND b.checkoutid='$checkoutid'");
+        $querycheckoutstafftip = $CI->db->query("SELECT a.first_name AS fname, a.last_name AS lname, b.price FROM staff a JOIN checkoutstafftip b ON a.id = b.staffid AND b.checkoutid='$checkoutid'");
         $tipdetails = $querycheckoutstafftip->row_array(); 
         $data['tipdetails'] = $tipdetails;
         

@@ -166,7 +166,7 @@ Class Receiptprint {
         }        
     }
     
-    function split_on($string, $num) {
+    public static function split_on($string, $num) {
         $length = strlen($string);
         $output[0] = trim(substr($string, 0, $num));
         $output[1] = trim(substr($string, $num, $length ));
