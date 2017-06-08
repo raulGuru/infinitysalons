@@ -17,9 +17,9 @@
                                             <label class="sr-only" for="date_range">date_range</label>
                                             <span class="custom reports-filters__custom">
                                                 <div class="input-group">
-                                                    <input type="text" name="date_from" id="date_from" value="<?php echo (!empty($servicesales['fromDate'])) ? $servicesales['fromDate'] : ""; ?>" class="date-input form-control text-center" readonly="readonly">
+                                                    <input type="text" name="date_from" id="date_from" value="" class="date-input form-control text-center" readonly="readonly">
                                                     <span class="input-group-addon">to</span>
-                                                    <input type="text" name="date_to" id="date_to" value="<?php echo (!empty($servicesales['toDate'])) ? $servicesales['toDate'] : ""; ?>" class="date-input form-control text-center" readonly="readonly">
+                                                    <input type="text" name="date_to" id="date_to" value="" class="date-input form-control text-center" readonly="readonly">
 
                                                 </div>
                                             </span>
@@ -36,39 +36,36 @@
                             </div>
                         </div>
                     </form>
-                    <div class="row m-b-10 filters-with-custom">
+                    <!--div class="row m-b-10 filters-with-custom">
                         <div class="col-lg-12">
                             <div class="filters-description sm-m-b-15">
                                 <p class="report-options no-margin">
-                                    Displaying from <span class="font-bold"><?php echo (!empty($servicesales['fromDate'])) ? date('l, j M Y', strtotime($servicesales['fromDate'])) : date('l, j M Y'); ?></span> to <span class="font-bold"><?php echo (!empty($servicesales['toDate'])) ? date('l, j M Y', strtotime($servicesales['toDate'])) : date('l, j M Y'); ?></span>
+                                    Displaying from <span class="font-bold"><?php //echo (date('l, j M Y', strtotime($servicesales['fromDate']))); ?></span> to <span class="font-bold"><?php //echo (date('l, j M Y', strtotime($servicesales['toDate']))); ?></span>
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div-->
                     <?php if (!empty($servicesales)) { ?>
-                        <table class="table table-hover table-sortable"  id="staffsale_list">
+                        <table class="table"  id="staffsale_list">
                             <thead class="bg-grey">
                                 <tr>
                                     <th>Service Name</th>
                                     <th>Quantity Sold</th>
-                                    <!--<th>Invoice Date</th>-->
                                     <th>Gross Total (in <span>&#8377;</span>)</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th colspan="3" style="text-align:right;padding-right: 265px;"></th>
+                                    <th colspan="3" style="text-align:right;padding-right: 310px;"></th>
                                 </tr>
                             </tfoot>
                             <tbody>
                                 <?php foreach ($servicesales['result'] as $servicesale) {
                                     ?> 
-                                    <tr class="clickable-row" data-params='{"id":"<?php echo $servicesale['serviceid']; ?>"}' >
+                                    <tr>
                                         <td><?php echo $servicesale['name'] ?></td>
                                         <td><?php echo $servicesale['quantity']; ?></td>
-                                        <!--<td><?php //echo date('l, j M Y', strtotime($servicesale['invoicedate'])) ?></td>-->
                                         <td><?php echo Common::formatMoneyToPrint($servicesale['salevalue']); ?></td>
-                                        <!--<td><?php // echo $servicesale['invoicedate']       ?></td>-->
                                     </tr>
                                 <?php } ?>                                            
                             </tbody>
@@ -81,7 +78,15 @@
 </div>
 
 <script>
+
+    var fdate = moment('<?php echo $servicesales['fromDate'];  ?>').format('MM/DD/YYYY');
+    var tdate = moment('<?php echo $servicesales['toDate'];  ?>').format('MM/DD/YYYY');
+
     $(document).ready(function () {
+
+        $('#date_from').datepicker( {maxDate : '+0d' } ).datepicker("setDate", fdate);
+        $('#date_to').datepicker( {maxDate : '+0d' } ).datepicker("setDate", tdate);
+
         var oTable = $('#staffsale_list').dataTable({
             "bLengthChange": false,
             "pageLength": 20,
@@ -114,51 +119,5 @@
                 }
             }
         });
-
-        $("#date_from").datepicker({
-            maxDate: '+0d',
-            onSelect: function (date) {
-                minDateFilter = new Date(date).getTime();
-                oTable.fnDraw();
-            }
-        })/*.keyup(function() {
-         minDateFilter = new Date(this.value).getTime();
-         oTable.fnDraw();
-         })*/.datepicker("setDate", new Date());
-
-        $("#date_to").datepicker({
-            maxDate: '+0d',
-            onSelect: function (date) {
-                maxDateFilter = new Date(date).getTime();
-                oTable.fnDraw();
-            }
-        })/*.keyup(function() {
-         maxDateFilter = new Date(this.value).getTime();
-         oTable.fnDraw();
-         })*/.datepicker("setDate", new Date());
     });
-
-
-    // Date range filter
-    minDateFilter = new Date().getTime();
-    maxDateFilter = new Date().getTime();
-
-    $.fn.dataTableExt.afnFiltering.push(
-            function (oSettings, aData, iDataIndex) {
-                if (typeof aData._date == 'undefined') {
-                    aData._date = new Date(aData[4]).getTime();
-                }
-                if (minDateFilter && !isNaN(minDateFilter)) {
-                    if (aData._date < minDateFilter) {
-                        return false;
-                    }
-                }
-                if (maxDateFilter && !isNaN(maxDateFilter)) {
-                    if (aData._date > maxDateFilter) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-    );
 </script>

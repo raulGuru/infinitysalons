@@ -10,9 +10,12 @@ class Reports_model extends CI_Model {
     }
 
     function getInvoices() {
-
+//        if (isset($id) && !empty($id)) {
+//            $this->db->where('id', $id);
+//        }
         $query = $this->db->get('checkout');
         $checkout = $query->result_array();
+
         $invoices = array();
         for ($i = 0; $i < count($checkout); $i++) {
 
@@ -20,14 +23,18 @@ class Reports_model extends CI_Model {
             $invoices[$i]['invoiceid'] = $invoiceid;
             //$invoices[$i]['invoicenumber'] = strtotime($checkout[$i]['timestamp']) . '-I' . $invoiceid . '-A' . $checkout[$i]['appointmentid'] . '-C' . $checkout[$i]['clientid'];
             $invoices[$i]['invoicenumber'] = $checkout[$i]['invoicenumber'];
+
             $invoices[$i]['invoicedate'] = $checkout[$i]['invoicedate'];
+
             $invoices[$i]['appointmentid'] = $checkout[$i]['appointmentid'];
+
             $invoices[$i]['clientid'] = $checkout[$i]['clientid'];
             if ($checkout[$i]['clientid'] != 0) {
                 $queryClients = $this->db->select('id, firstname, lastname')->get_where('clients', array('id' => $checkout[$i]['clientid']));
                 $client = $queryClients->result_array();
                 $invoices[$i]['client'] = $client[0];
             }
+
             $querycheckoutinvoice = $this->db->get_where('checkoutinvoice', array('checkoutid' => $invoiceid));
             $checkoutinvoice = $querycheckoutinvoice->row_array();
             $invoices[$i]['totalprice'] = $checkoutinvoice['totalprice'];
@@ -35,46 +42,44 @@ class Reports_model extends CI_Model {
         return $invoices;
     }
 
-    function getStaffSales($fromDate = '', $toDate = '') {
-        $where = '';
-        $where = "WHERE checkoutinvoice.invoicedate > '" . date('Y-m-d') . "' and checkoutinvoice.invoicedate <= '" . date('Y-m-d') . "'";
-        if (!empty($fromDate) && !empty($toDate)) {
-            $from = date("Y-m-d", $fromDate);
-            $to = date("Y-m-d", $toDate);
-            $where = "WHERE checkoutinvoice.invoicedate > '" . $from . "' and checkoutinvoice.invoicedate <= '" . $to . "'";
-        }
+    function getServiceSales($fromDate, $toDate) {
 
-        $query = $this->db->query("SELECT checkoutservices.staffid, concat(staff.first_name, ' ', staff.last_name) as staffname, sum(checkoutservices.quantity) as quantity, sum(checkoutservices.price) as salevalue FROM `checkoutservices` join staff on checkoutservices.staffid = staff.id join checkoutinvoice on checkoutservices.checkoutid = checkoutinvoice.checkoutid 
-$where
-group by staffid order by staffname");
+        $from = date("Y-m-d", $fromDate);
+        $to = date("Y-m-d", $toDate);
+        $where = "WHERE a.invoicedate >= '" . $from . "' and a.invoicedate <= '" . $to . "'";
+
+        $query = $this->db->query("SELECT b.serviceid, c.name, SUM(b.quantity) AS quantity, sum(b.price) as salevalue
+                                    FROM checkout a 
+                                    INNER JOIN checkoutservices b ON a.id = b.checkoutid
+                                    INNER JOIN services c ON b.serviceid = c.id
+                                    $where
+                                    GROUP BY b.serviceid, c.name
+                                    ORDER BY c.name");
 
         $data['result'] = $query->result_array();
-        $data['fromDate'] = (!empty($from) ? date("m/d/Y", strtotime($from)) : '');
-        $data['toDate'] = (!empty($to) ? date("m/d/Y", strtotime($to)) : '');
+        $data['fromDate'] = $from;
+        $data['toDate'] = $to;
 
         return $data;
     }
 
-    function getServiceSales($fromDate = '', $toDate = '') {
-        $where = '';
-        $where = "WHERE checkout.invoicedate > '" . date('Y-m-d') . "' and checkout.invoicedate <= '" . date('Y-m-d') . "'";
-        if (!empty($fromDate) && !empty($toDate)) {
-            $from = date("Y-m-d", $fromDate);
-            $to = date("Y-m-d", $toDate);
-            $where = "WHERE checkout.invoicedate > '" . $from . "' and checkout.invoicedate <= '" . $to . "'";
-        }
-            $query = $this->db->query("SELECT checkoutservices.serviceid, services.name, services.price, services.special_price, sum(checkoutservices.quantity) as quantity, sum(checkoutservices.price) as salevalue, checkout.invoicedate
-                        FROM `checkoutservices` 
-                        JOIN services 
-                        JOIN checkout 
-                        ON checkoutservices.serviceid = services.id AND checkoutservices.checkoutid = checkout.id
-                        $where
-                        GROUP BY checkoutservices.serviceid
-                        order by checkout.invoicedate,services.name");
+    function getStaffSales($fromDate, $toDate) {
+
+        $from = date("Y-m-d", $fromDate);
+        $to = date("Y-m-d", $toDate);
+        $where = "WHERE a.invoicedate >= '" . $from . "' and a.invoicedate <= '" . $to . "'";
+
+        $query = $this->db->query("SELECT b.staffid, CONCAT(c.first_name, ' ', c.last_name) as staffname, SUM(b.quantity) AS quantity, SUM(b.price) as salevalue
+                                    FROM checkout a
+                                    INNER JOIN checkoutservices b ON a.id = b.checkoutid
+                                    INNER JOIN staff c ON b.staffid = c.id
+                                    $where
+                                    GROUP BY b.staffid, staffname
+                                    ORDER BY staffname");
 
         $data['result'] = $query->result_array();
-        $data['fromDate'] = (!empty($from) ? date("m/d/Y", strtotime($from)) : '');
-        $data['toDate'] = (!empty($to) ? date("m/d/Y", strtotime($to)) : '');
+        $data['fromDate'] = $from;
+        $data['toDate'] = $to;
 
         return $data;
     }
@@ -150,30 +155,34 @@ from clients");
         return $data;
     }
 
-    function getDailySales($fromDate = '', $toDate = '') {
-        $where = '';
-        $where = "WHERE checkoutinvoice.invoicedate >= '" . date('Y-m-d') . "' and checkoutinvoice.invoicedate <= '" . date('Y-m-d') . "'";
-        if (!empty($fromDate) && !empty($toDate)) {
-            $from = date("Y-m-d", $fromDate);
-            $to = date("Y-m-d", $toDate);
-            $where = "WHERE checkoutinvoice.invoicedate >= '" . $from . "' and checkoutinvoice.invoicedate <= '" . $to . "'";
+    function getDailySales($fromDate, $toDate) {
+
+        $from = date("Y-m-d", $fromDate);
+        $to = date("Y-m-d", $toDate);
+        $where = "WHERE checkoutinvoice.invoicedate >= '" . $from . "' and checkoutinvoice.invoicedate <= '" . $to . "'";
+
+        $q1 = $this->db->query("SELECT invoicedate, SUM(totalprice) AS totalprice, SUM(sale) AS price
+                                FROM `checkoutinvoice` 
+                                $where 
+                                GROUP BY invoicedate");
+        $q1_r = $q1->result_array();
+
+        $q2 = $this->db->query("SELECT checkoutinvoice.invoicedate, COUNT(checkoutservices.serviceid) AS services
+                                FROM checkoutinvoice
+                                INNER JOIN checkoutservices ON checkoutinvoice.checkoutid = checkoutservices.checkoutid
+                                $where
+                                GROUP BY checkoutinvoice.invoicedate
+                                ORDER BY checkoutinvoice.invoicedate");
+        $q2_r = $q2->result_array();
+
+        foreach ($q1_r as $k) {
+            foreach ($q2_r as $k1 => $v1) {
+                $q1_r[$k1]['services'] = $v1['services'];
+            }
         }
-
-//        $where = "WHERE checkoutinvoice.invoicedate >= '2017-03-17' and checkoutinvoice.invoicedate <= '2017-03-18'";
-//        echo '<pre>', print_r($query), '</pre>';
-//        exit();
-        $query = $this->db->query("SELECT checkoutinvoice.totalprice, count(checkoutservices.serviceid) as services, checkoutinvoice.invoicedate
-FROM `checkoutinvoice` 
-JOIN checkoutservices 
-ON checkoutinvoice.checkoutid = checkoutservices.checkoutid
-$where
-GROUP by checkoutinvoice.invoicedate");
-
-//        echo '<pre>', print_r($this->db), '</pre>';
-//        die;
-        $data['result'] = $query->result_array();
-        $data['fromDate'] = (!empty($from) ? date("m/d/Y", strtotime($from)) : '');
-        $data['toDate'] = (!empty($to) ? date("m/d/Y", strtotime($to)) : '');
+        $data['result'] = $q1_r;
+        $data['fromDate'] = $from;
+        $data['toDate'] = $to;
 
         return $data;
     }

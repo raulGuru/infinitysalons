@@ -22,30 +22,28 @@ class Reports extends CI_Controller {
         $this->load->layout('reports/invoices', $data);
     }
 
-    function staffSales() {
-        $fromDate = $toDate = '';
-
-        if (!empty($_POST)) {
-            $fromDate = strtotime($_POST['date_from']);
-            $toDate = strtotime($_POST['date_to']);
-        }
-        
-        $data['title'] = "Staff Sales";
-        $data['staffsales'] = $this->reports_model->getStaffSales($fromDate, $toDate);
-        $this->load->layout('reports/staff_sales', $data);
-    }
-
     function serviceSales() {
-        $fromDate = $toDate = '';
-
         if (!empty($_POST)) {
             $fromDate = strtotime($_POST['date_from']);
             $toDate = strtotime($_POST['date_to']);
+        }else{
+            $fromDate = strtotime("now");
+            $toDate = strtotime("now");
         }
-
-        $data['title'] = "Service Sales";
         $data['servicesales'] = $this->reports_model->getServiceSales($fromDate, $toDate);
         $this->load->layout('reports/service_sales', $data);
+    }
+
+    function staffSales() {
+        if (!empty($_POST)) {
+            $fromDate = strtotime($_POST['date_from']);
+            $toDate = strtotime($_POST['date_to']);
+        }else{
+            $fromDate = strtotime("now");
+            $toDate = strtotime("now");
+        }
+        $data['staffsales'] = $this->reports_model->getStaffSales($fromDate, $toDate);
+        $this->load->layout('reports/staff_sales', $data);
     }
 
     function clientSales() {
@@ -62,14 +60,13 @@ class Reports extends CI_Controller {
     }
     
     function dailySales() {
-        $fromDate = $toDate = '';
-
         if (!empty($_POST)) {
             $fromDate = strtotime($_POST['date_from']);
             $toDate = strtotime($_POST['date_to']);
+        }else{
+            $fromDate = strtotime("now");
+            $toDate = strtotime("now");
         }
-
-        $data['title'] = "Daily Sales";
         $data['dailysales'] = $this->reports_model->getDailySales($fromDate, $toDate);
         $this->load->layout('reports/daily_sales', $data);
     }

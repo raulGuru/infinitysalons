@@ -22,9 +22,9 @@
                                                 <label class="sr-only" for="date_range">date_range</label>
                                                 <span class="custom reports-filters__custom">
                                                     <div class="input-group">
-                                                        <input type="text" name="date_from" id="date_from" value="<?php echo (isset($fromDate)) ? $fromDate : ""; ?>" class="date-input form-control text-center" readonly="readonly">
+                                                        <input type="text" name="date_from" id="date_from" value="" class="date-input form-control text-center" readonly="readonly">
                                                         <span class="input-group-addon">to</span>
-                                                        <input type="text" name="date_to" id="date_to" value="<?php echo (isset($toDate)) ? $toDate : ""; ?>" class="date-input form-control text-center" readonly="readonly">
+                                                        <input type="text" name="date_to" id="date_to" value="" class="date-input form-control text-center" readonly="readonly">
 
                                                     </div>
                                                 </span>
@@ -52,6 +52,11 @@
                                     <th></th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                            <tr>
+                                <th colspan="6" style="text-align:right;padding-right: 333px;"></th>
+                            </tr>
+                            </tfoot>
                             <tbody>
                                 <?php foreach ($invoices as $invoice) { ?> 
                                     <tr>
@@ -127,7 +132,28 @@
                 null,
                 {"visible": false},
                 null
-            ]
+            ],
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+                var colNumber = [3];
+
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[, ₹&nbsp;]|(\.\d{2})/g, "") * 1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                for (i = 0; i < colNumber.length; i++) {
+                    var colNo = colNumber[i];
+                    var total2 = api
+                        .column(colNo, {page: 'current'})
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                    $(api.column(colNo).footer()).html('TOTAL &nbsp;&nbsp;₹&nbsp;' + (accounting.formatMoney(total2)));
+                }
+            }
         });
 
         $("#date_from").datepicker({
@@ -220,4 +246,3 @@
     });
     
 </script>
-
