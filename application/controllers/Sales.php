@@ -245,6 +245,11 @@ class Sales extends CI_Controller {
             $this->db->insert("checkoutstafftip", $checkoutstafftip);
         }
 
+        /*
+         * send invoice mail
+         * */
+        $this->sendInvoiceMail($checkoutid);
+
         $res['success'] = true;
         $res['checkoutid'] = $checkoutid;
         echo json_encode($res);
@@ -359,7 +364,7 @@ class Sales extends CI_Controller {
     }
 
     function saleCompleted() {
-        
+
     }
 
     function editInvoice() {
@@ -408,6 +413,51 @@ class Sales extends CI_Controller {
         $data['invoiceid'] = $checkoutid;
         $data['invoicenumber'] = $checkoutinvoice['invoicenumber'];
         $this->load->view('sales/edit_service_sale', $data);
+    }
+
+    public function sendInvoiceMail($checkoutid) {
+
+        $data = Common::getInvoiceDetailsById($checkoutid);
+        $c_email = $data['client']['email'];
+        if(!empty($c_email)) {
+
+            $msg = $this->load->view('invoice/mail_invoice', $data, true);
+            $c_name = $data['client']['firstname'];
+
+            require_once __DIR__ . '/../../vendor/autoload.php';
+
+            $mail = new PHPMailer;
+
+            /*$mail->isSMTP();
+            $mail->Host = 'rely-hosting.secureserver.net';
+            $mail->Username = 'info@infinitysalons.com';
+            $mail->Password = 'k*aecLd0!cIX';
+            $mail->Port = 25;
+            $mail->SMTPAuth = false;
+            //$mail->SMTPSecure = 'ssl';
+            $mail->SMTPDebug = 2;*/
+
+            $mail->From = EMAIL_FROM;
+            $mail->FromName = EMAIL_FROM_NAME;
+            $mail->addReplyTo(EMAIL_REPLY_TO, EMAIL_REPLY_TO_NAME);
+            $mail->addAddress($c_email, $c_name);
+            //$mail->addCC("cc@example.com");
+            //$mail->addBCC("bcc@example.com");
+
+            $mail->isHTML(true);
+            $mail->Subject = "Invoice of Infinity Salon";
+            $mail->Body = $msg;
+            //$mail->AltBody = "This is the plain text version of the email content";
+
+            if(!$mail->send())
+            {
+                echo '<pre>',print_r($mail->ErrorInfo),'</pre>'; exit();
+            }
+            else
+            {
+                //echo "Message has been sent successfully";
+            }
+        }
     }
 
 }
