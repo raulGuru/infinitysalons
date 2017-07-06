@@ -26,7 +26,7 @@
                            <div class="form-group no-margin">
                               <label for="sale_customer_id">Client</label>
                               <div class="input-group">
-                                 <input placeholder="Search by name or mobile number" class="search b-r-none form-control ui-autocomplete-input" autofocus="autofocus" type="text" name="sale[customer_id]" id="sale_customer_id" autocomplete="off">
+                                 <input placeholder="Search by name or mobile number" class="search b-r-none form-control ui-autocomplete-input" autofocus="autofocus" type="text" name="sale[customer_id]" id="sale_customer_id" autocomplete="off" required="required">
                                  <span class="input-group-addon bg-white">
                                  <i class="s-icon-search"></i>
                                  </span>
