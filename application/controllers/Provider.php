@@ -5,6 +5,7 @@ class Provider extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('provider_model');
+        $this->user_id = $this->session->userdata['salon_user']['id'];
         
         Common::checkUserHasAccess('setup');
     }
@@ -19,10 +20,10 @@ class Provider extends CI_Controller {
         Common::checkUserHasAccess('setup');
         
         $data['title'] = "Business Settings";
-        $data['cancellationReasons'] = $this->getCancellationReasons();
+        /*$data['cancellationReasons'] = $this->getCancellationReasons();
         $data['referralSources'] = $this->getReferralSources();
         $data['payment_types'] = $this->getPosPaymentTypes();
-        $data['taxes'] = $this->getPosTaxes();
+        $data['taxes'] = $this->getPosTaxes();*/
 
         $this->load->layout('provider/business_settings_new', $data);
     }
@@ -145,8 +146,11 @@ class Provider extends CI_Controller {
 
     public function addTax() {
         $tax = array(
-            'taxname' => $_POST['name'],
-            'rate' => $_POST['rate']
+            'userid'    => $this->user_id,
+            'taxname'   => $_POST['name'],
+            'rate'      => $_POST['rate'],
+            'validfrom' => date('Y-m-d', strtotime($_POST['valid_from'])),
+            'validtill' => date('Y-m-d', strtotime($_POST['valid_till']))
         );
         if (!empty($_POST['tax_id'])) {
             $this->db->update('businesstax', $tax, array('id' => $_POST['tax_id']));
@@ -226,4 +230,26 @@ class Provider extends CI_Controller {
         $this->load->layout('paymentmethods/index', $returnArr);
     }
 
+    public function configsms()
+    {
+        $query = $this->db->get('businesssms');
+        $data['sms'] = $query->row_array();
+        $this->load->layout('sms/index', $data);
+    }
+
+    public function editSms()
+    {
+        $sms = $_POST['sms'];
+        $status = $sms['active'];
+        $content = $sms['content'];
+        $id = $sms['id'];
+        if($status == true) {
+            $val = array('status' => 'active', 'content' => $content);
+        }else{
+            $val = array('status' => 'inactive');
+        }
+        $this->db->update('businesssms', $val, array('id' => $id));
+        $res['success'] = true;
+        echo json_encode($res);
+    }
 }

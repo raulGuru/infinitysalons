@@ -158,7 +158,12 @@ class Common {
         $data['checkoutpayments'] = $payments;        
         
         if($checkoutcheckoutinvoice['tax']) {
-            $querybusinesstax = $CI->db->get_where('businesstax');
+            $invoicedate =  $checkoutcheckoutinvoice['invoicedate'];
+            $where = array(
+                "validfrom <=" => $invoicedate,
+                "validtill >=" => $invoicedate,
+            );
+            $querybusinesstax = $CI->db->get_where('businesstax', $where);
             $checkoutbusinesstax = $querybusinesstax->result_array();
             $data['taxes'] = $checkoutbusinesstax;
         }

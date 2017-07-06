@@ -56,7 +56,12 @@ class Sales extends CI_Controller {
         $querystaff = $this->db->get_where('staff', array('active' => '1'));
         $data['staffs'] = $querystaff->result_array();
 
-        $querytax = $this->db->get("businesstax");
+        $invoicedate = date('Y-m-d', strtotime($sale['invoice_date']));
+        $where = array(
+            "validfrom <=" => $invoicedate,
+            "validtill >=" => $invoicedate,
+        );
+        $querytax = $this->db->get_where("businesstax", $where);
         $data['taxes'] = $querytax->result_array();
 
         $querybusinesspayments = $this->db->get_where('businesspayments', array('active' => '1'));
@@ -150,7 +155,7 @@ class Sales extends CI_Controller {
         $checkoutins = array(
             'invoicenumber' => $invoicenumber,
             'appointmentid' => $appointmentid,
-            'clientid' => (!empty($sale['customer_id'])) ? $sale['customer_id'] : 0,
+            'clientid' => (!empty($sale['customer_id'])) ? $sale['customer_id'] : 1,
             'userid' => $this->user_id,
             'invoicedate' => $invoicedate
         );

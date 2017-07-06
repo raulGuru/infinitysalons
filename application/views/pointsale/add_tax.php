@@ -31,8 +31,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-6 right-modal-column-md">
+                                    <div class="form-group">
+                                        <label for="tax_rate_validf">Valid From</label>
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="valid_from" id="tax_rate_validf" required="required" value="<?php echo $tax['validfrom'] ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 right-modal-column-md">
+                                    <div class="form-group">
+                                        <label for="tax_rate_validt">Valid Till</label>
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" name="valid_till" id="tax_rate_validt" required="required" value="<?php echo $tax['validtill'] ?>">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            
                         </div>
                         <div class="modal-footer">
                             <button aria-hidden="" class="btn btn-default" data-dismiss="modal" type="button">Cancel</button>
@@ -66,6 +81,8 @@
             });
         }
     });
+
+    $('#tax_rate_validf, #tax_rate_validt').datepicker();
     /*$("#new_tax_rate").on('submit', function () {
         var tax_rate_name = $('#tax_rate_name').val();
         var tax_rate_rate = $('#tax_rate_rate').val();
