@@ -95,8 +95,8 @@ from clients");
         foreach ($clients as $client) {
             $clientid = $client['clientid'];
             $data['client'][$clientid] = $client;
-//        $where = " where checkout.invoicedate > '" . date('Y-m-d') . "' and checkout.invoicedate <= '" . date('Y-m-d') . "'";
-            $where = "where checkout.invoicedate > '2017-03-18' and checkout.invoicedate <= '2017-03-19'";
+            $where = " where checkout.invoicedate > '" . date('Y-m-d') . "' and checkout.invoicedate <= '" . date('Y-m-d') . "'";
+            //$where = "where checkout.invoicedate > '2017-03-18' and checkout.invoicedate <= '2017-03-19'";
 
             if (!empty($fromDate) && !empty($toDate)) {
                 $from = date("Y-m-d", $fromDate);
