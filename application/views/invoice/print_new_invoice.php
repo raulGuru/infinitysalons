@@ -118,7 +118,7 @@
         
         <!--Footer-->
 	<div style="text-align: right;font-size:14px; margin-bottom: 20px">
-            <span style="width: 150px;float: left;text-align:left">Service tx No:AATPC9486BSD001</span>
+            <span style="width: 150px;float: left;text-align:left">GSTIN:27AATPC9486B1ZC</span>
             <span style="width: 120px;float: right;text-align:right">PAN No:AATPC9486B</span>
 	</div>
         <!--Footer-->

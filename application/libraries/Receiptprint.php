@@ -152,7 +152,7 @@ Class Receiptprint {
             /* Footer */
             $printer -> feed(2);
             $printer->setFont(Printer::FONT_B);
-            $printer -> text("Service tx No:AATPC9486BSD001                  PAN No:AATPC9486B");            
+            $printer -> text("GSTIN:27AATPC9486B1ZC                  PAN No:AATPC9486B");
 
             /* Cut the receipt and open the cash drawer */
             $printer -> feed();

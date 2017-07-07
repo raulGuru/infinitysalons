@@ -227,7 +227,7 @@
                                 Sector 14, Sanpada, Navi Mumbai-400705
                             </td>
                             <td style="width: 300px">
-                                Service tax No: AATPC9486BSD001<br>
+                                GSTIN: 27AATPC9486B1ZC<br>
                                 PAN No: AATPC9486B
                             </td>
                         </tr>
